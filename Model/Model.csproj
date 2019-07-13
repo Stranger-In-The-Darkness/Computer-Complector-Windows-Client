@@ -44,20 +44,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Body.cs" />
-    <Compile Include="Models\Charger.cs" />
-    <Compile Include="Models\Cooler.cs" />
-    <Compile Include="Models\CPU.cs" />
-    <Compile Include="Models\HDD.cs" />
+    <Compile Include="Models\Data\Body.cs" />
+    <Compile Include="Models\Data\Charger.cs" />
+    <Compile Include="Models\Data\Cooler.cs" />
+    <Compile Include="Models\Data\CPU.cs" />
+    <Compile Include="Models\Data\HDD.cs" />
     <Compile Include="Model.cs" />
-    <Compile Include="Models\Motherboard.cs" />
+    <Compile Include="Models\Data\Motherboard.cs" />
+    <Compile Include="Models\Option.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\RAM.cs" />
-    <Compile Include="Models\SSD.cs" />
-    <Compile Include="Models\Videocard.cs" />
+    <Compile Include="Models\Data\RAM.cs" />
+    <Compile Include="Models\Data\SSD.cs" />
+    <Compile Include="Models\Data\Videocard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Fields\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

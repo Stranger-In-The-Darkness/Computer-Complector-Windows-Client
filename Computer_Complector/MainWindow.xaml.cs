@@ -36,13 +36,16 @@ namespace Computer_Complector
         {
             InitializeComponent();
 
-            DataContext = new VM(new ViewModel.Models.DefaultDialogService(), Properties.Settings.Default.ServiceConnectionString);            
+            DataContext = new VM(
+                new ViewModel.Models.DefaultDialogService(), 
+                Properties.Settings.Default.ServiceConnectionString, 
+                Properties.Settings.Default.Culture);            
         }
 
-        private void ChangeFilter(object sender, SelectionChangedEventArgs e)
+        private void ToggleFilter(object sender, RoutedEventArgs e)
         {
-            var cb = (ComboBox)sender;
-            ((VM)DataContext).SelectFilter.Execute(new Tuple<object, object>(cb.Tag.ToString().Replace("_",""), cb.SelectedIndex));
+            var check = sender as CheckBox;
+            (DataContext as VM)?.SelectFilter.Execute(new Tuple<object, object>(check.Tag.ToString(), check.Content));
         }
 
         private void ClearSelection(object sender, RoutedEventArgs e)

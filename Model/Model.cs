@@ -44,6 +44,7 @@ namespace Model
 #else
         private string _apiUri = null;
 #endif
+        private string _culture = string.Empty;
         /// <summary>
         /// True, if web request is faulted
         /// </summary>
@@ -51,111 +52,111 @@ namespace Model
 
         private List<Body> _bodies;
         private Body _selectedBody;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _bodyFields;
-        private Dictionary<string, string> _selectedBodyFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _bodyFields;
+        private Dictionary<string, IEnumerable<string>> _selectedBodyFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<Charger> _chargers;
         private Charger _selectedCharger;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _chargerFields;
-        private Dictionary<string, string> _selectedChargerFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _chargerFields;
+        private Dictionary<string, IEnumerable<string>> _selectedChargerFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<Cooler> _coolers;
         private Cooler _selectedCooler;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _coolerFields;
-        private Dictionary<string, string> _selectedCoolerFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _coolerFields;
+        private Dictionary<string, IEnumerable<string>> _selectedCoolerFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<CPU> _cpus; 
         private CPU _selectedCpu;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _cpuFields;
-        private Dictionary<string, string> _selectedCpuFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _cpuFields;
+        private Dictionary<string, IEnumerable<string>> _selectedCpuFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<HDD> _hdds;
         private HDD _selectedHdd;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _hddFields;
-        private Dictionary<string, string> _selectedHddFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _hddFields;
+        private Dictionary<string, IEnumerable<string>> _selectedHddFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<Motherboard> _motherboards;
         private Motherboard _selectedMotherboard;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _motherboardFields;
-        private Dictionary<string, string> _selectedMotherboardFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _motherboardFields;
+        private Dictionary<string, IEnumerable<string>> _selectedMotherboardFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<RAM> _rams;
         private RAM _selectedRam;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _ramFields;
-        private Dictionary<string, string> _selectedRamFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _ramFields;
+        private Dictionary<string, IEnumerable<string>> _selectedRamFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<SSD> _ssds;
         private SSD _selectedSsd;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _ssdFields;
-        private Dictionary<string, string> _selectedSsdFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _ssdFields;
+        private Dictionary<string, IEnumerable<string>> _selectedSsdFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<Videocard> _videocards;
         private Videocard _selectedVideocard;
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _videocardFields;
-        private Dictionary<string, string> _selectedVideocardFields = new Dictionary<string, string>();
+        private Dictionary<string, Option> _videocardFields;
+        private Dictionary<string, IEnumerable<string>> _selectedVideocardFields = new Dictionary<string, IEnumerable<string>>();
 
         public List<Body> Bodies { get => _bodies; set { _bodies = value; OnPropertyChanged("Bodies"); } }
         public Body SelectedBody { get => _selectedBody; set { if (value != null) { _selectedBody = value; OnPropertyChanged("SelectedBody"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> BodyFields { get => _bodyFields; set { _bodyFields = value; OnPropertyChanged("BodyFields"); } }
+        public Dictionary<string, Option> BodyFields { get => _bodyFields; set { _bodyFields = value; OnPropertyChanged("BodyFields"); } }
 
         public List<Charger> Chargers { get => _chargers; set { _chargers = value; OnPropertyChanged("Chargers"); } }
         public Charger SelectedCharger { get => _selectedCharger; set { if (value != null) { _selectedCharger = value; OnPropertyChanged("SelectedCharger"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> ChargerFields { get => _chargerFields; set { _chargerFields = value; OnPropertyChanged("ChargerFields"); } }
+        public Dictionary<string, Option> ChargerFields { get => _chargerFields; set { _chargerFields = value; OnPropertyChanged("ChargerFields"); } }
 
         public List<Cooler> Coolers { get => _coolers; set { _coolers = value; OnPropertyChanged("Coolers"); } }
         public Cooler SelectedCooler { get => _selectedCooler; set { if (value != null) { _selectedCooler = value; OnPropertyChanged("SelectedCooler"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> CoolerFields { get => _coolerFields; set { _coolerFields = value; OnPropertyChanged("CoolerFields"); } }
+        public Dictionary<string, Option> CoolerFields { get => _coolerFields; set { _coolerFields = value; OnPropertyChanged("CoolerFields"); } }
 
         public List<CPU> Cpus { get => _cpus; set { _cpus = value; OnPropertyChanged("Cpus"); } }
         public CPU SelectedCpu { get => _selectedCpu; set { if (value != null) { _selectedCpu = value; OnPropertyChanged("SelectedCpu"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> CPUFields { get => _cpuFields; set { _cpuFields = value; OnPropertyChanged("CpuFields"); } }
+        public Dictionary<string, Option> CPUFields { get => _cpuFields; set { _cpuFields = value; OnPropertyChanged("CpuFields"); } }
 
         public List<HDD> Hdds { get => _hdds; set { _hdds = value; OnPropertyChanged("Hdds"); } }
         public HDD SelectedHdd { get => _selectedHdd; set { if (value != null) { _selectedHdd = value; OnPropertyChanged("SelectedHdd"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> HDDFields { get => _hddFields; set { _hddFields = value; OnPropertyChanged("HddFields"); } }
+        public Dictionary<string, Option> HDDFields { get => _hddFields; set { _hddFields = value; OnPropertyChanged("HddFields"); } }
 
         public List<RAM> Rams { get => _rams; set { _rams = value; OnPropertyChanged("Rams"); } }
         public RAM SelectedRam { get => _selectedRam; set { if (value != null) { _selectedRam = value; OnPropertyChanged("SelectedRam"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> RAMFields { get => _ramFields; set { _ramFields = value; OnPropertyChanged("RamFields"); } }
+        public Dictionary<string, Option> RAMFields { get => _ramFields; set { _ramFields = value; OnPropertyChanged("RamFields"); } }
 
         public List<SSD> Ssds { get => _ssds; set { _ssds = value; OnPropertyChanged("Ssds"); } }
         public SSD SelectedSsd { get => _selectedSsd; set { if (value != null) { _selectedSsd = value; OnPropertyChanged("SelectedSsd"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> SSDFields { get => _ssdFields; set { _ssdFields = value; OnPropertyChanged("SsdFields"); } }
+        public Dictionary<string, Option> SSDFields { get => _ssdFields; set { _ssdFields = value; OnPropertyChanged("SsdFields"); } }
 
         public List<Motherboard> Motherboards { get => _motherboards; set { _motherboards = value; OnPropertyChanged("Motherboards"); } }
         /// <summary>
         /// Field, description, options
         /// </summary>
         public Motherboard SelectedMotherboard { get => _selectedMotherboard; set { if (value != null) { _selectedMotherboard = value; OnPropertyChanged("SelectedMotherboard"); } } }
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> MotherboardFields { get => _motherboardFields; set { _motherboardFields = value; OnPropertyChanged("MotherboardFields"); } }
+        public Dictionary<string, Option> MotherboardFields { get => _motherboardFields; set { _motherboardFields = value; OnPropertyChanged("MotherboardFields"); } }
 
         public List<Videocard> Videocards { get => _videocards; set { _videocards = value; OnPropertyChanged("Videocards"); } }
         public Videocard SelectedVideocard { get => _selectedVideocard; set { if (value != null) { _selectedVideocard = value; OnPropertyChanged("SelectedVideocard"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> VideocardFields { get => _videocardFields; set { _videocardFields = value; OnPropertyChanged("VideocardFields"); } }
+        public Dictionary<string, Option> VideocardFields { get => _videocardFields; set { _videocardFields = value; OnPropertyChanged("VideocardFields"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")
@@ -163,7 +164,7 @@ namespace Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        public Model(string apiUri)
+        public Model(string apiUri, string culture = "en")
         {
             _bodies = new List<Body>();
             _chargers = new List<Charger>();
@@ -178,6 +179,8 @@ namespace Model
 #if !LOCALHOST
             _apiUri = apiUri;
 #endif
+
+            _culture = culture;
         }
 
         /// <summary>
@@ -401,7 +404,7 @@ namespace Model
                 type == "ssd" ||
                 type == "videocard")
             {
-                string request = $"{_apiUri}/{type}/properties";
+                string request = $"{_apiUri}/{type}/properties?culture={_culture}";
 
                 HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
 
@@ -423,7 +426,12 @@ namespace Model
                     using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
                         string res = await reader.ReadToEndAsync();
-                        var v = JsonConvert.DeserializeObject<Dictionary<string, Tuple<bool, string, IEnumerable<string>>>>(res);
+                        Dictionary<string, Option> v = null;
+                        try
+                        {
+                            v = JsonConvert.DeserializeObject<Dictionary<string, Option>>(res);
+                        }
+                        catch (Exception e) { };
                         switch (type)
                         {
                             case "body": BodyFields = v;
@@ -459,138 +467,226 @@ namespace Model
             }
         }
 
-        /// <summary>
-        /// Changes selected option of filter of specific component
-        /// </summary>
-        /// <param name="type">Component name</param>
-        /// <param name="property">Filter name</param>
-        /// <param name="value">Option</param>
-        /// <returns></returns>
-        public async Task ChangeFilter(string type, string property, string value)
-        {
-            switch (type)
-            {
-                case "body":
-                {
-                    if (!_selectedBodyFields.Keys.Contains(property))
-                    {
-                        _selectedBodyFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedBodyFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "charger":
-                {
-                    if (!_selectedChargerFields.Keys.Contains(property))
-                    {
-                        _selectedChargerFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedChargerFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "cooler":
-                {
-                    if (!_selectedCoolerFields.Keys.Contains(property))
-                    {
-                        _selectedCoolerFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedCoolerFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "cpu":
-                {
-                    if (!_selectedCpuFields.Keys.Contains(property))
-                    {
-                        _selectedCpuFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedCpuFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "hdd":
-                {
-                    if (!_selectedHddFields.Keys.Contains(property))
-                    {
-                        _selectedHddFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedHddFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "motherboard":
-                {
-                    if (!_selectedMotherboardFields.Keys.Contains(property))
-                    {
-                        _selectedMotherboardFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedMotherboardFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "ram":
-                {
-                    if (!_selectedRamFields.Keys.Contains(property))
-                    {
-                        _selectedRamFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedRamFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "ssd":
-                {
-                    if (!_selectedSsdFields.Keys.Contains(property))
-                    {
-                        _selectedSsdFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedSsdFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-                case "videocard":
-                {
-                    if (!_selectedVideocardFields.Keys.Contains(property))
-                    {
-                        _selectedVideocardFields.Add(property, value);
-                    }
-                    else
-                    {
-                        _selectedVideocardFields[property] = value;
-                    }
-                    await UpdateData(type);
-                }
-                break;
-            }
-        }
+        ///// <summary>
+        ///// Changes selected option of filter of specific component
+        ///// </summary>
+        ///// <param name="type">Component name</param>
+        ///// <param name="property">Filter name</param>
+        ///// <param name="value">Option</param>
+        ///// <returns></returns>
+        //public async Task ChangeFilter(string type, string property, string value)
+        //{
+        //    switch (type)
+        //    {
+        //        case "body":
+        //        {
+        //            if (!_selectedBodyFields.Keys.Contains(property))
+        //            {
+        //                _selectedBodyFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedBodyFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "charger":
+        //        {
+        //            if (!_selectedChargerFields.Keys.Contains(property))
+        //            {
+        //                _selectedChargerFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedChargerFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "cooler":
+        //        {
+        //            if (!_selectedCoolerFields.Keys.Contains(property))
+        //            {
+        //                _selectedCoolerFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedCoolerFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "cpu":
+        //        {
+        //            if (!_selectedCpuFields.Keys.Contains(property))
+        //            {
+        //                _selectedCpuFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedCpuFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "hdd":
+        //        {
+        //            if (!_selectedHddFields.Keys.Contains(property))
+        //            {
+        //                _selectedHddFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedHddFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "motherboard":
+        //        {
+        //            if (!_selectedMotherboardFields.Keys.Contains(property))
+        //            {
+        //                _selectedMotherboardFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedMotherboardFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "ram":
+        //        {
+        //            if (!_selectedRamFields.Keys.Contains(property))
+        //            {
+        //                _selectedRamFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedRamFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "ssd":
+        //        {
+        //            if (!_selectedSsdFields.Keys.Contains(property))
+        //            {
+        //                _selectedSsdFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedSsdFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //        case "videocard":
+        //        {
+        //            if (!_selectedVideocardFields.Keys.Contains(property))
+        //            {
+        //                _selectedVideocardFields.Add(property, value);
+        //            }
+        //            else
+        //            {
+        //                _selectedVideocardFields[property] = value;
+        //            }
+        //            await UpdateData(type);
+        //        }
+        //        break;
+        //    }
+        //}
 
-        public async Task ClearFilter(string type, string property)
+        //public async Task ClearFilter(string type, string property)
+        //{
+        //    switch (type)
+        //    {
+        //        case "body":
+        //        {
+        //            if (_selectedBodyFields.Keys.Contains(property))
+        //            {
+        //                _selectedBodyFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "charger":
+        //        {
+        //            if (_selectedChargerFields.Keys.Contains(property))
+        //            {
+        //                _selectedChargerFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "cooler":
+        //        {
+        //            if (_selectedCoolerFields.Keys.Contains(property))
+        //            {
+        //                _selectedCoolerFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "cpu":
+        //        {
+        //            if (_selectedCpuFields.Keys.Contains(property))
+        //            {
+        //                _selectedCpuFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "hdd":
+        //        {
+        //            if (_selectedHddFields.Keys.Contains(property))
+        //            {
+        //                _selectedHddFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "motherboard":
+        //        {
+        //            if (_selectedMotherboardFields.Keys.Contains(property))
+        //            {
+        //                _selectedMotherboardFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "ram":
+        //        {
+        //            if (_selectedRamFields.Keys.Contains(property))
+        //            {
+        //                _selectedRamFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "ssd":
+        //        {
+        //            if (_selectedSsdFields.Keys.Contains(property))
+        //            {
+        //                _selectedSsdFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //        case "videocard":
+        //        {
+        //            if (_selectedVideocardFields.Keys.Contains(property))
+        //            {
+        //                _selectedVideocardFields.Remove(property);
+        //                await UpdateData(type);
+        //            }
+        //        }
+        //        break;
+        //    }
+        //}
+
+        public async Task ToggleFilter(string type, string property, string value)
         {
             switch (type)
             {
@@ -598,81 +694,216 @@ namespace Model
                 {
                     if (_selectedBodyFields.Keys.Contains(property))
                     {
-                        _selectedBodyFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedBodyFields[property].Contains(value))
+                        {
+                            var values = _selectedBodyFields[property].ToList();
+                            values.Remove(value);
+                            _selectedBodyFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedBodyFields[property].ToList();
+                            values.Add(value);
+                            _selectedBodyFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedBodyFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "charger":
                 {
                     if (_selectedChargerFields.Keys.Contains(property))
                     {
-                        _selectedChargerFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedChargerFields[property].Contains(value))
+                        {
+                            var values = _selectedChargerFields[property].ToList();
+                            values.Remove(value);
+                            _selectedChargerFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedChargerFields[property].ToList();
+                            values.Add(value);
+                            _selectedChargerFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedChargerFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "cooler":
                 {
                     if (_selectedCoolerFields.Keys.Contains(property))
                     {
-                        _selectedCoolerFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedCoolerFields[property].Contains(value))
+                        {
+                            var values = _selectedCoolerFields[property].ToList();
+                            values.Remove(value);
+                            _selectedCoolerFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedCoolerFields[property].ToList();
+                            values.Add(value);
+                            _selectedCoolerFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedCoolerFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "cpu":
                 {
                     if (_selectedCpuFields.Keys.Contains(property))
                     {
-                        _selectedCpuFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedCpuFields[property].Contains(value))
+                        {
+                            var values = _selectedCpuFields[property].ToList();
+                            values.Remove(value);
+                            _selectedCpuFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedCpuFields[property].ToList();
+                            values.Add(value);
+                            _selectedCpuFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedCpuFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "hdd":
                 {
                     if (_selectedHddFields.Keys.Contains(property))
                     {
-                        _selectedHddFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedHddFields[property].Contains(value))
+                        {
+                            var values = _selectedHddFields[property].ToList();
+                            values.Remove(value);
+                            _selectedHddFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedHddFields[property].ToList();
+                            values.Add(value);
+                            _selectedHddFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedHddFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "motherboard":
                 {
                     if (_selectedMotherboardFields.Keys.Contains(property))
                     {
-                        _selectedMotherboardFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedMotherboardFields[property].Contains(value))
+                        {
+                            var values = _selectedMotherboardFields[property].ToList();
+                            values.Remove(value);
+                            _selectedMotherboardFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedMotherboardFields[property].ToList();
+                            values.Add(value);
+                            _selectedMotherboardFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedMotherboardFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "ram":
                 {
                     if (_selectedRamFields.Keys.Contains(property))
                     {
-                        _selectedRamFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedRamFields[property].Contains(value))
+                        {
+                            var values = _selectedRamFields[property].ToList();
+                            values.Remove(value);
+                            _selectedRamFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedRamFields[property].ToList();
+                            values.Add(value);
+                            _selectedRamFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedRamFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "ssd":
                 {
                     if (_selectedSsdFields.Keys.Contains(property))
                     {
-                        _selectedSsdFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedSsdFields[property].Contains(value))
+                        {
+                            var values = _selectedSsdFields[property].ToList();
+                            values.Remove(value);
+                            _selectedSsdFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedSsdFields[property].ToList();
+                            values.Add(value);
+                            _selectedSsdFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedSsdFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
                 case "videocard":
                 {
                     if (_selectedVideocardFields.Keys.Contains(property))
                     {
-                        _selectedVideocardFields.Remove(property);
-                        await UpdateData(type);
+                        if (_selectedVideocardFields[property].Contains(value))
+                        {
+                            var values = _selectedVideocardFields[property].ToList();
+                            values.Remove(value);
+                            _selectedVideocardFields[property] = values;
+                        }
+                        else
+                        {
+                            var values = _selectedVideocardFields[property].ToList();
+                            values.Add(value);
+                            _selectedVideocardFields[property] = values;
+                        }
                     }
+                    else
+                    {
+                        _selectedVideocardFields.Add(property, new string[] { value });
+                    }
+                    await UpdateData(type);
                 }
                 break;
             }
@@ -700,7 +931,7 @@ namespace Model
                 {
                     if (_selectedBodyFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedBodyFields.Select((kv) => $"{kv.Key}={kv.Value.Trim()}"))}";
+                        request = $"{request}{string.Join("&", _selectedBodyFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -802,7 +1033,7 @@ namespace Model
                 {
                     if (_selectedChargerFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedChargerFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedChargerFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -904,7 +1135,7 @@ namespace Model
                 {
                     if (_selectedCoolerFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedCoolerFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedCoolerFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -1006,7 +1237,7 @@ namespace Model
                 {
                     if (_selectedCpuFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedCpuFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedCpuFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -1108,7 +1339,7 @@ namespace Model
                 {
                     if (_selectedHddFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedHddFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedHddFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -1210,7 +1441,7 @@ namespace Model
                 {
                     if (_selectedMotherboardFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedMotherboardFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedMotherboardFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -1312,7 +1543,7 @@ namespace Model
                 {
                     if (_selectedRamFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedRamFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedRamFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -1414,7 +1645,7 @@ namespace Model
                 {
                     if (_selectedSsdFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedSsdFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedSsdFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -1516,7 +1747,7 @@ namespace Model
                 {
                     if (_selectedVideocardFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedVideocardFields.Select((kv) => $"{kv.Key}={kv.Value}"))}";
+                        request = $"{request}{string.Join("&", _selectedVideocardFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
                     if (SelectedBody != null)
@@ -1864,6 +2095,15 @@ namespace Model
 
                 }
                 break;
+            }
+        }
+
+        public async void ChangeCulture(string newCulture)
+        {
+            if (newCulture != null)
+            {
+                _culture = newCulture;
+                await Initialize();
             }
         }
     }

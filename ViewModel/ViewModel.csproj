@@ -59,6 +59,7 @@
     <Compile Include="Models\Data\Videocard.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\DefaultDialogService.cs" />
+    <Compile Include="Models\Option.cs" />
     <Compile Include="ViewModelMock.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

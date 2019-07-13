@@ -33,22 +33,26 @@ namespace ViewModel
             public IEnumerable<Body>        Item9 { get; internal set; }
         }
 
+        private string _culture = string.Empty;
+
         private IDialogService _dialogService;
 
-        public ViewModel(IDialogService service)
+        public ViewModel(IDialogService service, string culture = "en")
         {
+            _culture = culture;
             _dialogService = service;
-            _model = new m.Model("");
+            _model = new m.Model("", culture);
             _model.PropertyChanged += OnModelPropertyChanged;
-            _model.Initialize().RunSynchronously();
+            _model.Initialize();
         }
 
-        public ViewModel(IDialogService service, string serviceUri)
+        public ViewModel(IDialogService service, string serviceUri, string culture = "en")
         {
+            _culture = culture;
             _dialogService = service;
-            _model = new m.Model(serviceUri);
+            _model = new m.Model(serviceUri, culture);
             _model.PropertyChanged += OnModelPropertyChanged;
-            _model.Initialize().RunSynchronously();
+            _model.Initialize();
         }
 
         private readonly string[] _type = new string[]
@@ -109,14 +113,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("cpu", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        else
-                                        {
-                                            await _model.ChangeFilter("cpu", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), CPUFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "cpu", 
+                                            values.Item1 as string, 
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -125,14 +125,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("motherboard", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        else
-                                        {
-                                            await _model.ChangeFilter("motherboard", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), MOTHERBOARDFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "motherboard",
+                                            values.Item1 as string,
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -141,14 +137,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("videocard", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        else
-                                        {
-                                            await _model.ChangeFilter("videocard", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), VIDEOCARDFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "videocard",
+                                            values.Item1 as string,
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -157,14 +149,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("ram", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        else
-                                        {
-                                            await _model.ChangeFilter("ram", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), RAMFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "ram",
+                                            values.Item1 as string, 
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -173,13 +161,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("charger", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        {
-                                            await _model.ChangeFilter("charger", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), CHARGERFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "charger",
+                                            values.Item1 as string,
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -188,13 +173,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("cooler", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        {
-                                            await _model.ChangeFilter("cooler", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), COOLERFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "cooler",
+                                            values.Item1 as string,
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -203,13 +185,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("ssd", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        {
-                                            await _model.ChangeFilter("ssd", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), SSDFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "ssd",
+                                            values.Item1 as string,
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -218,13 +197,10 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("hdd", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        {
-                                            await _model.ChangeFilter("hdd", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), HDDFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "hdd",
+                                            values.Item1 as string,
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
@@ -233,20 +209,15 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        if ((int)values.Item2 == -1)
-                                        {
-                                            await _model.ClearFilter("body", string.Join("-", ((string)values.Item1).ToLower().Split(' ')));
-                                        }
-                                        {
-                                            await _model.ChangeFilter("body", string.Join("-", ((string)values.Item1).ToLower().Split(' ')), BODYFields[(string)values.Item1].Item3.ElementAt((int)values.Item2));
-                                        }
+                                        await _model.ToggleFilter(
+                                            "body",
+                                            values.Item1 as string,
+                                            values.Item2 as string);
                                     }
                                     catch { }
                                 }
                                 break;
                             }
-                            //_model.ChangeFilter(_type[_selectedTab], string.Join("-", ((string)values.Item1).Split(' ')), 
-                            //_selectedFields[_selectedTab][(string)values.Item1] = (int)values.Item2;
                         },
                         (obj) =>
                         {
@@ -348,6 +319,24 @@ namespace ViewModel
                             SelectedSsd != null ||
                             SelectedVideocard != null;
                         }));
+            }
+        }
+
+        private RelayCommand _changeCulture;
+        public RelayCommand ChangeCulture
+        {
+            get
+            {
+                return _changeCulture ??
+                    (_changeCulture = new RelayCommand(
+                        (obj)=>
+                        {
+                            if (obj as string != null)
+                            {
+                                ChangeModelCulture(obj as string);
+                            }
+                        },
+                        _ => { return true; }));
             }
         }
 
@@ -777,32 +766,32 @@ namespace ViewModel
             }
         }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _bodyFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> BODYFields          { get => _bodyFields; set { if (value != null) { _bodyFields = value; OnPropertyChanged("BODYFields"); } } }
+        private Dictionary<string, Option> _bodyFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> BODYFields          { get => _bodyFields; set { if (value != null) { _bodyFields = value; OnPropertyChanged("BODYFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _chargerFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> CHARGERFields       { get => _chargerFields; set { if (value != null) { _chargerFields = value; OnPropertyChanged("CHARGERFields"); } } }
+        private Dictionary<string, Option> _chargerFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> CHARGERFields       { get => _chargerFields; set { if (value != null) { _chargerFields = value; OnPropertyChanged("CHARGERFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _coolerFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> COOLERFields        { get => _coolerFields; set { if (value != null) { _coolerFields = value; OnPropertyChanged("COOLERFields"); } } }
+        private Dictionary<string, Option> _coolerFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> COOLERFields        { get => _coolerFields; set { if (value != null) { _coolerFields = value; OnPropertyChanged("COOLERFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _cpuFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> CPUFields           { get => _cpuFields; set { if (value != null) { _cpuFields = value; OnPropertyChanged("CPUFields"); } } }
+        private Dictionary<string, Option> _cpuFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> CPUFields           { get => _cpuFields; set { if (value != null) { _cpuFields = value; OnPropertyChanged("CPUFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _hddFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> HDDFields           { get => _hddFields; set { if (value != null) { _hddFields = value; OnPropertyChanged("HDDFields"); } } }
+        private Dictionary<string, Option> _hddFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> HDDFields           { get => _hddFields; set { if (value != null) { _hddFields = value; OnPropertyChanged("HDDFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _motherboardFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> MOTHERBOARDFields   { get => _motherboardFields; set { if (value != null) { _motherboardFields = value; OnPropertyChanged("MOTHERBOARDFields"); } } }
+        private Dictionary<string, Option> _motherboardFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> MOTHERBOARDFields   { get => _motherboardFields; set { if (value != null) { _motherboardFields = value; OnPropertyChanged("MOTHERBOARDFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _ramFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> RAMFields           { get => _ramFields; set { if (value != null) { _ramFields = value; OnPropertyChanged("RAMFields"); } } }
+        private Dictionary<string, Option> _ramFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> RAMFields           { get => _ramFields; set { if (value != null) { _ramFields = value; OnPropertyChanged("RAMFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _ssdFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> SSDFields           { get => _ssdFields; set { if (value != null) { _ssdFields = value; OnPropertyChanged("SSDFields"); } } }
+        private Dictionary<string, Option> _ssdFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> SSDFields           { get => _ssdFields; set { if (value != null) { _ssdFields = value; OnPropertyChanged("SSDFields"); } } }
 
-        private Dictionary<string, Tuple<bool, string, IEnumerable<string>>> _videocardFields = new Dictionary<string, Tuple<bool, string, IEnumerable<string>>>();
-        public Dictionary<string, Tuple<bool, string, IEnumerable<string>>> VIDEOCARDFields     { get => _videocardFields; set { if (value != null) { _videocardFields = value; OnPropertyChanged("VIDEOCARDFields"); } } }
+        private Dictionary<string, Option> _videocardFields = new Dictionary<string, Option>();
+        public Dictionary<string, Option> VIDEOCARDFields     { get => _videocardFields; set { if (value != null) { _videocardFields = value; OnPropertyChanged("VIDEOCARDFields"); } } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")
@@ -922,6 +911,14 @@ namespace ViewModel
                     }
                 }
                 );
+        }
+
+        private void ChangeModelCulture(string newCulture)
+        {
+            if (newCulture != null)
+            {
+                _model.ChangeCulture(newCulture);
+            }
         }
 
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -1117,15 +1114,24 @@ namespace ViewModel
                     OnPropertyChanged("Videocards");
                 }
                 break;
-                case "BodyFields": BODYFields = _model.BodyFields; break;
-                case "ChargerFields": CHARGERFields = _model.ChargerFields; break;
-                case "CoolerFields": COOLERFields = _model.CoolerFields; break;
-                case "CPUFields": CPUFields = _model.CPUFields; break;
-                case "HDDFields": HDDFields = _model.HDDFields; break;
-                case "MotherboardFields": MOTHERBOARDFields = _model.MotherboardFields; break;
-                case "RAMFields": RAMFields = _model.RAMFields; break;
-                case "SSDFields": SSDFields = _model.SSDFields; break;
-                case "VideocardFields": VIDEOCARDFields = _model.VideocardFields; break;
+                case "BodyFields": BODYFields = _model.BodyFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "ChargerFields": CHARGERFields = _model.ChargerFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "CoolerFields": COOLERFields = _model.CoolerFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "CPUFields": CPUFields = _model.CPUFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "HDDFields": HDDFields = _model.HDDFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "MotherboardFields": MOTHERBOARDFields = _model.MotherboardFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "RAMFields": RAMFields = _model.RAMFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "SSDFields": SSDFields = _model.SSDFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
+                case "VideocardFields": VIDEOCARDFields = _model.VideocardFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);
+                break;
                 case "SelectedBody":
                 {
                     if (_model.SelectedBody == null)
