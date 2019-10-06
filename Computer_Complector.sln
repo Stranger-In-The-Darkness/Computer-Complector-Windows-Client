@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\View
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerComplectorWebAPI", "ComputerComplectorWebService\ComputerComplectorWebAPI.csproj", "{885EDC3C-56F8-4EA1-A879-6A1A99B53193}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerComplectorWebAPITests", "ComputerComplectorWebAPITests\ComputerComplectorWebAPITests.csproj", "{026EE356-E6FF-4969-A828-1E343E807781}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{885EDC3C-56F8-4EA1-A879-6A1A99B53193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{885EDC3C-56F8-4EA1-A879-6A1A99B53193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{885EDC3C-56F8-4EA1-A879-6A1A99B53193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{026EE356-E6FF-4969-A828-1E343E807781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{026EE356-E6FF-4969-A828-1E343E807781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{026EE356-E6FF-4969-A828-1E343E807781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{026EE356-E6FF-4969-A828-1E343E807781}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

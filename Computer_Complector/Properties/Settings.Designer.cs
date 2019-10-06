@@ -43,5 +43,17 @@ namespace Computer_Complector.Properties {
                 this["Culture"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:44346/users")]
+        public string AuthentificationConnectionString {
+            get {
+                return ((string)(this["AuthentificationConnectionString"]));
+            }
+            set {
+                this["AuthentificationConnectionString"] = value;
+            }
+        }
     }
 }

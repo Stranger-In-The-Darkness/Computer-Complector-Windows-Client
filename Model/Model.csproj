@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoginModel.cs" />
     <Compile Include="Models\Data\Body.cs" />
     <Compile Include="Models\Data\Charger.cs" />
     <Compile Include="Models\Data\Cooler.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Model.cs" />
     <Compile Include="Models\Data\Motherboard.cs" />
     <Compile Include="Models\Option.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Data\RAM.cs" />
     <Compile Include="Models\Data\SSD.cs" />

@@ -42,17 +42,35 @@ namespace Model
 #if LOCALHOST
         private string _apiUri = "https://localhost:44346/api/components";
 #else
+		/// <summary>
+		/// API uri
+		/// </summary>
         private string _apiUri = null;
 #endif
+		/// <summary>
+		/// App culture
+		/// </summary>
         private string _culture = string.Empty;
         /// <summary>
         /// True, if web request is faulted
         /// </summary>
         public bool IsFaulted { get; private set; } = false;
 
+		/// <summary>
+		/// List of bodies
+		/// </summary>
         private List<Body> _bodies;
+		/// <summary>
+		/// Selected body
+		/// </summary>
         private Body _selectedBody;
+		/// <summary>
+		/// Filters for bodies
+		/// </summary>
         private Dictionary<string, Option> _bodyFields;
+		/// <summary>
+		/// Selected bodies filters values
+		/// </summary>
         private Dictionary<string, IEnumerable<string>> _selectedBodyFields = new Dictionary<string, IEnumerable<string>>();
 
         private List<Charger> _chargers;
@@ -164,6 +182,11 @@ namespace Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
+		/// <summary>
+		/// Creates new model
+		/// </summary>
+		/// <param name="apiUri">APU uri</param>
+		/// <param name="culture">Culture code</param>
         public Model(string apiUri, string culture = "en")
         {
             _bodies = new List<Body>();
@@ -183,11 +206,11 @@ namespace Model
             _culture = culture;
         }
 
-        /// <summary>
-        /// Initializes loading of entries and filters
-        /// </summary>
-        /// <returns></returns>
-        public async Task Initialize()
+		/// <summary>
+		/// Initializes loading of entries and filters
+		/// </summary>
+		/// <returns></returns>
+		public async Task Initialize()
         {
             await LoadFields("body");
             await LoadFields("charger");
@@ -217,174 +240,90 @@ namespace Model
         /// <returns></returns>
         public async Task LoadAllEntries(string type)
         {
-            switch (type)
-            {
-                case "body":
-                {
-                    string request = $"{_apiUri}/bodies";
-                    
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
+			try
+			{
+				switch (type)
+				{
+					case "body":
+					{
+						string request = $"{_apiUri}/bodies";
 
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        //If request if faulted due to different reasons, activate "offline-mode"
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
+						Bodies = (await SendHTTPRequest<IEnumerable<Body>>("GET", request)).ToList();
+						OnPropertyChanged("Bodies");
+					}
+					break;
+					case "charger":
+					{
+						string request = $"{_apiUri}/{type}s";
 
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            //Clear current list if not null
-                            //then add new records
-                            Bodies?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Body>>(res))
-                            {
-                                if (Bodies != null && !Bodies.Contains(e))
-                                {
-                                    Bodies.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Bodies");
-                        }
-                    }
-                }
-                break;
-                case "charger":
-                case "cooler":
-                case "cpu":
-                case "hdd":
-                case "motherboard":
-                case "ram":
-                case "ssd":
-                case "videocard":
-                {
-                    string request = $"{_apiUri}/{type}s";
+						Chargers = (await SendHTTPRequest<IEnumerable<Charger>>("GET", request)).ToList();
+						OnPropertyChanged("Chargers");
+					}
+					break;
+					case "cooler":
+					{
+						string request = $"{_apiUri}/{type}s";
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
+						Coolers = (await SendHTTPRequest<IEnumerable<Cooler>>("GET", request)).ToList();
+						OnPropertyChanged("Coolers");
+					}
+					break;
+					case "cpu":
+					{
+						string request = $"{_apiUri}/{type}s";
 
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        //If request if faulted due to different reasons, activate "offline-mode"
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
+						Cpus = (await SendHTTPRequest<IEnumerable<CPU>>("GET", request)).ToList();
+						OnPropertyChanged("Cpus");
+					}
+					break;
+					case "hdd":
+					{
+						string request = $"{_apiUri}/{type}s";
 
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            string res = await reader.ReadToEndAsync();
-                            switch (type)
-                            {
-                                case "charger":
-                                Chargers?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Charger>>(res))
-                                {
-                                    if (Chargers!= null && !Chargers.Contains(e))
-                                    {
-                                        Chargers.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Chargers");
-                                break;
-                                case "cooler":
-                                Coolers?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Cooler>>(res))
-                                {
-                                    if (Coolers != null && !Coolers.Contains(e))
-                                    {
-                                        Coolers.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Coolers");
-                                break;
-                                case "cpu":
-                                Cpus?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<CPU>>(res))
-                                {
-                                    if (Cpus != null && !Cpus.Contains(e))
-                                    {
-                                        Cpus.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Cpus");
-                                break;
-                                case "hdd":
-                                Hdds?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<HDD>>(res))
-                                {
-                                    if (Hdds != null && !Hdds.Contains(e))
-                                    {
-                                        Hdds.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Hdds");
-                                break;
-                                case "motherboard":
-                                Motherboards?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Motherboard>>(res))
-                                {
-                                    if (Motherboards != null && !Motherboards.Contains(e))
-                                    {
-                                        Motherboards.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Motherboards");
-                                break;
-                                case "ram":
-                                Rams?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<RAM>>(res))
-                                {
-                                    if (Rams != null && !Rams.Contains(e))
-                                    {
-                                        Rams.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Rams");
-                                break;
-                                case "ssd":
-                                Ssds?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<SSD>>(res))
-                                {
-                                    if (Ssds != null && !Ssds.Contains(e))
-                                    {
-                                        Ssds.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Ssds");
-                                break;
-                                case "videocard":
-                                Videocards?.Clear();
-                                foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Videocard>>(res))
-                                {
-                                    if (Videocards != null && !Videocards.Contains(e))
-                                    {
-                                        Videocards.Add(e);
-                                    }
-                                }
-                                OnPropertyChanged("Videocards");
-                                break;
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
+						Hdds = (await SendHTTPRequest<IEnumerable<HDD>>("GET", request)).ToList();
+						OnPropertyChanged("Hdds");
+					}
+					break;
+					case "motherboard":
+					{
+						string request = $"{_apiUri}/{type}s";
+
+						Motherboards = (await SendHTTPRequest<IEnumerable<Motherboard>>("GET", request)).ToList();
+						OnPropertyChanged("Motherboards");
+					}
+					break;
+					case "ram":
+					{
+						string request = $"{_apiUri}/{type}s";
+
+						Rams = (await SendHTTPRequest<IEnumerable<RAM>>("GET", request)).ToList();
+						OnPropertyChanged("Rams");
+					}
+					break;
+					case "ssd":
+					{
+						string request = $"{_apiUri}/{type}s";
+
+						Ssds = (await SendHTTPRequest<IEnumerable<SSD>>("GET", request)).ToList();
+						OnPropertyChanged("Ssds");
+					}
+					break;
+					case "videocard":
+					{
+						string request = $"{_apiUri}/{type}s";
+
+						Videocards = (await SendHTTPRequest<IEnumerable<Videocard>>("GET", request)).ToList();
+						OnPropertyChanged("Videocards");
+						break;
+					}
+				}
+			}
+			catch (WebException)
+			{
+				IsFaulted = true;
+				OnPropertyChanged("IsFaulted");
+				return;
+			}
         }
 
         /// <summary>
@@ -394,298 +333,78 @@ namespace Model
         /// <returns></returns>
         public async Task LoadFields(string type)
         {
-            if (type == "body" ||
-                type == "charger" ||
-                type == "cooler" ||
-                type == "cpu" ||
-                type == "hdd" ||
-                type == "motherboard" ||
-                type == "ram" ||
-                type == "ssd" ||
-                type == "videocard")
-            {
-                string request = $"{_apiUri}/{type}/properties?culture={_culture}";
+			try
+			{
+				if (type == "body" ||
+					type == "charger" ||
+					type == "cooler" ||
+					type == "cpu" ||
+					type == "hdd" ||
+					type == "motherboard" ||
+					type == "ram" ||
+					type == "ssd" ||
+					type == "videocard")
+				{
+					string request = $"{_apiUri}/{type}/properties?culture={_culture}";
 
-                HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
+					var v = await SendHTTPRequest<Dictionary<string, Option>>("GET", request);
 
-                HttpWebResponse response = null;
-                try
-                {
-                    response = (HttpWebResponse)await get.GetResponseAsync();
-                }
-                catch (WebException e)
-                {
-                    var ex = e;
-                    IsFaulted = true;
-                    OnPropertyChanged("IsFaulted");
-                    return;
-                }
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        string res = await reader.ReadToEndAsync();
-                        Dictionary<string, Option> v = null;
-                        try
-                        {
-                            v = JsonConvert.DeserializeObject<Dictionary<string, Option>>(res);
-                        }
-                        catch (Exception e) { };
-                        switch (type)
-                        {
-                            case "body": BodyFields = v;
-                            OnPropertyChanged("BodyFields");
-                            break;
-                            case "charger": ChargerFields = v;
-                            OnPropertyChanged("ChargerFields");
-                            break;
-                            case "cooler": CoolerFields = v;
-                            OnPropertyChanged("CoolerFields");
-                            break;
-                            case "cpu": CPUFields = v;
-                            OnPropertyChanged("CPUFields");
-                            break;
-                            case "hdd": HDDFields = v;
-                            OnPropertyChanged("HDDFields");
-                            break;
-                            case "motherboard": MotherboardFields = v;
-                            OnPropertyChanged("MotherboardFields");
-                            break;
-                            case "ram": RAMFields = v;
-                            OnPropertyChanged("RAMFields");
-                            break;
-                            case "ssd": SSDFields = v;
-                            OnPropertyChanged("SSDFields");
-                            break;
-                            case "videocard": VideocardFields = v;
-                            OnPropertyChanged("VideocardFields");
-                            break;
-                        }
-                    }
-                }
-            }
+					switch (type)
+					{
+						case "body":
+							BodyFields = v;
+							OnPropertyChanged("BodyFields");
+							break;
+						case "charger":
+							ChargerFields = v;
+							OnPropertyChanged("ChargerFields");
+							break;
+						case "cooler":
+							CoolerFields = v;
+							OnPropertyChanged("CoolerFields");
+							break;
+						case "cpu":
+							CPUFields = v;
+							OnPropertyChanged("CPUFields");
+							break;
+						case "hdd":
+							HDDFields = v;
+							OnPropertyChanged("HDDFields");
+							break;
+						case "motherboard":
+							MotherboardFields = v;
+							OnPropertyChanged("MotherboardFields");
+							break;
+						case "ram":
+							RAMFields = v;
+							OnPropertyChanged("RAMFields");
+							break;
+						case "ssd":
+							SSDFields = v;
+							OnPropertyChanged("SSDFields");
+							break;
+						case "videocard":
+							VideocardFields = v;
+							OnPropertyChanged("VideocardFields");
+							break;
+					}
+				}
+			}
+			catch (WebException)
+			{
+				IsFaulted = true;
+				OnPropertyChanged("IsFaulted");
+				return;
+			}
         }
 
-        ///// <summary>
-        ///// Changes selected option of filter of specific component
-        ///// </summary>
-        ///// <param name="type">Component name</param>
-        ///// <param name="property">Filter name</param>
-        ///// <param name="value">Option</param>
-        ///// <returns></returns>
-        //public async Task ChangeFilter(string type, string property, string value)
-        //{
-        //    switch (type)
-        //    {
-        //        case "body":
-        //        {
-        //            if (!_selectedBodyFields.Keys.Contains(property))
-        //            {
-        //                _selectedBodyFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedBodyFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "charger":
-        //        {
-        //            if (!_selectedChargerFields.Keys.Contains(property))
-        //            {
-        //                _selectedChargerFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedChargerFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "cooler":
-        //        {
-        //            if (!_selectedCoolerFields.Keys.Contains(property))
-        //            {
-        //                _selectedCoolerFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedCoolerFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "cpu":
-        //        {
-        //            if (!_selectedCpuFields.Keys.Contains(property))
-        //            {
-        //                _selectedCpuFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedCpuFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "hdd":
-        //        {
-        //            if (!_selectedHddFields.Keys.Contains(property))
-        //            {
-        //                _selectedHddFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedHddFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "motherboard":
-        //        {
-        //            if (!_selectedMotherboardFields.Keys.Contains(property))
-        //            {
-        //                _selectedMotherboardFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedMotherboardFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "ram":
-        //        {
-        //            if (!_selectedRamFields.Keys.Contains(property))
-        //            {
-        //                _selectedRamFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedRamFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "ssd":
-        //        {
-        //            if (!_selectedSsdFields.Keys.Contains(property))
-        //            {
-        //                _selectedSsdFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedSsdFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //        case "videocard":
-        //        {
-        //            if (!_selectedVideocardFields.Keys.Contains(property))
-        //            {
-        //                _selectedVideocardFields.Add(property, value);
-        //            }
-        //            else
-        //            {
-        //                _selectedVideocardFields[property] = value;
-        //            }
-        //            await UpdateData(type);
-        //        }
-        //        break;
-        //    }
-        //}
-
-        //public async Task ClearFilter(string type, string property)
-        //{
-        //    switch (type)
-        //    {
-        //        case "body":
-        //        {
-        //            if (_selectedBodyFields.Keys.Contains(property))
-        //            {
-        //                _selectedBodyFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "charger":
-        //        {
-        //            if (_selectedChargerFields.Keys.Contains(property))
-        //            {
-        //                _selectedChargerFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "cooler":
-        //        {
-        //            if (_selectedCoolerFields.Keys.Contains(property))
-        //            {
-        //                _selectedCoolerFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "cpu":
-        //        {
-        //            if (_selectedCpuFields.Keys.Contains(property))
-        //            {
-        //                _selectedCpuFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "hdd":
-        //        {
-        //            if (_selectedHddFields.Keys.Contains(property))
-        //            {
-        //                _selectedHddFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "motherboard":
-        //        {
-        //            if (_selectedMotherboardFields.Keys.Contains(property))
-        //            {
-        //                _selectedMotherboardFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "ram":
-        //        {
-        //            if (_selectedRamFields.Keys.Contains(property))
-        //            {
-        //                _selectedRamFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "ssd":
-        //        {
-        //            if (_selectedSsdFields.Keys.Contains(property))
-        //            {
-        //                _selectedSsdFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //        case "videocard":
-        //        {
-        //            if (_selectedVideocardFields.Keys.Contains(property))
-        //            {
-        //                _selectedVideocardFields.Remove(property);
-        //                await UpdateData(type);
-        //            }
-        //        }
-        //        break;
-        //    }
-        //}
-
+		/// <summary>
+		/// Adds value to selected filters if not yet selected, otherwise deletes it from selected
+		/// </summary>
+		/// <param name="type">Component</param>
+		/// <param name="property">Filter name</param>
+		/// <param name="value">Target value</param>
+		/// <returns></returns>
         public async Task ToggleFilter(string type, string property, string value)
         {
             switch (type)
@@ -909,6 +628,10 @@ namespace Model
             }
         }
 
+		/// <summary>
+		/// Reloads all of the records
+		/// </summary>
+		/// <returns></returns>
         public async Task UpdateAllData()
         {
             await UpdateData("body");
@@ -922,6 +645,11 @@ namespace Model
             await UpdateData("videocard");
         }
 
+		/// <summary>
+		/// Reloads only records of selected component
+		/// </summary>
+		/// <param name="type">Component</param>
+		/// <returns></returns>
         public async Task UpdateData(string type)
         {
             string request = $"{_apiUri}/{type}?";
@@ -934,99 +662,19 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedBodyFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Bodies?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Body>>(res))
-                            {
-                                if (Bodies != null && !Bodies.Contains(e))
-                                {
-                                    Bodies.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Bodies");
-                        }
-                    }
+					try
+					{
+						Bodies = (await SendHTTPRequest<IEnumerable<Body>>("GET", request)).ToList();
+						OnPropertyChanged("Bodies");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
                 }
                 break;
                 case "charger":
@@ -1036,100 +684,20 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedChargerFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Chargers?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Charger>>(res))
-                            {
-                                if (Chargers != null && !Chargers.Contains(e))
-                                {
-                                    Chargers.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Chargers");
-                        }
-                    }
-                }
+					try
+					{
+						Chargers = (await SendHTTPRequest<IEnumerable<Charger>>("GET", request)).ToList();
+						OnPropertyChanged("Chargers");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
                 case "cooler":
                 {
@@ -1138,100 +706,20 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedCoolerFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Coolers?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Cooler>>(res))
-                            {
-                                if (Coolers != null && !Coolers.Contains(e))
-                                {
-                                    Coolers.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Coolers");
-                        }
-                    }
-                }
+					try
+					{
+						Coolers = (await SendHTTPRequest<IEnumerable<Cooler>>("GET", request)).ToList();
+						OnPropertyChanged("Coolers");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
                 case "cpu":
                 {
@@ -1240,100 +728,20 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedCpuFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Cpus?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<CPU>>(res))
-                            {
-                                if (Cpus != null && !Cpus.Contains(e))
-                                {
-                                    Cpus.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Cpus");
-                        }
-                    }
-                }
+					try
+					{
+						Cpus = (await SendHTTPRequest<IEnumerable<CPU>>("GET", request)).ToList();
+						OnPropertyChanged("Cpus");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
                 case "hdd":
                 {
@@ -1342,100 +750,20 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedHddFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Hdds?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<HDD>>(res))
-                            {
-                                if (Hdds != null && !Hdds.Contains(e))
-                                {
-                                    Hdds.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Hdds");
-                        }
-                    }
-                }
+					try
+					{
+						Hdds = (await SendHTTPRequest<IEnumerable<HDD>>("GET", request)).ToList();
+						OnPropertyChanged("Hdds");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
                 case "motherboard":
                 {
@@ -1444,100 +772,20 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedMotherboardFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Motherboards?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Motherboard>>(res))
-                            {
-                                if (Motherboards != null && !Motherboards.Contains(e))
-                                {
-                                    Motherboards.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Motherboards");
-                        }
-                    }
-                }
+					try
+					{
+						Motherboards = (await SendHTTPRequest<IEnumerable<Motherboard>>("GET", request)).ToList();
+						OnPropertyChanged("Motherboards");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
                 case "ram":
                 {
@@ -1546,100 +794,20 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedRamFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Rams?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<RAM>>(res))
-                            {
-                                if (Rams != null && !Rams.Contains(e))
-                                {
-                                    Rams.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Rams");
-                        }
-                    }
-                }
+					try
+					{
+						Rams = (await SendHTTPRequest<IEnumerable<RAM>>("GET", request)).ToList();
+						OnPropertyChanged("Rams");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
                 case "ssd":
                 {
@@ -1648,100 +816,20 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedSsdFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Ssds?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<SSD>>(res))
-                            {
-                                if (Ssds != null && !Ssds.Contains(e))
-                                {
-                                    Ssds.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Ssds");
-                        }
-                    }
-                }
+					try
+					{
+						Ssds = (await SendHTTPRequest<IEnumerable<SSD>>("GET", request)).ToList();
+						OnPropertyChanged("Ssds");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
                 case "videocard":
                 {
@@ -1750,104 +838,28 @@ namespace Model
                         request = $"{request}{string.Join("&", _selectedVideocardFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
                     }
 
-                    if (SelectedBody != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-body={SelectedBody.ID}";
-                        else
-                            request = $"{request}&selected-body={SelectedBody.ID}";
-                    }
-                    if (SelectedCharger != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-charger={SelectedCharger.ID}";
-                        else
-                            request = $"{request}&selected-charger={SelectedCharger.ID}";
-                    }
-                    if (SelectedCooler != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cooler={SelectedCooler.ID}";
-                        else
-                            request = $"{request}&selected-cooler={SelectedCooler.ID}";
-                    }
-                    if (SelectedCpu != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-cpu={SelectedCpu.ID}";
-                        else
-                            request = $"{request}&selected-cpu={SelectedCpu.ID}";
-                    }
-                    if (SelectedHdd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-hdd={SelectedHdd.ID}";
-                        else
-                            request = $"{request}&selected-hdd={SelectedHdd.ID}";
-                    }
-                    if (SelectedMotherboard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
-                        else
-                            request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
-                    }
-                    if (SelectedRam != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ram={SelectedRam.ID}";
-                        else
-                            request = $"{request}&selected-ram={SelectedRam.ID}";
-                    }
-                    if (SelectedSsd != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-ssd={SelectedSsd.ID}";
-                        else
-                            request = $"{request}&selected-ssd={SelectedSsd.ID}";
-                    }
-                    if (SelectedVideocard != null)
-                    {
-                        if (request.Last() == '?')
-                            request = $"{request}selected-videocard={SelectedVideocard.ID}";
-                        else
-                            request = $"{request}&selected-videocard={SelectedVideocard.ID}";
-                    }
+					request = AddSelectedToRequest(request);
 
-                    HttpWebRequest get = (HttpWebRequest)WebRequest.Create(request);
-
-                    HttpWebResponse response = null;
-                    try
-                    {
-                        response = (HttpWebResponse)await get.GetResponseAsync();
-                    }
-                    catch (WebException)
-                    {
-                        IsFaulted = true;
-                        OnPropertyChanged("IsFaulted");
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            Videocards?.Clear();
-                            string res = await reader.ReadToEndAsync();
-                            foreach (var e in JsonConvert.DeserializeObject<IEnumerable<Videocard>>(res))
-                            {
-                                if (Videocards != null && !Videocards.Contains(e))
-                                {
-                                    Videocards.Add(e);
-                                }
-                            }
-                            OnPropertyChanged("Videocards");
-                        }
-                    }
-                }
+					try
+					{
+						Videocards = (await SendHTTPRequest<IEnumerable<Videocard>>("GET", request)).ToList();
+						OnPropertyChanged("Videocards");
+					}
+					catch (WebException)
+					{
+						IsFaulted = true;
+						OnPropertyChanged("IsFaulted");
+						return;
+					}
+				}
                 break;
             }
         }
 
+		/// <summary>
+		/// Clears all of the applied filters on component
+		/// </summary>
+		/// <param name="type">Component</param>
         public void Clear(string type)
         {
             switch (type)
@@ -1864,59 +876,69 @@ namespace Model
             }
         }
 
+		/// <summary>
+		/// Adds component to the selection
+		/// </summary>
+		/// <param name="type">Component</param>
+		/// <param name="id">Element ID</param>
         public void SelectItem(string type, int id)
         {
             switch (type)
             {
                 case "body":
                 {
-                    SelectedBody = Bodies.Where((o) => o.ID == id).ToList()?.First();
+                    SelectedBody = Bodies.FirstOrDefault((o) => o.ID == id);
                 }
                 break;
                 case "charger":
                 {
-                    SelectedCharger = Chargers.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedCharger = Chargers.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
                 case "cooler":
                 {
-                    SelectedCooler = Coolers.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedCooler = Coolers.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
                 case "cpu":
                 {
-                    SelectedCpu = Cpus.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedCpu = Cpus.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
                 case "hdd":
                 {
-                    SelectedHdd = Hdds.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedHdd = Hdds.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
                 case "motherboard":
                 {
-                    SelectedMotherboard = Motherboards.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedMotherboard = Motherboards.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
                 case "ram":
                 {
-                    SelectedRam = Rams.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedRam = Rams.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
                 case "ssd":
                 {
-                    SelectedSsd = Ssds.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedSsd = Ssds.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
                 case "videocard":
                 {
-                    SelectedVideocard = Videocards.Where((o) => o.ID == id).ToList()?.First();
-                }
+                    SelectedVideocard = Videocards.FirstOrDefault((o) => o.ID == id);
+				}
                 break;
             }
         }
 
-        public async void ClearSelectedItem(string type)
+		/// <summary>
+		/// Deletes selection of component
+		/// </summary>
+		/// <param name="type">Component</param>
+		/// <returns></returns>
+        public async Task ClearSelectedItem(string type)
         {
             switch (type)
             {
@@ -1978,7 +1000,13 @@ namespace Model
             await UpdateAllData();
         }
 
-        public async void SaveSelection(string path, string format)
+		/// <summary>
+		/// Saves selection to file
+		/// </summary>
+		/// <param name="path">File path</param>
+		/// <param name="format">File format</param>
+		/// <returns></returns>
+        public async Task SaveSelection(string path, string format)
         {
             switch (format.ToLower().Trim())
             {
@@ -2032,6 +1060,11 @@ namespace Model
             }
         }
 
+		/// <summary>
+		/// Loads selection from file
+		/// </summary>
+		/// <param name="path">File path</param>
+		/// <param name="format">File format</param>
         public void OpenSelection(string path, string format)
         {
             switch (format)
@@ -2098,7 +1131,12 @@ namespace Model
             }
         }
 
-        public async void ChangeCulture(string newCulture)
+		/// <summary>
+		/// Changes culture of the application
+		/// </summary>
+		/// <param name="newCulture">New culture</param>
+		/// <returns></returns>
+        public async Task ChangeCulture(string newCulture)
         {
             if (newCulture != null)
             {
@@ -2106,5 +1144,511 @@ namespace Model
                 await Initialize();
             }
         }
+
+		/// <summary>
+		/// Adds component element
+		/// </summary>
+		/// <param name="type">Component</param>
+		/// <param name="model">Element to add</param>
+		/// <returns></returns>
+		public async Task AddModel(string type, object model, string token)
+		{
+			switch (type)
+			{
+				case "body":
+				{
+					var m = model as Body;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Body>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Bodies = res.ToList();
+						OnPropertyChanged("Bodies");
+					}
+				}
+				break;
+				case "charger":
+				{
+					var m = model as Charger;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Charger>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Chargers = res.ToList();
+						OnPropertyChanged("Chargers");
+					}
+				}
+				break;
+				case "cooler":
+				{
+					var m = model as Cooler;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Cooler>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Coolers = res.ToList();
+						OnPropertyChanged("Coolers");
+					}
+				}
+				break;
+				case "cpu":
+				{
+					var m = model as CPU;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<CPU>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Cpus = res.ToList();
+						OnPropertyChanged("Cpus");
+					}
+				}
+				break;
+				case "hdd":
+				{
+					var m = model as HDD;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<HDD>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Hdds = res.ToList();
+						OnPropertyChanged("Hdds");
+					}
+				}
+				break;
+				case "motherboard":
+				{
+					var m = model as Motherboard;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Motherboard>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Motherboards = res.ToList();
+						OnPropertyChanged("Motherboards");
+					}
+				}
+				break;
+				case "ram":
+				{
+					var m = model as RAM;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<RAM>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Rams = res.ToList();
+						OnPropertyChanged("Rams");
+					}
+				}
+				break;
+				case "ssd":
+				{
+					var m = model as SSD;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<SSD>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Ssds = res.ToList();
+						OnPropertyChanged("Ssds");
+					}
+				}
+				break;
+				case "videocard":
+				{
+					var m = model as Videocard;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Videocard>>("POST", $"{_apiUri}/{type}", content, token);
+
+						Videocards = res.ToList();
+						OnPropertyChanged("Videocards");
+					}
+				}
+				break;
+			}
+		}
+
+		/// <summary>
+		/// Replaces component element with specified ID
+		/// </summary>
+		/// <param name="type">Component</param>
+		/// <param name="id">Element ID</param>
+		/// <param name="model">New element</param>
+		/// <returns></returns>
+		public async Task ReplaceModel(string type, int id, object model, string token)
+		{
+			switch (type)
+			{
+				case "body":
+				{
+					var m = model as Body;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Body>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Bodies = res.ToList();
+						OnPropertyChanged("Bodies");
+					}
+				}
+				break;
+				case "charger":
+				{
+					var m = model as Charger;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Charger>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Chargers = res.ToList();
+						OnPropertyChanged("Chargers");
+					}
+				}
+				break;
+				case "cooler":
+				{
+					var m = model as Cooler;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Cooler>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Coolers = res.ToList();
+						OnPropertyChanged("Coolers");
+					}
+				}
+				break;
+				case "cpu":
+				{
+					var m = model as CPU;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<CPU>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Cpus = res.ToList();
+						OnPropertyChanged("Cpus");
+					}
+				}
+				break;
+				case "hdd":
+				{
+					var m = model as HDD;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<HDD>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Hdds = res.ToList();
+						OnPropertyChanged("Hdds");
+					}
+				}
+				break;
+				case "motherboard":
+				{
+					var m = model as Motherboard;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Motherboard>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Motherboards = res.ToList();
+						OnPropertyChanged("Motherboards");
+					}
+				}
+				break;
+				case "ram":
+				{
+					var m = model as RAM;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<RAM>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Rams = res.ToList();
+						OnPropertyChanged("Rams");
+					}
+				}
+				break;
+				case "ssd":
+				{
+					var m = model as SSD;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<SSD>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Ssds = res.ToList();
+						OnPropertyChanged("Ssds");
+					}
+				}
+				break;
+				case "videocard":
+				{
+					var m = model as Videocard;
+					if (m != null)
+					{
+						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
+
+						var res = await SendHTTPRequest<IEnumerable<Videocard>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+
+						Videocards = res.ToList();
+						OnPropertyChanged("Videocards");
+					}
+				}
+				break;
+			}
+		}
+
+		/// <summary>
+		/// Removes component with specified ID
+		/// </summary>
+		/// <param name="type">Component</param>
+		/// <param name="id">Element ID</param>
+		/// <returns></returns>
+		public async Task DeleteModel(string type, int id, string token)
+		{
+			switch (type)
+			{
+				case "body":
+				{
+					var res = await SendHTTPRequest<IEnumerable<Body>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+
+					Bodies = res.ToList();
+
+					OnPropertyChanged("Bodies");
+				}
+				break;
+				case "charger":
+				{
+					var res = await SendHTTPRequest<IEnumerable<Charger>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+
+					Chargers = res.ToList();
+
+					OnPropertyChanged("Chargers");
+				}
+				break;
+				case "cooler":
+				{
+					var res = await SendHTTPRequest<IEnumerable<Cooler>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+
+					Coolers = res.ToList();
+
+					OnPropertyChanged("Coolers");
+				}
+				break;
+				case "cpu":
+				{
+					var res = await SendHTTPRequest<IEnumerable<CPU>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+
+					Cpus = res.ToList();
+
+					OnPropertyChanged("Cpus");
+				}
+				break;
+				case "hdd":
+				{
+					var res = await SendHTTPRequest<IEnumerable<HDD>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+
+					Hdds = res.ToList();
+
+					OnPropertyChanged("Hdds");
+				}
+				break;
+				case "motherboard":
+				{
+					var res = await SendHTTPRequest<IEnumerable<Motherboard>>("PUT", $"{_apiUri}/{type}/{id}", token: token);
+
+					Motherboards = res.ToList();
+
+					OnPropertyChanged("Motherboards");
+				}
+				break;
+				case "ram":
+				{
+					var res = await SendHTTPRequest<IEnumerable<RAM>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+
+					Rams = res.ToList();
+
+					OnPropertyChanged("Rams");
+				}
+				break;
+				case "ssd":
+				{
+					var res = await SendHTTPRequest<IEnumerable<SSD>>("PUT", $"{_apiUri}/{type}/{id}", token: token);
+
+					Ssds = res.ToList();
+
+					OnPropertyChanged("Ssds");
+				}
+				break;
+				case "videocard":
+				{
+					var res = await SendHTTPRequest<IEnumerable<Videocard>>("PUT", $"{_apiUri}/{type}/{id}", token: token);
+
+					Videocards = res.ToList();
+
+					OnPropertyChanged("Videocards");
+				}
+				break;
+			}
+		}
+
+		/// <summary>
+		/// Sends HTTP request with optional JSON body and authorization token
+		/// </summary>
+		/// <typeparam name="T">Return value expected type</typeparam>
+		/// <param name="method">HTTP method</param>
+		/// <param name="path">Request uri</param>
+		/// <param name="content">JSON content</param>
+		/// <param name="token">Authorization token</param>
+		/// <returns></returns>
+		private async Task<T> SendHTTPRequest<T>(string method, string path, string content = null, string token = null)
+		{
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(path);
+
+			request.Method = method;
+
+			if (token != null)
+			{
+				var cookies = new CookieContainer();
+				cookies.Add(new Cookie("Authorization", $"Bearer {token}"));
+				request.CookieContainer = cookies;
+				request.ContentType = "application/json";
+			}
+
+			if (content != null)
+			{
+				using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+				{
+					streamWriter.Write(content);
+				}
+			}
+
+			HttpWebResponse response = null;
+			try
+			{
+				response = (HttpWebResponse)await request.GetResponseAsync();
+			}
+			catch (WebException)
+			{
+				throw;
+			}
+
+			if (response.StatusCode == HttpStatusCode.OK)
+			{
+				using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+				{
+					string res = await reader.ReadToEndAsync();
+					try
+					{
+						return JsonConvert.DeserializeObject<T>(res);
+					}
+					catch (JsonSerializationException) { throw; };
+				}
+			}
+			else
+			{
+				return default(T);
+			}
+		}
+
+		/// <summary>
+		/// Adds selected components ID`s to the request
+		/// </summary>
+		/// <param name="initialRequest">Initial request</param>
+		/// <returns></returns>
+		private string AddSelectedToRequest(string initialRequest)
+		{
+			string request = initialRequest;
+			if (SelectedBody != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-body={SelectedBody.ID}";
+				else
+					request = $"{request}&selected-body={SelectedBody.ID}";
+			}
+			if (SelectedCharger != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-charger={SelectedCharger.ID}";
+				else
+					request = $"{request}&selected-charger={SelectedCharger.ID}";
+			}
+			if (SelectedCooler != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-cooler={SelectedCooler.ID}";
+				else
+					request = $"{request}&selected-cooler={SelectedCooler.ID}";
+			}
+			if (SelectedCpu != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-cpu={SelectedCpu.ID}";
+				else
+					request = $"{request}&selected-cpu={SelectedCpu.ID}";
+			}
+			if (SelectedHdd != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-hdd={SelectedHdd.ID}";
+				else
+					request = $"{request}&selected-hdd={SelectedHdd.ID}";
+			}
+			if (SelectedMotherboard != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-motherboard={SelectedMotherboard.ID}";
+				else
+					request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
+			}
+			if (SelectedRam != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-ram={SelectedRam.ID}";
+				else
+					request = $"{request}&selected-ram={SelectedRam.ID}";
+			}
+			if (SelectedSsd != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-ssd={SelectedSsd.ID}";
+				else
+					request = $"{request}&selected-ssd={SelectedSsd.ID}";
+			}
+			if (SelectedVideocard != null)
+			{
+				if (request.Last() == '?')
+					request = $"{request}selected-videocard={SelectedVideocard.ID}";
+				else
+					request = $"{request}&selected-videocard={SelectedVideocard.ID}";
+			}
+			return request;
+		}
     }
 }

@@ -35,6 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Model\bin\Debug\Model.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -47,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminViewModel.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
+    <Compile Include="LoginViewModel.cs" />
     <Compile Include="Models\Data\Body.cs" />
     <Compile Include="Models\Data\Charger.cs" />
     <Compile Include="Models\Data\Cooler.cs" />
@@ -60,6 +66,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\DefaultDialogService.cs" />
     <Compile Include="Models\Option.cs" />
+    <Compile Include="ViewModelExtension.cs" />
     <Compile Include="ViewModelMock.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

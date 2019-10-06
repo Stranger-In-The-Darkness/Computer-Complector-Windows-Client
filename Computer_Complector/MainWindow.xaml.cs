@@ -17,6 +17,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Net.Http;
+using System.Net;
+using System.IO;
+using ViewModel;
+using Model;
+
 #if MOCK
 using VM = ViewModel.ViewModelMock;
 #else
@@ -117,5 +123,42 @@ namespace Computer_Complector
                 }
             }
         }
-    }
+
+		private void LogInOutBtn_Click(object sender, RoutedEventArgs e)
+		{
+			if (userPanel.DataContext is User currentUser)
+			{
+				DataContext = (DataContext as AdminViewModel).ToViewModel();
+				userPanel.DataContext = null;
+				logInOutBtn.Content = "Login";
+			}
+			else
+			{
+				var login = new LoginWindow();
+				login.Closing += (send, args) =>
+				{
+					if (login.IsSuccess)
+					{
+						var user = (login.DataContext as LoginViewModel)?.User;
+						if (user != null)
+						{
+							if (user.Role.ToUpper() == "ADMIN")
+							{
+								DataContext = (DataContext as VM).ToAdminViewModel();
+								(DataContext as AdminViewModel).User = user;
+							}
+							else
+							{
+								(DataContext as VM).User = user;
+							}
+							userPanel.DataContext = user;
+							logInOutBtn.Content = "Logout";
+						}
+					}
+				};
+
+				login.ShowDialog();
+			}
+		}
+	}
 }

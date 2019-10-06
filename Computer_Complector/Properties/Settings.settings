@@ -8,5 +8,8 @@
     <Setting Name="Culture" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
     </Setting>
+    <Setting Name="AuthentificationConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://localhost:44346/users</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -34,8 +34,10 @@ namespace ViewModel
         }
 
         private string _culture = string.Empty;
+		public string Culture { get => _culture; }
 
         private IDialogService _dialogService;
+		internal IDialogService DialogService { get => _dialogService; }
 
         public ViewModel(IDialogService service, string culture = "en")
         {
@@ -55,7 +57,16 @@ namespace ViewModel
             _model.Initialize();
         }
 
-        private readonly string[] _type = new string[]
+		public ViewModel(IDialogService service, string serviceUri, string authUri, string culture = "en")
+		{
+			_culture = culture;
+			_dialogService = service;
+			_model = new m.Model(serviceUri, culture);
+			_model.PropertyChanged += OnModelPropertyChanged;
+			_model.Initialize();
+		}
+
+		private readonly string[] _type = new string[]
         {
             "cpu",
             "motherboard",
@@ -71,15 +82,15 @@ namespace ViewModel
         private int _selectedTab = 0;
         public int SelectedTab { get => _selectedTab; set { _selectedTab = value; OnPropertyChanged("SelectedTab"); } }
 
-        public bool OfflineMode { get; private set; } = false;
+        public bool OfflineMode { get; protected set; } = false;
 
-        private RelayCommand changeTab;
+        private RelayCommand _changeTab;
         public RelayCommand ChangeTab
         {
             get
             {
-                return changeTab ??
-                    (changeTab = new RelayCommand(
+                return _changeTab ??
+                    (_changeTab = new RelayCommand(
                         async obj =>
                         {
                             _model.Clear(_type[SelectedTab]);
@@ -224,7 +235,7 @@ namespace ViewModel
                             return true;
                         }));
             }
-        }
+		}
 
         private RelayCommand _selectItem;
         public RelayCommand SelectItem
@@ -243,7 +254,7 @@ namespace ViewModel
                         }
                         ));
             }
-        }
+		}
 
         private RelayCommand _deselectItem;
         public RelayCommand DeselectItem
@@ -262,7 +273,7 @@ namespace ViewModel
                         }
                         ));
             }
-        }
+		}
 
         private RelayCommand _openFile;
         public RelayCommand OpenFile
@@ -286,7 +297,7 @@ namespace ViewModel
                         },
                         (obj) => { return true; }));
             }
-        }
+		}
 
         private RelayCommand _saveFile;
         public RelayCommand SaveFile
@@ -320,7 +331,7 @@ namespace ViewModel
                             SelectedVideocard != null;
                         }));
             }
-        }
+		}
 
         private RelayCommand _changeCulture;
         public RelayCommand ChangeCulture
@@ -338,9 +349,22 @@ namespace ViewModel
                         },
                         _ => { return true; }));
             }
-        }
+		}
 
         private m.Model _model;
+		internal m.Model Model
+		{
+			get => _model;
+			set
+			{
+				if (value != null)
+				{
+					_model = value;
+				}
+			}
+		}
+
+		public m.User User { get; set; } = null;
 
         public ObservableCollection<Body> Bodies { get; set; } = new ObservableCollection<Body>();
         public ObservableCollection<Charger> Chargers { get; set; } = new ObservableCollection<Charger>();
