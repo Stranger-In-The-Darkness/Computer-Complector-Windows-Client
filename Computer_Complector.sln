@@ -17,7 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\View
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerComplectorWebAPI", "ComputerComplectorWebService\ComputerComplectorWebAPI.csproj", "{885EDC3C-56F8-4EA1-A879-6A1A99B53193}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerComplectorWebAPITests", "ComputerComplectorWebAPITests\ComputerComplectorWebAPITests.csproj", "{026EE356-E6FF-4969-A828-1E343E807781}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerComplectorWebAPITests", "ComputerComplectorWebAPITests\ComputerComplectorWebAPITests.csproj", "{026EE356-E6FF-4969-A828-1E343E807781}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WindowsWPFClient", "WindowsWPFClient", "{50A8125E-1BF8-42C2-8F59-F0115F48EB0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerComplectorAdministrativeTool", "ComputerComplectorAdministrativeTool\ComputerComplectorAdministrativeTool.csproj", "{E1FF9049-F784-421B-AD1A-ED0F5C8C226E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +49,19 @@ Global
 		{026EE356-E6FF-4969-A828-1E343E807781}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{026EE356-E6FF-4969-A828-1E343E807781}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{026EE356-E6FF-4969-A828-1E343E807781}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1FF9049-F784-421B-AD1A-ED0F5C8C226E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1FF9049-F784-421B-AD1A-ED0F5C8C226E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1FF9049-F784-421B-AD1A-ED0F5C8C226E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1FF9049-F784-421B-AD1A-ED0F5C8C226E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{54418C8B-55A9-4790-9FD6-494F626E53A1} = {50A8125E-1BF8-42C2-8F59-F0115F48EB0C}
+		{45AB1ACE-CCCD-42CC-AC3E-8C23619DEBA0} = {50A8125E-1BF8-42C2-8F59-F0115F48EB0C}
+		{736E027B-6558-41EA-9C58-963C9F2162D6} = {50A8125E-1BF8-42C2-8F59-F0115F48EB0C}
+		{E1FF9049-F784-421B-AD1A-ED0F5C8C226E} = {50A8125E-1BF8-42C2-8F59-F0115F48EB0C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {183C0567-9ED7-4B53-90E4-971935118E52}

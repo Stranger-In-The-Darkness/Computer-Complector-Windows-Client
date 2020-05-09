@@ -21,8 +21,17 @@ namespace ViewModel
 	    public int      Capacity        { get; set; }
         public string   Family          { get; set; }
 	    public List<string>   Connector       { get; set; }
+		public bool Compatible { get; set; }
+		public Dictionary<string, string> Incompatible { get; set; }
+		public int CompatibilityLevel
+		{
+			get
+			{
+				return Incompatible?.Keys.Count ?? 0;
+			}
+		}
 
-        private bool isSelected = false;
+		private bool isSelected = false;
         public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
 
         public static implicit operator Videocard(M.Videocard b)
@@ -37,7 +46,9 @@ namespace ViewModel
                 VRAM = b.VRAM,
                 Capacity = b.Capacity,
                 Family = b.Family,
-                Connector = b.Connectors
+                Connector = b.Connectors,
+				Compatible = b.Compatible,
+				Incompatible = b.Incompatible
             } : null;
         }
 

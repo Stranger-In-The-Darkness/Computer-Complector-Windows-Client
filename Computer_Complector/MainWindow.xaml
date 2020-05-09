@@ -30,102 +30,159 @@
 		
 		<!--#region Converters -->
 
-		<local:ShinkWidthConverter x:Key="widthConverter"/>
-		<local:SelectFieldConverter x:Key="selectFilterConverter"/>
-		<local:SelectedItemConverter x:Key="selectedItemConverter"/>
-		<local:UserRoleOrNullToBoolConverter x:Key="nullToBoolConverter"/>
+		<local:ShinkWidthConverter 
+			x:Key="widthConverter"/>
+		<local:SelectFieldConverter 
+			x:Key="selectFilterConverter"/>
+		<local:SelectedItemConverter 
+			x:Key="selectedItemConverter"/>
+		<local:UserRoleOrNullToBoolConverter 
+			x:Key="nullToBoolConverter"/>
 
 		<!--#endregion-->
 
 		<!--#region Effects-->
 
-		<DropShadowEffect x:Key="NotHover" ShadowDepth="0" Color="#FFDEFCFF" BlurRadius="10"/>
-		<DropShadowEffect x:Key="HoverImg" ShadowDepth="0" Color="#FFDEFCFF" BlurRadius="40"/>
-		<DropShadowEffect x:Key="HoverLabel" ShadowDepth="0" Color="#FFDEFCFF" BlurRadius="20"/>
+		<DropShadowEffect 
+			x:Key="NotHover" 
+			ShadowDepth="0" 
+			Color="#FFDEFCFF" 
+			BlurRadius="10"/>
+		<DropShadowEffect 
+			x:Key="HoverImg" 
+			ShadowDepth="0" 
+			Color="#FFDEFCFF" 
+			BlurRadius="40"/>
+		<DropShadowEffect 
+			x:Key="HoverLabel" 
+			ShadowDepth="0" 
+			Color="#FFDEFCFF" 
+			BlurRadius="20"/>
 
-		<DropShadowEffect x:Key="SelectedImg" ShadowDepth="0" Color="#FF46FF00" BlurRadius="40"/>
-		<DropShadowEffect x:Key="SelectedItem" ShadowDepth="0" Color="#AA99FF00" BlurRadius="40"/>
-		<DropShadowEffect x:Key="SelectedLabel" ShadowDepth="0" Color="#FF46FF00" BlurRadius="20"/>
+		<DropShadowEffect 
+			x:Key="SelectedImg" 
+			ShadowDepth="0" 
+			Color="#FF46FF00" 
+			BlurRadius="40"/>
+		<DropShadowEffect 
+			x:Key="SelectedItem" 
+			ShadowDepth="0" 
+			Color="#AA99FF00" 
+			BlurRadius="40"/>
+		<DropShadowEffect 
+			x:Key="SelectedLabel" 
+			ShadowDepth="0" 
+			Color="#FF46FF00" 
+			BlurRadius="20"/>
 
+		<DropShadowEffect 
+			x:Key="IncompatibleItem" 
+			ShadowDepth="0" 
+			Color="#AAFF9900" 
+			BlurRadius="40"/>
+		
 		<!--#endregion-->
 
 		<!--#region Color Brushes-->
 
-		<SolidColorBrush x:Key="NotSelected" Color="#FF00E8FF"/>
-		<SolidColorBrush x:Key="Selected" Color="#FF46FF00"/>
+		<SolidColorBrush 
+			x:Key="NotSelected" 
+			Color="#FF00E8FF"/>
+		<SolidColorBrush 
+			x:Key="Selected" 
+			Color="#FF46FF00"/>
 
 		<!--#endregion-->
 
 		<!--#region Control Templates-->
 
-		<ControlTemplate x:Key="flatListBoxItem" TargetType="ListBoxItem">
-			<Border Width="{TemplateBinding Width}"
-            Height="{TemplateBinding Height}"
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}">
-				<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                          TextElement.Foreground="{TemplateBinding Foreground}"
-                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                          TextElement.FontSize="{TemplateBinding FontSize}"
-                          TextElement.FontStretch="{TemplateBinding FontStretch}"
-                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
+		<ControlTemplate 
+			x:Key="flatListBoxItem" 
+			TargetType="ListBoxItem">
+			<Border 
+				Width="{TemplateBinding Width}"
+				Height="{TemplateBinding Height}"
+				Background="{TemplateBinding Background}"
+				BorderBrush="{TemplateBinding BorderBrush}"
+				BorderThickness="{TemplateBinding BorderThickness}">
+				<ContentPresenter 
+					HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+					VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+					TextElement.Foreground="{TemplateBinding Foreground}"
+					TextElement.FontFamily="{TemplateBinding FontFamily}"
+					TextElement.FontSize="{TemplateBinding FontSize}"
+					TextElement.FontStretch="{TemplateBinding FontStretch}"
+					TextElement.FontWeight="{TemplateBinding FontWeight}"/>
 			</Border>
 		</ControlTemplate>
 		
-		<ControlTemplate x:Key="flatBtn" TargetType="Button">
-			<Border Width="{TemplateBinding Width}"
-            Height="{TemplateBinding Height}"
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}">
-				<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                          TextElement.Foreground="{TemplateBinding Foreground}"
-                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                          TextElement.FontSize="{TemplateBinding FontSize}"
-                          TextElement.FontStretch="{TemplateBinding FontStretch}"
-                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
+		<ControlTemplate 
+			x:Key="flatBtn" 
+			TargetType="Button">
+			<Border 
+				Width="{TemplateBinding Width}"
+				Height="{TemplateBinding Height}"
+				Background="{TemplateBinding Background}"
+				BorderBrush="{TemplateBinding BorderBrush}"
+				BorderThickness="{TemplateBinding BorderThickness}">
+				<ContentPresenter 
+					HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    TextElement.Foreground="{TemplateBinding Foreground}"
+                    TextElement.FontFamily="{TemplateBinding FontFamily}"
+                    TextElement.FontSize="{TemplateBinding FontSize}"
+                    TextElement.FontStretch="{TemplateBinding FontStretch}"
+                    TextElement.FontWeight="{TemplateBinding FontWeight}"/>
 			</Border>
 		</ControlTemplate>
 		
-		<ControlTemplate x:Key="flatRoundedBtn" TargetType="Button">
-			<Border Width="{TemplateBinding Width}"
-            Height="{TemplateBinding Height}"
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            CornerRadius="20">
-				<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                          TextElement.Foreground="{TemplateBinding Foreground}"
-                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                          TextElement.FontSize="{TemplateBinding FontSize}"
-                          TextElement.FontStretch="{TemplateBinding FontStretch}"
-                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
+		<ControlTemplate 
+			x:Key="flatRoundedBtn" 
+			TargetType="Button">
+			<Border 
+				Width="{TemplateBinding Width}"
+				Height="{TemplateBinding Height}"
+				Background="{TemplateBinding Background}"
+				BorderBrush="{TemplateBinding BorderBrush}"
+				BorderThickness="{TemplateBinding BorderThickness}"
+				CornerRadius="20">
+				<ContentPresenter 
+					HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    TextElement.Foreground="{TemplateBinding Foreground}"
+                    TextElement.FontFamily="{TemplateBinding FontFamily}"
+                    TextElement.FontSize="{TemplateBinding FontSize}"
+                    TextElement.FontStretch="{TemplateBinding FontStretch}"
+                    TextElement.FontWeight="{TemplateBinding FontWeight}"/>
 			</Border>
 		</ControlTemplate>
 		
-		<ControlTemplate x:Key="flatListViewItem" TargetType="ListViewItem">
-			<Border BorderBrush="{TemplateBinding BorderBrush}"
-                    Background="{TemplateBinding Background}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    Focusable="{TemplateBinding Focusable}"
-                    Height="{TemplateBinding Height}"
-                    Width="{TemplateBinding Width}"
-                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                    VerticalAlignment="{TemplateBinding VerticalAlignment}">
+		<ControlTemplate 
+			x:Key="flatListViewItem" 
+			TargetType="ListViewItem">
+			<Border 
+				BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Focusable="{TemplateBinding Focusable}"
+                Height="{TemplateBinding Height}"
+                Width="{TemplateBinding Width}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalAlignment}">
 				<ContentPresenter/>
 			</Border>
 		</ControlTemplate>
 
-		<ControlTemplate x:Key="headerBtn" TargetType="{x:Type Button}">
-			<Grid Background="{TemplateBinding Background}">
-				<ContentPresenter x:Name="MyContentPresenter" 
-                                          Content="{TemplateBinding Content}"
-                                          HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center" />
+		<ControlTemplate 
+			x:Key="headerBtn" 
+			TargetType="{x:Type Button}">
+			<Grid 
+				Background="{TemplateBinding Background}">
+				<ContentPresenter 
+					x:Name="MyContentPresenter" 
+                    Content="{TemplateBinding Content}"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" />
 			</Grid>
 		</ControlTemplate>
 
@@ -133,85 +190,171 @@
 
 		<!--#region Styles-->
 
-		<Style x:Key="SelectedItemsListView" TargetType="ListViewItem">
+		<Style 
+			x:Key="SelectedItemsListView" 
+			TargetType="ListViewItem">
 			<Style.Setters>
-				<Setter Property="BorderThickness" Value="0"/>
-				<Setter Property="BorderBrush" Value="{x:Null}"/>
-				<Setter Property="Background" Value="{x:Null}"/>
-				<Setter Property="Effect" Value="{x:Null}"/>
-				<Setter Property="Margin" Value="0,0,0,5"/>
-				<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+				<Setter 
+					Property="BorderThickness" 
+					Value="0"/>
+				<Setter 
+					Property="BorderBrush" 
+					Value="{x:Null}"/>
+				<Setter 
+					Property="Background" 
+					Value="{x:Null}"/>
+				<Setter 
+					Property="Effect" 
+					Value="{x:Null}"/>
+				<Setter 
+					Property="Margin" 
+					Value="0,0,0,5"/>
+				<Setter 
+					Property="Template" 
+					Value="{StaticResource flatListBoxItem}"/>
 			</Style.Setters>
 		</Style>
 
-		<Style x:Key="TabImg" TargetType="Image">
+		<Style 
+			x:Key="TabImg" 
+			TargetType="Image">
 			<Style.Setters>
-				<Setter Property="Effect" Value="{StaticResource NotHover}"/>
-				<Setter Property="Cursor" Value="Hand"/>
+				<Setter 
+					Property="Effect" 
+					Value="{StaticResource NotHover}"/>
+				<Setter 
+					Property="Cursor" 
+					Value="Hand"/>
 			</Style.Setters>
 			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
+				<Trigger 
+					Property="IsMouseOver" 
+					Value="True">
 					<Trigger.Setters>
-						<Setter Property="Effect" Value="{StaticResource HoverImg}"/>
+						<Setter 
+							Property="Effect" 
+							Value="{StaticResource HoverImg}"/>
 					</Trigger.Setters>
 				</Trigger>
-				<DataTrigger Binding="{Binding ElementName=BODY_Btn,Path=IsMouseOver,Mode=OneWay}" Value="True">
-					<Setter Property="Effect" Value="{StaticResource HoverImg}"/>
+				<DataTrigger 
+					Binding="{Binding ElementName=BODY_Btn,Path=IsMouseOver,Mode=OneWay}" 
+					Value="True">
+					<Setter 
+						Property="Effect" 
+						Value="{StaticResource HoverImg}"/>
 				</DataTrigger>
-				<DataTrigger Binding="{Binding Path=SelectedTab}" Value="8">
-					<Setter Property="Cursor" Value="Arrow"/>
-					<Setter Property="Effect" Value="{StaticResource SelectedImg}"/>
+				<DataTrigger 
+					Binding="{Binding Path=SelectedTab}" 
+					Value="8">
+					<Setter 
+						Property="Cursor" 
+						Value="Arrow"/>
+					<Setter 
+						Property="Effect" 
+						Value="{StaticResource SelectedImg}"/>
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
 
-		<Style x:Key="elementBtn" TargetType="Button">
+		<Style 
+			x:Key="elementBtn" 
+			TargetType="Button">
 			<Style.Setters>
-				<Setter Property="Background" Value="#00FFFFFF"/>
-				<Setter Property="BorderBrush" Value="#99FFFFFF"/>
-				<Setter Property="BorderThickness" Value="3"/>
-				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="FontSize" Value="32"/>
-				<Setter Property="Cursor" Value="Hand"/>
-				<Setter Property="Effect" Value="{StaticResource NotHover}"/>
-				<Setter Property="Template" Value="{StaticResource flatRoundedBtn}"/>
+				<Setter 
+					Property="Background" 
+					Value="#00FFFFFF"/>
+				<Setter 
+					Property="BorderBrush" 
+					Value="#99FFFFFF"/>
+				<Setter 
+					Property="BorderThickness" 
+					Value="3"/>
+				<Setter 
+					Property="Foreground" 
+					Value="White"/>
+				<Setter 
+					Property="FontSize" 
+					Value="32"/>
+				<Setter 
+					Property="Cursor" 
+					Value="Hand"/>
+				<Setter 
+					Property="Effect" 
+					Value="{StaticResource NotHover}"/>
+				<Setter 
+					Property="Template" 
+					Value="{StaticResource flatRoundedBtn}"/>
 			</Style.Setters>
 			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
+				<Trigger 
+					Property="IsMouseOver" 
+					Value="True">
 					<Trigger.Setters>
-						<Setter Property="Effect" Value="{StaticResource HoverImg}"/>
-						<Setter Property="Background" Value="#33FFFFFF"/>
+						<Setter 
+							Property="Effect" 
+							Value="{StaticResource HoverImg}"/>
+						<Setter 
+							Property="Background" 
+							Value="#33FFFFFF"/>
 					</Trigger.Setters>
 				</Trigger>
 			</Style.Triggers>
 		</Style>
 
-		<Style x:Key="elementExpanderLabel" TargetType="Label">
+		<Style 
+			x:Key="elementExpanderLabel" 
+			TargetType="Label">
 			<Style.Setters>
-				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="FontWeight" Value="Normal"/>
-				<Setter Property="FontSize" Value="18"/>
+				<Setter 
+					Property="Foreground" 
+					Value="White"/>
+				<Setter 
+					Property="FontWeight" 
+					Value="Normal"/>
+				<Setter 
+					Property="FontSize" 
+					Value="18"/>
 			</Style.Setters>
 		</Style>
 
-		<Style x:Key="elementsListLoader" TargetType="Border">
+		<Style 
+			x:Key="elementsListLoader" 
+			TargetType="Border">
 			<Style.Setters>
-				<Setter Property="Visibility" Value='Hidden'/>
-				<Setter Property="BorderThickness" Value="3,3,0,0"/>
-				<Setter Property="Width" Value="120"/>
-				<Setter Property="Height" Value="120"/>
-				<Setter Property="CornerRadius" Value="60"/>
-				<Setter Property="BorderBrush" Value="White"/>
+				<Setter 
+					Property="Visibility" 
+					Value='Hidden'/>
+				<Setter 
+					Property="BorderThickness" 
+					Value="3,3,0,0"/>
+				<Setter 
+					Property="Width" 
+					Value="120"/>
+				<Setter 
+					Property="Height" 
+					Value="120"/>
+				<Setter 
+					Property="CornerRadius" 
+					Value="60"/>
+				<Setter 
+					Property="BorderBrush" 
+					Value="White"/>
 			</Style.Setters>
 			<Style.Triggers>
-				<DataTrigger Binding="{Binding ElementName=ItemsListBox, Path=Items.Count}" Value="0">
+				<DataTrigger 
+					Binding="{Binding ElementName=ItemsListBox, Path=Items.Count}" 
+					Value="0">
 					<DataTrigger.Setters>
-						<Setter Property="Visibility" Value="Visible"/>
+						<Setter 
+							Property="Visibility" 
+							Value="Visible"/>
 					</DataTrigger.Setters>
 				</DataTrigger>
-				<EventTrigger RoutedEvent="Loaded">
+				<EventTrigger 
+					RoutedEvent="Loaded">
 					<EventTrigger.Actions>
-						<BeginStoryboard Storyboard="{StaticResource LoadingCircle}"/>
+						<BeginStoryboard 
+							Storyboard="{StaticResource LoadingCircle}"/>
 					</EventTrigger.Actions>
 				</EventTrigger>
 			</Style.Triggers>
@@ -1365,15 +1508,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="White" FontSize="20" Grid.Column="0" Grid.ColumnSpan="1" Margin="20,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center" MaxWidth="180"/>
 					<Button 
@@ -1383,15 +1517,45 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Grid.Row="1" Grid.ColumnSpan="2" Background="White" MinHeight="2"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="260" Grid.Row="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Company, StringFormat=Vendor: {0}}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Formfactor, StringFormat=Formfactor: {0}}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Type, StringFormat=Type: {0}}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=BuildInCharger,StringFormat=Build-in charger: {0}}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding StringFormat=Charger power: {0} Wt, Path=ChargerPower}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Color, StringFormat=Color {0}}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=USB2Ports, StringFormat=USB 2.0 ports: {0}}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=USB3Ports, StringFormat=UDB 3.0 ports: {0}}" HorizontalAlignment="Left"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Additions, StringFormat=Additions: {0}}" HorizontalAlignment="Left"/>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="260" Grid.Row="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Company, StringFormat=Vendor: {0}}" HorizontalAlignment="Left"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="260" Grid.Row="3" Foreground="White" FontWeight="Normal" FontSize="18" Text="Formfactor:" HorizontalAlignment="Left"/>
+							<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Formfactor}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
+								<ListView.ItemContainerStyle>
+									<Style TargetType="ListViewItem">
+										<Style.Setters>
+											<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+										</Style.Setters>
+									</Style>
+								</ListView.ItemContainerStyle>
+							</ListView>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Type, StringFormat=Type: {0}}" HorizontalAlignment="Left"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=BuildInCharger,StringFormat=Build-in charger: {0}}" HorizontalAlignment="Left"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding StringFormat=Charger power: {0} Wt, Path=ChargerPower}" HorizontalAlignment="Left"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Color, StringFormat=Color {0}}" HorizontalAlignment="Left"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=USB2Ports, StringFormat=USB 2.0 ports: {0}}" HorizontalAlignment="Left"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=USB3Ports, StringFormat=UDB 3.0 ports: {0}}" HorizontalAlignment="Left"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Foreground="White" FontWeight="Normal" FontSize="18" Text="{Binding Path=Additions, StringFormat=Additions: {0}}" HorizontalAlignment="Left"/>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1406,15 +1570,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="White" FontSize="20" Grid.Column="0" Grid.ColumnSpan="1" Margin="20,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center" MaxWidth="180"/>
 					<Button 
@@ -1424,15 +1579,35 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Grid.Row="1" Background="White" MinHeight="2" Grid.ColumnSpan="2"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Power, StringFormat=Power: {0} Wt}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="{Binding Path=Sertificate, StringFormat=Sertificate 80 Plus: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Text="{Binding Path=VideoConnectorsAmount, StringFormat=Video connectors amount: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=ConnectorType, StringFormat=Connector type: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=SATAAmount, StringFormat=Amount of SATA: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Text="{Binding Path=IDEAmount, StringFormat=Amount of IDE: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10" Text="{Binding Path=MotherboardConnector, StringFormat=Motherboard connector: {0}}"/>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Power, StringFormat=Power: {0} Wt}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="{Binding Path=Sertificate, StringFormat=Sertificate 80 Plus: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Text="{Binding Path=VideoConnectorsAmount, StringFormat=Video connectors amount: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=ConnectorType, StringFormat=Connector type: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=SATAAmount, StringFormat=Amount of SATA: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Text="{Binding Path=IDEAmount, StringFormat=Amount of IDE: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10" Text="{Binding Path=MotherboardConnector, StringFormat=Motherboard connector: {0}}"/>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1447,12 +1622,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock TextWrapping="WrapWithOverflow" MaxWidth="180" Foreground="White" FontSize="20" Grid.Row="0" Grid.Column="0" Margin="20,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center"/>
 					<Button 
@@ -1462,21 +1631,38 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Background="White" MinHeight="2" Grid.ColumnSpan="2" Grid.Row="1"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Purpose, StringFormat=Purpose: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Type, StringFormat=Type: {0}}"/>
-					<Label Content="Socket:" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Foreground="White" VerticalAlignment="Stretch" Margin="20,0,0,5"/>
-					<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" ItemsSource="{Binding Path=Socket}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
-						<ListView.ItemContainerStyle>
-							<Style TargetType="ListViewItem">
-								<Style.Setters>
-									<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
-								</Style.Setters>
-							</Style>
-						</ListView.ItemContainerStyle>
-					</ListView>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=Material, StringFormat=Material: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=TurnAdj, StringFormat=Turn adjustment: {0}}"/>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Purpose, StringFormat=Purpose: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Type, StringFormat=Type: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="Socket:"/>
+							<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" ItemsSource="{Binding Path=Socket}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
+								<ListView.ItemContainerStyle>
+									<Style TargetType="ListViewItem">
+										<Style.Setters>
+											<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+										</Style.Setters>
+									</Style>
+								</ListView.ItemContainerStyle>
+							</ListView>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=Material, StringFormat=Material: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="260" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=TurnAdj, StringFormat=Turn adjustment: {0}}"/>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1491,15 +1677,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock TextWrapping="WrapWithOverflow" Foreground="White" FontSize="20" Margin="20,0,0,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center" MaxWidth="180" MinHeight="60"/>
 					<Button 
@@ -1509,16 +1686,37 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Background="White" Grid.ColumnSpan="2" Grid.Row="1"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Socket, StringFormat=Socket: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Frequency,StringFormat=Frequecny: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=CoresAmount, StringFormat=Amount of cores: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=ThreadsAmount, StringFormat=Amount of threads: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=IntegratedGraphics, StringFormat=Integrated graphics: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Core, StringFormat=Core: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=DeliveryType, StringFormat=Delivery type: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Overcloacking, StringFormat=Overclocking: {0}}"/>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Socket, StringFormat=Socket: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Frequency,StringFormat=Frequecny: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=CoresAmount, StringFormat=Amount of cores: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=ThreadsAmount, StringFormat=Amount of threads: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=IntegratedGraphics, StringFormat=Integrated graphics: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Core, StringFormat=Core: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=DeliveryType, StringFormat=Delivery type: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Overcloacking, StringFormat=Overclocking: {0}}"/>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1533,12 +1731,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock TextWrapping="WrapWithOverflow" Foreground="White" FontSize="20" Margin="20,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center" MaxWidth="180"/>
 					<Button 
@@ -1548,21 +1740,39 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Background="White" MinHeight="2" Grid.ColumnSpan="2" Grid.Row="1"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Formfactor, StringFormat=Formfactor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Capacity,StringFormat=Capacity: {0}}"/>
-					<Label Content="Interface:" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Foreground="White" VerticalAlignment="Stretch" Margin="20,0,0,5"/>
-					<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" ItemsSource="{Binding Path=Interface}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
-						<ListView.ItemContainerStyle>
-							<Style TargetType="ListViewItem">
-								<Style.Setters>
-									<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
-								</Style.Setters>
-							</Style>
-						</ListView.ItemContainerStyle>
-					</ListView>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=BufferVolume, StringFormat=Buffer volume: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=Speed, StringFormat=Speed: {0}}"/>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Formfactor, StringFormat=Formfactor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Capacity,StringFormat=Capacity: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="Interface:"/>
+							<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" ItemsSource="{Binding Path=Interface}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
+								<ListView.ItemContainerStyle>
+									<Style TargetType="ListViewItem">
+										<Style.Setters>
+											<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+										</Style.Setters>
+									</Style>
+								</ListView.ItemContainerStyle>
+							</ListView>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=BufferVolume, StringFormat=Buffer volume: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=Speed, StringFormat=Speed: {0}}"/>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1577,19 +1787,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock TextWrapping="WrapWithOverflow" Foreground="White" FontSize="20" Grid.Column="0" Margin="20,0,0,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center" MaxWidth="180"/>
 					<Button 
@@ -1599,26 +1796,51 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Background="White" MinHeight="2" Grid.Row="1" Grid.ColumnSpan="2"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Socket, StringFormat=Socket: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="{Binding Path=Chipset, StringFormat=Chipset: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=Formfactor, StringFormat=Formfactor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=Memory, StringFormat=Memory type: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Text="{Binding Path=MemorySlotsAmount, StringFormat=Amount of memory slots: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10" Text="{Binding Path=MemoryChanelsAmount,StringFormat=Amount of memory chanels: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11" Text="{Binding Path=MaxMemory,StringFormat=Maximum memory: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Text="{Binding Path=RAMMaxFreq, StringFormat=Maximum RAM frequency: {0}}"/>
-					<Label Content="Slots:" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Foreground="White" VerticalAlignment="Stretch" Margin="20,0,0,5"/>
-					<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14" ItemsSource="{Binding Path=Slots}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
-						<ListView.ItemContainerStyle>
-							<Style TargetType="ListViewItem">
-								<Style.Setters>
-									<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
-								</Style.Setters>
-							</Style>
-						</ListView.ItemContainerStyle>
-					</ListView>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=Socket, StringFormat=Socket: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="{Binding Path=Chipset, StringFormat=Chipset: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=Formfactor, StringFormat=Formfactor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=Memory, StringFormat=Memory type: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Text="{Binding Path=MemorySlotsAmount, StringFormat=Amount of memory slots: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10" Text="{Binding Path=MemoryChanelsAmount,StringFormat=Amount of memory chanels: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11" Text="{Binding Path=MaxMemory,StringFormat=Maximum memory: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Text="{Binding Path=RAMMaxFreq, StringFormat=Maximum RAM frequency: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Text="Slots:"/>
+							<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14" ItemsSource="{Binding Path=Slots}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
+								<ListView.ItemContainerStyle>
+									<Style TargetType="ListViewItem">
+										<Style.Setters>
+											<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+										</Style.Setters>
+									</Style>
+								</ListView.ItemContainerStyle>
+							</ListView>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1633,15 +1855,8 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
-					<TextBlock Foreground="White" FontSize="20" Grid.Column="0" Margin="20,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center" MaxWidth="180"/>
+					<TextBlock Foreground="White" FontSize="20" Grid.Column="0" Margin="20,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" VerticalAlignment="Center" MaxWidth="180" TextWrapping="WrapWithOverflow"/>
 					<Button 
 						Content ="X" 
 						Style="{StaticResource selectedItemDeselectBtn}"
@@ -1649,14 +1864,33 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Background="White" MinHeight="2" Grid.ColumnSpan="2" Grid.Row="1"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=MemoryType, StringFormat=Memory type: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="{Binding Path=Purpose, StringFormat=Purpose: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Text="{Binding Path=Volume, StringFormat=Volume: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=ModuleAmount, StringFormat=Amount of modules: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=Freq, StringFormat=Frequency: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Text="{Binding Path=CL, StringFormat=CAS Latency: {0}}"/>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding Path=MemoryType, StringFormat=Memory type: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="{Binding Path=Purpose, StringFormat=Purpose: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Text="{Binding Path=Volume, StringFormat=Volume: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Text="{Binding Path=ModuleAmount, StringFormat=Amount of modules: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Text="{Binding Path=Freq, StringFormat=Frequency: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Text="{Binding Path=CL, StringFormat=CAS Latency: {0}}"/>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1671,12 +1905,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock TextWrapping="WrapWithOverflow" Foreground="White" FontSize="20" Grid.Column="0" Margin="20,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" MaxWidth="180" VerticalAlignment="Center"/>
 					<Button 
@@ -1686,21 +1914,39 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Background="White" MinHeight="2" Grid.ColumnSpan="2" Grid.Row="1"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="4" Text="{Binding Path=Capacity, StringFormat=Capacity: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="5" Text="{Binding Path=Formfactor, StringFormat=Formfactor: {0}}"/>
-					<Label Content="Interface:" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Foreground="White" VerticalAlignment="Stretch" Margin="20,0,0,5"/>
-					<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" ItemsSource="{Binding Path=Interface}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
-						<ListView.ItemContainerStyle>
-							<Style TargetType="ListViewItem">
-								<Style.Setters>
-									<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
-								</Style.Setters>
-							</Style>
-						</ListView.ItemContainerStyle>
-					</ListView>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="8" Text="{Binding Path=CellType, StringFormat=Cell type: {0}}"/>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="4" Text="{Binding Path=Capacity, StringFormat=Capacity: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="5" Text="{Binding Path=Formfactor, StringFormat=Formfactor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="5" Text="Interfaces:"/>
+							<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" ItemsSource="{Binding Path=Interface}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
+								<ListView.ItemContainerStyle>
+									<Style TargetType="ListViewItem">
+										<Style.Setters>
+											<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+										</Style.Setters>
+									</Style>
+								</ListView.ItemContainerStyle>
+							</ListView>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="8" Text="{Binding Path=CellType, StringFormat=Cell type: {0}}"/>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1715,13 +1961,6 @@
 						<RowDefinition Height="2*"/>
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
-						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<TextBlock TextWrapping="WrapWithOverflow" Foreground="White" FontSize="20" Grid.Column="0"  Margin="20,0,0,0" HorizontalAlignment="Left" Text="{Binding Path=Title}" MaxWidth="180" VerticalAlignment="Center"/>
 					<Button 
@@ -1731,22 +1970,41 @@
 						Grid.Row="0"
 						Tag="8"/>
 					<Separator Background="White" MinHeight="2" Grid.ColumnSpan="2" Grid.Row="1"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="4" Text="{Binding Path=Proccessor, StringFormat=GPU: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="5" Text="{Binding Path=VRAM, StringFormat=VRAM: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="6" Text="{Binding Path=Capacity, StringFormat=Capacity: {0}}"/>
-					<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="7" Text="{Binding Path=Family, StringFormat=Family: {0}}"/>
-					<Label Content="Connectors:" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Foreground="White" VerticalAlignment="Stretch" Margin="20,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-					<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" ItemsSource="{Binding Path=Connector}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
-						<ListView.ItemContainerStyle>
-							<Style TargetType="ListViewItem">
-								<Style.Setters>
-									<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
-								</Style.Setters>
-							</Style>
-						</ListView.ItemContainerStyle>
-					</ListView>
+					<Expander Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+						<Expander.Header>
+							<Label Foreground="White">Info</Label>
+						</Expander.Header>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+								<RowDefinition Height="1*"/>
+							</Grid.RowDefinitions>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,10,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="2" Text="{Binding Path=Company, StringFormat=Vendor: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="3" Text="{Binding Path=Series, StringFormat=Series: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="4" Text="{Binding Path=Proccessor, StringFormat=GPU: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="5" Text="{Binding Path=VRAM, StringFormat=VRAM: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="6" Text="{Binding Path=Capacity, StringFormat=Capacity: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="7" Text="{Binding Path=Family, StringFormat=Family: {0}}"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Margin="20,0,0,10" MaxWidth="250" Foreground="White" FontWeight="Normal" FontSize="18" Grid.Column="0" Grid.Row="7" Text="Connectors:"/>
+							<ListView Foreground="White" FontWeight="Normal" MaxWidth="260" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" ItemsSource="{Binding Path=Connector}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="20,0,0,10" Grid.IsSharedSizeScope="True">
+								<ListView.ItemContainerStyle>
+									<Style TargetType="ListViewItem">
+										<Style.Setters>
+											<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+										</Style.Setters>
+									</Style>
+								</ListView.ItemContainerStyle>
+							</ListView>
+						</Grid>
+					</Expander>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -1871,7 +2129,7 @@
 			<RowDefinition Height="4*"/>
 			<RowDefinition Height="16*"/>
 		</Grid.RowDefinitions>
-		
+
 		<!--#region Header panel-->
 		
 		<Grid x:Name="header" Grid.ColumnSpan="3" Background="#FF2D2D30">
@@ -1907,6 +2165,69 @@
 				</Button.ToolTip>
 			</Button>
 		</Grid>
+
+		<Grid Grid.Row="1" Grid.Column="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="1*"/>
+			</Grid.ColumnDefinitions>
+			<Border Margin=" 20,5,10,5" CornerRadius="10" BorderThickness="1,0,1,0" BorderBrush="White">
+				<Border.Style>
+					<Style TargetType="Border">
+						<Style.Setters>
+							<Setter Property="Effect" Value="{x:Null}"/>
+							<Setter Property="Cursor" Value="Hand"/>
+						</Style.Setters>
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Trigger.Setters>
+									<Setter Property="Effect" Value="{StaticResource HoverImg}"/>
+								</Trigger.Setters>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</Border.Style>
+				<Button Margin="0" Template="{StaticResource flatBtn}" Command="{Binding Path=OpenFile}">
+					<Button.Style>
+						<Style TargetType="Button">
+							<Style.Setters>
+								<Setter Property="Background" Value="{x:Null}"/>
+								<Setter Property="BorderBrush" Value="{x:Null}"/>
+							</Style.Setters>
+						</Style>
+					</Button.Style>
+					<Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="Resources/Images/Open.png"/>
+				</Button>
+			</Border>
+			<Border Margin="10,5,20,5" CornerRadius="10" BorderThickness="1,0,1,0" BorderBrush="White" Grid.Column="1">
+				<Border.Style>
+					<Style TargetType="Border">
+						<Style.Setters>
+							<Setter Property="Effect" Value="{x:Null}"/>
+							<Setter Property="Cursor" Value="Hand"/>
+						</Style.Setters>
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Trigger.Setters>
+									<Setter Property="Effect" Value="{StaticResource HoverImg}"/>
+								</Trigger.Setters>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</Border.Style>
+				<Button Margin="0" Template="{StaticResource flatBtn}" Command="{Binding SaveFile}">
+					<Button.Style>
+						<Style TargetType="Button">
+							<Style.Setters>
+								<Setter Property="Background" Value="{x:Null}"/>
+								<Setter Property="BorderBrush" Value="{x:Null}"/>
+							</Style.Setters>
+						</Style>
+					</Button.Style>
+					<Image Source="Resources/Images/Save.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Button>
+			</Border>
+		</Grid>
 		
 		<Grid x:Name="userPanel" Grid.Row="1" Grid.Column="2">
 			<Grid.ColumnDefinitions>
@@ -1925,7 +2246,7 @@
 			<Button x:Name="logInOutBtn" Style="{StaticResource loginBtn}" Grid.Column="1" Click="LogInOutBtn_Click">
 			</Button>
 		</Grid>
-		
+
 		<Grid Grid.ColumnSpan="3" Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="1*"/>
@@ -2585,7 +2906,7 @@
             Focusable="False" 
             Margin="10" 
             Grid.Row="3" 
-            Grid.RowSpan="3" 
+            Grid.RowSpan="2" 
             ScrollViewer.VerticalScrollBarVisibility="Visible" 
             ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
             Background="{x:Null}" 
@@ -2722,177 +3043,117 @@
 
 		<!--#region Elements panel-->
 
-		<Grid Grid.Column="1" Grid.Row="4" Grid.RowSpan="2">
+		<Grid Grid.Column="1" Grid.Row="3" Grid.RowSpan="2">
 			<Border x:Name="elementToAdd">
 				
 			</Border>
 			<Border 
-			Style="{StaticResource elementsListLoader}" 
-			RenderTransformOrigin="0.5,0.5" />
+				Style="{StaticResource elementsListLoader}" 
+				RenderTransformOrigin="0.5,0.5" />
 			<ListBox 
-            x:Name="ItemsListBox" 
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            Foreground="{x:Null}" 
-            ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
-            ScrollViewer.VerticalScrollBarVisibility="Visible" 
-            HorizontalContentAlignment="Stretch" 
-            VerticalContentAlignment="Stretch" 
-            Margin="0,10"
-            SelectionChanged="ItemsListBox_SelectionChanged" 
-            ScrollViewer.CanContentScroll="False">
-			<ListBox.Style>
-				<Style TargetType="ListBox">
-					<Style.Setters>
-						<Setter Property="ItemTemplate" Value="{StaticResource CPUElements}"/>
-						<Setter Property="ItemsSource" Value="{Binding CPUs}"/>
-					</Style.Setters>
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="0">
+				x:Name="ItemsListBox" 
+				SelectionChanged="ItemsListBox_SelectionChanged">
+				<ListBox.Style>
+					<Style TargetType="ListBox">
+						<Style.Setters>
 							<Setter Property="ItemTemplate" Value="{StaticResource CPUElements}"/>
 							<Setter Property="ItemsSource" Value="{Binding CPUs}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="1">
-							<Setter Property="ItemTemplate" Value="{StaticResource MOTHERBOARDElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding Motherboards}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="2">
-							<Setter Property="ItemTemplate" Value="{StaticResource VIDEOCARDElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding Videocards}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="3">
-							<Setter Property="ItemTemplate" Value="{StaticResource RAMElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding RAMs}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="4">
-							<Setter Property="ItemTemplate" Value="{StaticResource CHARGERElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding Chargers}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="5">
-							<Setter Property="ItemTemplate" Value="{StaticResource COOLERElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding Coolers}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="6">
-							<Setter Property="ItemTemplate" Value="{StaticResource SSDElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding SSDs}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="7">
-							<Setter Property="ItemTemplate" Value="{StaticResource HDDElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding HDDs}"/>
-						</DataTrigger>
-						<DataTrigger Binding="{Binding Path=SelectedTab}" Value="8">
-							<Setter Property="ItemTemplate" Value="{StaticResource BODYElements}"/>
-							<Setter Property="ItemsSource" Value="{Binding Bodies}"/>
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</ListBox.Style>
-			<ListBox.ItemContainerStyle>
-				<Style TargetType="ListBoxItem">
-					<Style.Setters>
-						<Setter Property="BorderBrush">
-							<Setter.Value>
-								<SolidColorBrush/>
-							</Setter.Value>
-						</Setter>
-						<Setter Property="BorderThickness" Value="0"/>
-						<Setter Property="Background">
-							<Setter.Value>
-								<SolidColorBrush/>
-							</Setter.Value>
-						</Setter>
-						<Setter Property="Effect" Value="{x:Null}"/>
-						<Setter Property="Margin" Value="0,0,0,5"/>
-						<Setter Property="Focusable" Value="False"/>
-						<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
-					</Style.Setters>
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding IsSelected}" Value="True">
-							<DataTrigger.Setters>
-								<Setter Property="IsSelected" Value="True"/>
-							</DataTrigger.Setters>
-						</DataTrigger>
-						<Trigger Property="IsSelected" Value="True">
-							<Trigger.Setters>
-								<Setter Property="Effect" Value="{StaticResource SelectedItem}"/>
-								<Setter Property="Background" Value="#11FFFFFF"/>
-							</Trigger.Setters>
-						</Trigger>
-					</Style.Triggers>
-				</Style>
-			</ListBox.ItemContainerStyle>
-		</ListBox>
+							<Setter Property="Background" Value="{x:Null}"/>
+							<Setter Property="BorderBrush" Value="{x:Null}"/>
+							<Setter Property="Foreground" Value="{x:Null}"/>
+							<Setter Property="Margin" Value="0,10"/>
+							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+							<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+							<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+							<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+							<Setter Property="ScrollViewer.CanContentScroll" Value ="False"/>
+						</Style.Setters>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="0">
+								<Setter Property="ItemTemplate" Value="{StaticResource CPUElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding CPUs}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="1">
+								<Setter Property="ItemTemplate" Value="{StaticResource MOTHERBOARDElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding Motherboards}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="2">
+								<Setter Property="ItemTemplate" Value="{StaticResource VIDEOCARDElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding Videocards}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="3">
+								<Setter Property="ItemTemplate" Value="{StaticResource RAMElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding RAMs}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="4">
+								<Setter Property="ItemTemplate" Value="{StaticResource CHARGERElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding Chargers}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="5">
+								<Setter Property="ItemTemplate" Value="{StaticResource COOLERElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding Coolers}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="6">
+								<Setter Property="ItemTemplate" Value="{StaticResource SSDElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding SSDs}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="7">
+								<Setter Property="ItemTemplate" Value="{StaticResource HDDElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding HDDs}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Path=SelectedTab}" Value="8">
+								<Setter Property="ItemTemplate" Value="{StaticResource BODYElements}"/>
+								<Setter Property="ItemsSource" Value="{Binding Bodies}"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ListBox.Style>
+				<ListBox.ItemContainerStyle>
+					<Style TargetType="ListBoxItem">
+						<Style.Setters>
+							<Setter Property="BorderBrush">
+								<Setter.Value>
+									<SolidColorBrush/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="BorderThickness" Value="0"/>
+							<Setter Property="Background">
+								<Setter.Value>
+									<SolidColorBrush/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Effect" Value="{x:Null}"/>
+							<Setter Property="Margin" Value="0,0,0,5"/>
+							<Setter Property="Focusable" Value="False"/>
+							<Setter Property="Template" Value="{StaticResource flatListBoxItem}"/>
+						</Style.Setters>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding IsSelected}" Value="True">
+								<DataTrigger.Setters>
+									<Setter Property="IsSelected" Value="True"/>
+								</DataTrigger.Setters>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Compatible}" Value="False">
+								<DataTrigger.Setters>
+									<Setter Property="Effect" Value="{StaticResource IncompatibleItem}"/>
+									<Setter Property="Background" Value="#11FFFFFF"/>
+								</DataTrigger.Setters>
+							</DataTrigger>
+							<Trigger Property="IsSelected" Value="True">
+								<Trigger.Setters>
+									<Setter Property="Effect" Value="{StaticResource SelectedItem}"/>
+									<Setter Property="Background" Value="#11FFFFFF"/>
+								</Trigger.Setters>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</ListBox.ItemContainerStyle>
+			</ListBox>
 		</Grid>
 
 		<!--#endregion-->
 
 		<Grid Grid.Row="3" Grid.RowSpan="2" Grid.Column="2">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="2*"/>
-				<RowDefinition Height="16*"/>
-			</Grid.RowDefinitions>
-			<Grid x:Name="SelectionActionPanel" Margin="20,10,30,10">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="1*"/>
-					<ColumnDefinition Width="1*"/>
-				</Grid.ColumnDefinitions>
-				<Border Margin="20,5,10,5" CornerRadius="10" BorderThickness="1,0,1,0" BorderBrush="White">
-					<Border.Style>
-						<Style TargetType="Border">
-							<Style.Setters>
-								<Setter Property="Effect" Value="{x:Null}"/>
-								<Setter Property="Cursor" Value="Hand"/>
-							</Style.Setters>
-							<Style.Triggers>
-								<Trigger Property="IsMouseOver" Value="True">
-									<Trigger.Setters>
-										<Setter Property="Effect" Value="{StaticResource HoverImg}"/>
-									</Trigger.Setters>
-								</Trigger>
-							</Style.Triggers>
-						</Style>
-					</Border.Style>
-					<Button Margin="5" Template="{StaticResource flatBtn}" Command="{Binding Path=OpenFile}">
-						<Button.Style>
-							<Style TargetType="Button">
-								<Style.Setters>
-									<Setter Property="Background" Value="{x:Null}"/>
-									<Setter Property="BorderBrush" Value="{x:Null}"/>
-								</Style.Setters>
-							</Style>
-						</Button.Style>
-						<Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="Resources/Images/Open.png"/>
-					</Button>
-				</Border>
-				<Border Margin="10,5,20,5" CornerRadius="10" BorderThickness="1,0,1,0" BorderBrush="White" Grid.Column="1">
-					<Border.Style>
-						<Style TargetType="Border">
-							<Style.Setters>
-								<Setter Property="Effect" Value="{x:Null}"/>
-								<Setter Property="Cursor" Value="Hand"/>
-							</Style.Setters>
-							<Style.Triggers>
-								<Trigger Property="IsMouseOver" Value="True">
-									<Trigger.Setters>
-										<Setter Property="Effect" Value="{StaticResource HoverImg}"/>
-									</Trigger.Setters>
-								</Trigger>
-							</Style.Triggers>
-						</Style>
-					</Border.Style>
-					<Button Margin="5" Template="{StaticResource flatBtn}" Command="{Binding SaveFile}">
-						<Button.Style>
-							<Style TargetType="Button">
-								<Style.Setters>
-									<Setter Property="Background" Value="{x:Null}"/>
-									<Setter Property="BorderBrush" Value="{x:Null}"/>
-								</Style.Setters>
-							</Style>
-						</Button.Style>
-						<Image Source="Resources/Images/Save.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-					</Button>
-				</Border>
-			</Grid>
 			<ScrollViewer Grid.Row="1" Margin="10">
 				<ListView x:Name="selectedItemsListView" Style="{StaticResource selectedListViewContainer}">
 					<ListView Style="{StaticResource selectedViewList}" ItemsSource="{Binding Path=Item1}" ItemTemplate="{StaticResource CPUElementSelected}"/>

@@ -24,8 +24,17 @@ namespace ViewModel
         public string  Core                { get; set; }
         public string  DeliveryType        { get; set; }
         public bool    Overcloacking       { get; set; }
+		public bool Compatible { get; set; }
+		public Dictionary<string, string> Incompatible { get; set; }
+		public int CompatibilityLevel
+		{
+			get
+			{
+				return Incompatible?.Keys.Count ?? 0;
+			}
+		}
 
-        private bool isSelected = false;
+		private bool isSelected = false;
         public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
 
         public static implicit operator CPU(M.CPU b)
@@ -43,7 +52,9 @@ namespace ViewModel
                 IntegratedGraphics = b.IntegratedGraphics,
                 Core = b.Core,
                 DeliveryType = b.DeliveryType,
-                Overcloacking = b.Overcloacking
+                Overcloacking = b.Overcloacking,
+				Compatible = b.Compatible,
+				Incompatible = b.Incompatible
             } : null;
         }
 

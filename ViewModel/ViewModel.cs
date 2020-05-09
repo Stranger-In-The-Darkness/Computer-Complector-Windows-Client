@@ -263,13 +263,13 @@ namespace ViewModel
             {
                 return _deselectItem ??
                     (_deselectItem = new RelayCommand(
-                        (obj) =>
+                        async (obj) =>
                         {
-                            _model.ClearSelectedItem(_type[int.Parse(obj.ToString())]);
+                            await _model.ClearSelectedItem(_type[int.Parse(obj.ToString())]);
                         },
                         (obj) =>
                         {
-                            return int.TryParse(obj.ToString(), out _);
+                            return int.TryParse(obj?.ToString() ?? "", out _);
                         }
                         ));
             }
@@ -937,11 +937,12 @@ namespace ViewModel
                 );
         }
 
-        private void ChangeModelCulture(string newCulture)
+        private async void ChangeModelCulture(string newCulture)
         {
             if (newCulture != null)
             {
-                _model.ChangeCulture(newCulture);
+                Task t = Task.Factory.StartNew(() => _model.ChangeCulture(newCulture));
+				await t;
             }
         }
 
@@ -967,6 +968,7 @@ namespace ViewModel
                             Bodies[i].IsSelected = true;
                         }
                     }
+					Bodies.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
                     OnPropertyChanged("Bodies");
                 }
                 break;
@@ -988,7 +990,8 @@ namespace ViewModel
                             Chargers[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("Chargers");
+					Chargers.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("Chargers");
                 }
                 break;
                 case "Coolers":
@@ -1009,7 +1012,8 @@ namespace ViewModel
                             Coolers[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("Coolers");
+					Coolers.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("Coolers");
                 }
                 break;
                 case "Cpus":
@@ -1030,7 +1034,8 @@ namespace ViewModel
                             CPUs[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("CPUs");
+					CPUs.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("CPUs");
                 }
                 break;
                 case "Hdds":
@@ -1051,7 +1056,8 @@ namespace ViewModel
                             HDDs[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("HDDs");
+					HDDs.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("HDDs");
                 }
                 break;
                 case "Motherboards":
@@ -1072,7 +1078,8 @@ namespace ViewModel
                             Motherboards[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("Motherboards");
+					Motherboards.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("Motherboards");
                 }
                 break;
                 case "Rams":
@@ -1093,7 +1100,8 @@ namespace ViewModel
                             RAMs[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("RAMs");
+					RAMs.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("RAMs");
                 }
                 break;
                 case "Ssds":
@@ -1114,7 +1122,8 @@ namespace ViewModel
                             SSDs[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("SSDs");
+					SSDs.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("SSDs");
                 }
                 break;
                 case "Videocards":
@@ -1135,7 +1144,8 @@ namespace ViewModel
                             Videocards[i].IsSelected = true;
                         }
                     }
-                    OnPropertyChanged("Videocards");
+					Videocards.OrderBy(b => b.CompatibilityLevel).ThenBy(b => b.ID);
+					OnPropertyChanged("Videocards");
                 }
                 break;
                 case "BodyFields": BODYFields = _model.BodyFields.Select((o) => new Tuple<string, Option>(o.Key, (Option)o.Value)).ToDictionary((e1) => e1.Item1, (e2) => e2.Item2);

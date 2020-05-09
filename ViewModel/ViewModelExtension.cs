@@ -4,78 +4,82 @@
 	{
 		public static AdminViewModel ToAdminViewModel(this ViewModel viewModel)
 		{
-			AdminViewModel model = new AdminViewModel(viewModel.DialogService, viewModel.Culture);
-			model.Model = viewModel.Model;
+			AdminViewModel model = new AdminViewModel(viewModel.DialogService, viewModel.Culture)
+			{
+				Model = viewModel.Model,
 
-			model.Bodies = viewModel.Bodies;
-			model.Chargers = viewModel.Chargers;
-			model.Coolers = viewModel.Coolers;
-			model.CPUs = viewModel.CPUs;
-			model.HDDs = viewModel.HDDs;
-			model.Motherboards = viewModel.Motherboards;
-			model.RAMs = viewModel.RAMs;
-			model.SSDs = viewModel.SSDs;
-			model.Videocards = viewModel.Videocards;
+				Bodies = viewModel.Bodies,
+				Chargers = viewModel.Chargers,
+				Coolers = viewModel.Coolers,
+				CPUs = viewModel.CPUs,
+				HDDs = viewModel.HDDs,
+				Motherboards = viewModel.Motherboards,
+				RAMs = viewModel.RAMs,
+				SSDs = viewModel.SSDs,
+				Videocards = viewModel.Videocards,
 
-			model.BODYFields = viewModel.BODYFields;
-			model.CHARGERFields = viewModel.CHARGERFields;
-			model.COOLERFields = viewModel.COOLERFields;
-			model.CPUFields = viewModel.CPUFields;
-			model.HDDFields = viewModel.HDDFields;
-			model.MOTHERBOARDFields = viewModel.MOTHERBOARDFields;
-			model.RAMFields = viewModel.RAMFields;
-			model.SSDFields = viewModel.SSDFields;
-			model.VIDEOCARDFields = viewModel.VIDEOCARDFields;
+				BODYFields = viewModel.BODYFields,
+				CHARGERFields = viewModel.CHARGERFields,
+				COOLERFields = viewModel.COOLERFields,
+				CPUFields = viewModel.CPUFields,
+				HDDFields = viewModel.HDDFields,
+				MOTHERBOARDFields = viewModel.MOTHERBOARDFields,
+				RAMFields = viewModel.RAMFields,
+				SSDFields = viewModel.SSDFields,
+				VIDEOCARDFields = viewModel.VIDEOCARDFields,
 
-			model.SelectedBody = viewModel.SelectedBody;
-			model.SelectedCharger = viewModel.SelectedCharger;
-			model.SelectedCooler = viewModel.SelectedCooler;
-			model.SelectedCpu = viewModel.SelectedCpu;
-			model.SelectedHdd = viewModel.SelectedHdd;
-			model.SelectedMotherboard = viewModel.SelectedMotherboard;
-			model.SelectedRam = viewModel.SelectedRam;
-			model.SelectedSsd = viewModel.SelectedSsd;
-			model.SelectedTab = viewModel.SelectedTab;
-			model.SelectedVideocard = viewModel.SelectedVideocard;
+				SelectedBody = viewModel.SelectedBody,
+				SelectedCharger = viewModel.SelectedCharger,
+				SelectedCooler = viewModel.SelectedCooler,
+				SelectedCpu = viewModel.SelectedCpu,
+				SelectedHdd = viewModel.SelectedHdd,
+				SelectedMotherboard = viewModel.SelectedMotherboard,
+				SelectedRam = viewModel.SelectedRam,
+				SelectedSsd = viewModel.SelectedSsd,
+				SelectedTab = viewModel.SelectedTab,
+				SelectedVideocard = viewModel.SelectedVideocard
+			};
 
 			return model;
 		}
 
 		public static ViewModel ToViewModel(this AdminViewModel viewModel)
 		{
-			ViewModel model = new ViewModel(viewModel.DialogService, viewModel.Culture);
-			model.Model = viewModel.Model;
+			ViewModel model = new ViewModel(viewModel.DialogService, viewModel.Culture)
+			{
+				Model = viewModel.Model,
 
-			model.Bodies = viewModel.Bodies;
-			model.Chargers = viewModel.Chargers;
-			model.Coolers = viewModel.Coolers;
-			model.CPUs = viewModel.CPUs;
-			model.HDDs = viewModel.HDDs;
-			model.Motherboards = viewModel.Motherboards;
-			model.RAMs = viewModel.RAMs;
-			model.SSDs = viewModel.SSDs;
-			model.Videocards = viewModel.Videocards;
+				Bodies = viewModel.Bodies,
+				Chargers = viewModel.Chargers,
+				Coolers = viewModel.Coolers,
+				CPUs = viewModel.CPUs,
+				HDDs = viewModel.HDDs,
+				Motherboards = viewModel.Motherboards,
+				RAMs = viewModel.RAMs,
+				SSDs = viewModel.SSDs,
+				Videocards = viewModel.Videocards,
 
-			model.BODYFields = viewModel.BODYFields;
-			model.CHARGERFields = viewModel.CHARGERFields;
-			model.COOLERFields = viewModel.COOLERFields;
-			model.CPUFields = viewModel.CPUFields;
-			model.HDDFields = viewModel.HDDFields;
-			model.MOTHERBOARDFields = viewModel.MOTHERBOARDFields;
-			model.RAMFields = viewModel.RAMFields;
-			model.SSDFields = viewModel.SSDFields;
-			model.VIDEOCARDFields = viewModel.VIDEOCARDFields;
+				BODYFields = viewModel.BODYFields,
+				CHARGERFields = viewModel.CHARGERFields,
+				COOLERFields = viewModel.COOLERFields,
+				CPUFields = viewModel.CPUFields,
+				HDDFields = viewModel.HDDFields,
+				MOTHERBOARDFields = viewModel.MOTHERBOARDFields,
+				RAMFields = viewModel.RAMFields,
+				SSDFields = viewModel.SSDFields,
+				VIDEOCARDFields = viewModel.VIDEOCARDFields,
 
-			model.SelectedBody = viewModel.SelectedBody;
-			model.SelectedCharger = viewModel.SelectedCharger;
-			model.SelectedCooler = viewModel.SelectedCooler;
-			model.SelectedCpu = viewModel.SelectedCpu;
-			model.SelectedHdd = viewModel.SelectedHdd;
-			model.SelectedMotherboard = viewModel.SelectedMotherboard;
-			model.SelectedRam = viewModel.SelectedRam;
-			model.SelectedSsd = viewModel.SelectedSsd;
-			model.SelectedTab = viewModel.SelectedTab;
-			model.SelectedVideocard = viewModel.SelectedVideocard;
+				SelectedBody = viewModel.SelectedBody,
+				SelectedCharger = viewModel.SelectedCharger,
+				SelectedCooler = viewModel.SelectedCooler,
+				SelectedCpu = viewModel.SelectedCpu,
+				SelectedHdd = viewModel.SelectedHdd,
+				SelectedMotherboard = viewModel.SelectedMotherboard,
+				SelectedRam = viewModel.SelectedRam,
+				SelectedSsd = viewModel.SelectedSsd,
+				SelectedTab = viewModel.SelectedTab,
+				SelectedVideocard = viewModel.SelectedVideocard
+			};
 
 			return model;
 		}

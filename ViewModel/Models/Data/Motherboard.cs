@@ -27,8 +27,17 @@ namespace ViewModel
         public int      RAMMaxFreq          { get; set; }
         public List<string>    Slots         { get; set; }
         public string   Additions           { get; set; }
+		public bool Compatible { get; set; }
+		public Dictionary<string, string> Incompatible { get; set; }
+		public int CompatibilityLevel
+		{
+			get
+			{
+				return Incompatible?.Keys.Count ?? 0;
+			}
+		}
 
-        private bool isSelected = false;
+		private bool isSelected = false;
         public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
 
         public static implicit operator Motherboard(M.Motherboard b)
@@ -49,7 +58,9 @@ namespace ViewModel
                 MemorySlotsAmount = b.MemorySlotsAmount,
                 RAMMaxFreq = b.RAMMaxFreq,
                 Slots = b.Slots,
-                Additions = b.Additions
+                Additions = b.Additions,
+				Compatible = b.Compatible,
+				Incompatible = b.Incompatible
             } : null;
         }
 

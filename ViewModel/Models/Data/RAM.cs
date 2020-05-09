@@ -22,8 +22,17 @@ namespace ViewModel
         public int      ModuleAmount { get; set; }
         public int      Freq         { get; set; }
 	    public string   CL           { get; set; }
+		public bool Compatible { get; set; }
+		public Dictionary<string, string> Incompatible { get; set; }
+		public int CompatibilityLevel
+		{
+			get
+			{
+				return Incompatible?.Keys.Count ?? 0;
+			}
+		}
 
-        private bool isSelected = false;
+		private bool isSelected = false;
         public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
 
         public static implicit operator RAM(M.RAM b)
@@ -39,7 +48,9 @@ namespace ViewModel
                 Volume = b.Volume,
                 ModuleAmount = b.ModuleAmount,
                 Freq = b.Freq,
-                CL = b.CL
+                CL = b.CL,
+				Compatible = b.Compatible,
+				Incompatible = b.Incompatible
             } : null;
         }
 
