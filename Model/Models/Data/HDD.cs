@@ -19,7 +19,9 @@ namespace Model
             Interface = null;
             BufferVolume = 0;
             Speed = 0;
-        }
+			Compatible = true;
+			Incompatible = new Dictionary<string, string>();
+		}
 
         public HDD(int iD, string title, string company, string formfactor, int capacity, IEnumerable<string> @interface, int bufferVolume, int speed)
         {
@@ -33,13 +35,15 @@ namespace Model
             Speed = speed;
         }
 
-        public int      ID              { get; set; }
-	    public string   Title           { get; set; }
-	    public string   Company         { get; set; }
-	    public string   Formfactor      { get; set; }
-	    public int      Capacity        { get; set; }
-	    public List<string>   Interface       { get; set; }
-	    public int      BufferVolume    { get; set; }
-	    public int      Speed           { get; set; }
-    }
+        public int							ID              { get; set; }
+	    public string						Title           { get; set; }
+	    public string						Company         { get; set; }
+	    public string						Formfactor      { get; set; }
+	    public int							Capacity        { get; set; }
+	    public List<string>					Interface       { get; set; }
+	    public int							BufferVolume    { get; set; }
+	    public int							Speed           { get; set; }
+		public bool							Compatible		{ get; set; }
+		public Dictionary<string, string>	Incompatible	{ get; set; }
+	}
 }

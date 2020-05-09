@@ -20,8 +20,17 @@ namespace ViewModel
 	    public string   Formfactor  { get; set; }
 	    public List<string>   Interface   { get; set; }
 	    public string   CellType    { get; set; }
+		public bool Compatible { get; set; }
+		public Dictionary<string, string> Incompatible { get; set; }
+		public int CompatibilityLevel
+		{
+			get
+			{
+				return Incompatible?.Keys.Count ?? 0;
+			}
+		}
 
-        private bool isSelected = false;
+		private bool isSelected = false;
         public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
 
         public static implicit operator SSD(M.SSD b)
@@ -35,7 +44,9 @@ namespace ViewModel
                 Capacity = b.Capacity,
                 Formfactor = b.Formfactor,
                 Interface = b.Interface,
-                CellType = b.CellType
+                CellType = b.CellType,
+				Compatible = b.Compatible,
+				Incompatible = b.Incompatible
             } : null;
         }
 

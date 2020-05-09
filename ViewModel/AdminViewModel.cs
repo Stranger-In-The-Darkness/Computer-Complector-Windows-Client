@@ -18,6 +18,9 @@ namespace ViewModel
 		{
 		}
 
+		private string _selectedPanel = "Elements";
+		public string SelectedPanel { get => _selectedPanel; set { _selectedPanel = value; OnPropertyChanged("SelectedPanel"); } }
+
 		private User _user;
 		public User User { get => _user; set { _user = value ?? _user; OnPropertyChanged("User"); } }
 
@@ -314,6 +317,21 @@ namespace ViewModel
 								}
 								break;
 							}
+						},
+						obj => true));
+			}
+		}
+
+		private RelayCommand _changePanel;
+		public RelayCommand ChangePanel
+		{
+			get
+			{
+				return _changePanel ??
+					(_changePanel = new RelayCommand(
+						obj =>
+						{
+							SelectedPanel = obj.ToString();
 						},
 						obj => true));
 			}

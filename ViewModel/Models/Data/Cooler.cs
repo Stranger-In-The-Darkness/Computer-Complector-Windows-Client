@@ -12,18 +12,27 @@ namespace ViewModel
 {
     public class Cooler : INotifyPropertyChanged
     {
-        public int      ID                  { get; set; }
-        public string   Title               { get; set; }
-	    public string   Company             { get; set; }
-	    public string   Purpose             { get; set; }
-	    public string   Type                { get; set; }       
-	    public List<string>   Socket              { get; set; }
-	    public string   Material            { get; set; }
-	    public double   VentDiam            { get; set; }
-	    public bool     TurnAdj             { get; set; }
-	    public string   Color               { get; set; }
+        public int							ID              { get; set; }
+        public string						Title           { get; set; }
+	    public string						Company         { get; set; }
+	    public string						Purpose         { get; set; }
+	    public string						Type            { get; set; }       
+	    public List<string>					Socket          { get; set; }
+	    public string						Material        { get; set; }
+	    public double						VentDiam        { get; set; }
+	    public bool							TurnAdj         { get; set; }
+	    public string						Color           { get; set; }
+		public bool							Compatible		{ get; set; }
+		public Dictionary<string, string>	Incompatible	{ get; set; }
+		public int CompatibilityLevel
+		{
+			get
+			{
+				return Incompatible?.Keys.Count ?? 0;
+			}
+		}
 
-        private bool isSelected = false;
+		private bool isSelected = false;
         public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
 
         public static implicit operator Cooler(M.Cooler b)
@@ -38,8 +47,10 @@ namespace ViewModel
                 Socket = b.Socket,
                 Material = b.Material,
                 Color = b.Color,
-                VentDiam = b.VentDiam.HasValue ? b.VentDiam.Value : 0,
-                TurnAdj = b.TurnAdj.HasValue ? b.TurnAdj.Value : false
+                VentDiam = b.VentDiam ?? 0,
+                TurnAdj = b.TurnAdj ?? false,
+				Compatible = b.Compatible,
+				Incompatible = b.Incompatible
             } : null;
         }
 

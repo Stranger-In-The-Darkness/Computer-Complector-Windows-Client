@@ -12,38 +12,57 @@ namespace ViewModel
 {
     public class Body : INotifyPropertyChanged
     {
-        public int      ID                  { get; set; }
-        public string   Title               { get; set; }
-        public string   Company             { get; set; }
-        public string   Formfactor          { get; set; }
-        public string   Type                { get; set; }
-        public bool     BuildInCharger      { get; set; }
-        public int      ChargerPower        { get; set; }
-        public string   Color               { get; set; }
-        public int      USB3Ports           { get; set; }
-		public int      USB2Ports           { get; set; }
-        public string   Additions           { get; set; }
-        public string   BackLightColor      { get; set; }
+        public int							ID                  { get; set; }
+        public string						Title               { get; set; }
+        public string						Company             { get; set; }
+        public List<string>					Formfactor          { get; set; }
+        public string						Type                { get; set; }
+        public bool							BuildInCharger      { get; set; }
+        public int							ChargerPower        { get; set; }
+        public string						Color               { get; set; }
+        public int							USB3Ports           { get; set; }
+		public int							USB2Ports           { get; set; }
+        public string						Additions           { get; set; }
+        public string						BackLightColor      { get; set; }
+		public bool							Compatible			{ get; set; }
+		public Dictionary<string, string>	Incompatible		{ get; set; }
+		public int							CompatibilityLevel
+		{
+			get
+			{
+				return Incompatible?.Keys.Count ?? 0;
+			}
+		}
 
-        private bool    isSelected = false;
-        public bool     IsSelected          { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
+		private bool _isSelected = false;
+        public bool IsSelected
+		{
+			get => _isSelected;
+			set
+			{
+				_isSelected = value;
+				OnPropertyChanged("IsSelected");
+			}
+		}
 
         public static implicit operator Body(M.Body b)
         {
-            return b != null ? new Body()
-            {
-                ID = b.ID,
-                Title = b.Title,
-                Company = b.Company,
-                Formfactor = b.Formfactor,
-                Type = b.Type,
-                BuildInCharger = b.BuildInCharger,
-                ChargerPower = b.ChargerPower,
-                Color = b.Color,
-                USB2Ports = b.USB2Ports,
-                USB3Ports = b.USB3Ports,
-                Additions = b.Additions,
-                BackLightColor = b.BackLightColor
+			return b != null ? new Body()
+			{
+				ID = b.ID,
+				Title = b.Title,
+				Company = b.Company,
+				Formfactor = b.Formfactor,
+				Type = b.Type,
+				BuildInCharger = b.BuildInCharger,
+				ChargerPower = b.ChargerPower,
+				Color = b.Color,
+				USB2Ports = b.USB2Ports,
+				USB3Ports = b.USB3Ports,
+				Additions = b.Additions,
+				BackLightColor = b.BackLightColor,
+				Compatible = b.Compatible,
+				Incompatible = b.Incompatible
             } : null;
         }
 

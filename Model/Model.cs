@@ -1558,6 +1558,10 @@ namespace Model
 			{
 				throw;
 			}
+			catch (Exception e)
+			{
+
+			}
 
 			if (response.StatusCode == HttpStatusCode.OK)
 			{
