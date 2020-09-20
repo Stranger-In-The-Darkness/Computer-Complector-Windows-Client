@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Model.Models.Data
 {
 	public class User
 	{

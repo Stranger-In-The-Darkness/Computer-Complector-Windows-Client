@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 using Model;
+using Model.Models.Data;
 using Newtonsoft.Json;
 
 namespace ViewModel
@@ -37,13 +38,13 @@ namespace ViewModel
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 		}
 
-		private RelayCommand _autheorize;
+		private RelayCommand _authorize;
 		public RelayCommand Authorize
 		{
 			get
 			{
-				return _autheorize ??
-					(_autheorize = new RelayCommand(
+				return _authorize ??
+					(_authorize = new RelayCommand(
 						async (obj) => 
 						{
 							try
@@ -57,15 +58,29 @@ namespace ViewModel
 							}
 							catch (WebException e)
 							{
-								using (var stream = e.Response.GetResponseStream())
+								if (e.Response != null)
 								{
-									using (var reader = new StreamReader(stream))
+									using (var stream = e.Response.GetResponseStream())
 									{
-										var error = await reader.ReadToEndAsync();
-										var er = new { message = "" };
-										er = JsonConvert.DeserializeAnonymousType(error, er);
-										Error = er.message;
+										using (var reader = new StreamReader(stream))
+										{
+											var error = await reader.ReadToEndAsync();
+											var er = new { message = "" };
+											try
+											{
+												er = JsonConvert.DeserializeAnonymousType(error, er);
+												Error = er.message;
+											}
+											catch
+											{
+												Error = "Unknown error";
+											}
+										}
 									}
+								}
+								else
+								{
+									Error = e.Message;
 								}
 								OnPropertyChanged("Error");
 								IsAuthorized = false;

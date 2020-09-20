@@ -44,7 +44,9 @@ namespace Computer_Complector
 
             DataContext = new VM(
                 new ViewModel.Models.DefaultDialogService(), 
-                Properties.Settings.Default.ServiceConnectionString, 
+                Properties.Settings.Default.APIURIString,
+				Properties.Settings.Default.ComponentsRequestFormat,
+				Properties.Settings.Default.StatisticsRequestFormat,
                 Properties.Settings.Default.Culture);            
         }
 
@@ -99,11 +101,6 @@ namespace Computer_Complector
             ((VM)DataContext).DeselectItem.Execute(((Button)sender).Tag);
         }
 
-        private void ItemsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void Expander_Expanded(object sender, RoutedEventArgs e)
         {
             var exp = sender as Expander;
@@ -124,41 +121,41 @@ namespace Computer_Complector
             }
         }
 
-		private void LogInOutBtn_Click(object sender, RoutedEventArgs e)
-		{
-			if (userPanel.DataContext is User currentUser)
-			{
-				DataContext = (DataContext as AdminViewModel).ToViewModel();
-				userPanel.DataContext = null;
-				logInOutBtn.Content = "Login";
-			}
-			else
-			{
-				var login = new LoginWindow();
-				login.Closing += (send, args) =>
-				{
-					if (login.IsSuccess)
-					{
-						var user = (login.DataContext as LoginViewModel)?.User;
-						if (user != null)
-						{
-							if (user.Role.ToUpper() == "ADMIN")
-							{
-								DataContext = (DataContext as VM).ToAdminViewModel();
-								(DataContext as AdminViewModel).User = user;
-							}
-							else
-							{
-								(DataContext as VM).User = user;
-							}
-							userPanel.DataContext = user;
-							logInOutBtn.Content = "Logout";
-						}
-					}
-				};
+		//private void LogInOutBtn_Click(object sender, RoutedEventArgs e)
+		//{
+		//	if (userPanel.DataContext is User currentUser)
+		//	{
+		//		DataContext = (DataContext as AdminViewModel).ToViewModel();
+		//		userPanel.DataContext = null;
+		//		logInOutBtn.Content = "Login";
+		//	}
+		//	else
+		//	{
+		//		var login = new LoginWindow();
+		//		login.Closing += (send, args) =>
+		//		{
+		//			if (login.IsSuccess)
+		//			{
+		//				var user = (login.DataContext as LoginViewModel)?.User;
+		//				if (user != null)
+		//				{
+		//					if (user.Role.ToUpper() == "ADMIN")
+		//					{
+		//						DataContext = (DataContext as VM).ToAdminViewModel();
+		//						(DataContext as AdminViewModel).User = user;
+		//					}
+		//					else
+		//					{
+		//						(DataContext as VM).User = user;
+		//					}
+		//					userPanel.DataContext = user;
+		//					logInOutBtn.Content = "Logout";
+		//				}
+		//			}
+		//		};
 
-				login.ShowDialog();
-			}
-		}
+		//		login.ShowDialog();
+		//	}
+		//}
 	}
 }

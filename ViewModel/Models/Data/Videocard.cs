@@ -5,34 +5,138 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
-using M = Model;
+using ViewModel.Models;
+using M = Model.Models.Data.Components;
 
 namespace ViewModel
 {
-    public class Videocard : INotifyPropertyChanged
+    public class Videocard : DataViewModelBase, ICloneable
     {
-        public int      ID              { get; set; }
-	    public string   Title           { get; set; }
-        public string   Company         { get; set; }
-	    public string   Series          { get; set; }
-	    public string   Proccessor      { get; set; }
-	    public int      VRAM            { get; set; }
-	    public int      Capacity        { get; set; }
-        public string   Family          { get; set; }
-	    public List<string>   Connector       { get; set; }
-		public bool Compatible { get; set; }
-		public Dictionary<string, string> Incompatible { get; set; }
-		public int CompatibilityLevel
+		private string _title;
+		private string _company;
+		private string _proccessor;
+		private int _vram;
+		private int _capacity;
+		private string _family;
+		private List<string> _connector;
+
+        public int ID { get; set; }
+	    public string Title
 		{
-			get
+			get => _title;
+			set
 			{
-				return Incompatible?.Keys.Count ?? 0;
+				_title = value;
+
+				_errors.Remove("Title");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_title))
+				{
+					_errors.Add("Title", "Invalid data!");
+				}
+				OnPropertyChanged("Title");
+				OnPropertyChanged("Error");
 			}
 		}
+        public string Company
+		{
+			get => _company;
+			set
+			{
+				_company = value;
 
-		private bool isSelected = false;
-        public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
+				_errors.Remove("Company");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_company))
+				{
+					_errors.Add("Company", "Invalid data!");
+				}
+				OnPropertyChanged("Company");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public string Series { get; set; }
+	    public string Proccessor
+		{
+			get => _proccessor;
+			set
+			{
+				_proccessor = value;
+
+				_errors.Remove("Proccessor");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_proccessor))
+				{
+					_errors.Add("Proccessor", "Invalid data");
+				}
+				OnPropertyChanged("Proccessor");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public int VRAM
+		{
+			get => _vram;
+			set
+			{
+				_vram = value;
+
+				_errors.Remove("VRAM");
+				if (!ValidateIntNotLessThanValue(_vram, 1))
+				{
+					_errors.Add("VRAM", "VRAM cannot be less or equal to zero!");
+				}
+				OnPropertyChanged("VRAM");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public int Capacity
+		{
+			get => _capacity;
+			set
+			{
+				_capacity = value;
+
+				_errors.Remove("Capacity");
+				if (!ValidateIntNotLessThanValue(_capacity, 1))
+				{
+					_errors.Add("Capacity", "Capacity cannot be less or equal to zero!");
+				}
+				OnPropertyChanged("Capacity");
+				OnPropertyChanged("Error");
+			}
+		}
+        public string Family
+		{
+			get => _family;
+			set
+			{
+				_family = value;
+
+				_errors.Remove("Family");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_family))
+				{
+					_errors.Add("Family", "Invalid data");
+				}
+				OnPropertyChanged("Family");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public List<string> Connector
+		{
+			get => _connector;
+			set
+			{
+				_connector = value;
+				_errors.Remove("Connector");
+				foreach(string connector in _connector)
+				{
+					if (!ValidateStringNotNullNotEmptyNotWhiteSpace(connector))
+					{
+						_errors.Add("Connector", "Invalid data!");
+						break;
+					}
+				}
+				OnPropertyChanged("Connector");
+				OnPropertyChanged("Error");
+			}
+		}
 
         public static implicit operator Videocard(M.Videocard b)
         {
@@ -52,29 +156,48 @@ namespace ViewModel
             } : null;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-
         public override bool Equals(object obj)
         {
-            Videocard b = obj as Videocard;
-            if (b != null)
-            {
-                return ID == b.ID;
-            }
-            else
-            {
-                return false;
-            }
-        }
+			if (obj is Videocard b)
+			{
+				return ID.Equals(b?.ID ?? 0) &&
+					Capacity.Equals(b?.Capacity ?? 0) &&
+					(Company?.Equals(b?.Company ?? "") ?? true) &&
+					(Connector?.SequenceEqual(b?.Connector ?? new List<string>()) ?? true) &&
+					(Family?.Equals(b?.Family ?? "") ?? true) &&
+					(Proccessor?.Equals(b?.Proccessor ?? "") ?? true) &&
+					(Series?.Equals(b?.Series ?? "") ?? true) &&
+					(Title?.Equals(b?.Title ?? "") ?? true) &&
+					VRAM.Equals(b?.VRAM ?? 0);
+			}
+			else
+			{
+				return false;
+			}
+		}
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-    }
+
+		public override object Clone()
+		{
+			return new Videocard()
+			{
+				Capacity = Capacity,
+				Company = Company,
+				Connector = Connector?.ToList(),
+				Family = Family,
+				ID = ID,
+				Proccessor = Proccessor,
+				Series = Series,
+				Title = Title,
+				VRAM = VRAM,
+				Compatible = Compatible,
+				Incompatible = Incompatible?.ToDictionary(e => e.Key, e => e.Value),
+				IsSelected = IsSelected
+			};
+		}
+	}
 }

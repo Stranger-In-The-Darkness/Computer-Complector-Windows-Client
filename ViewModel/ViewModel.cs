@@ -14,13 +14,14 @@ using System.IO;
 
 using ViewModel.Interfaces;
 
-using m = Model;
+using Model;
+using Model.Models.Data;
+using Components = Model.Models.Data.Components;
+using Specials = Model.Models.Special;
 
 namespace ViewModel
 {
-    public class ViewModel : INotifyPropertyChanged
-    {
-        public class Selection
+    public class Selection
         {
             public IEnumerable<CPU>         Item1 { get; internal set; }
             public IEnumerable<Motherboard> Item2 { get; internal set; }
@@ -33,38 +34,22 @@ namespace ViewModel
             public IEnumerable<Body>        Item9 { get; internal set; }
         }
 
+    public class ViewModel : INotifyPropertyChanged
+    {
         private string _culture = string.Empty;
 		public string Culture { get => _culture; }
 
         private IDialogService _dialogService;
 		internal IDialogService DialogService { get => _dialogService; }
 
-        public ViewModel(IDialogService service, string culture = "en")
+        public ViewModel(IDialogService service, string serviceUri, string componentsFormat, string statisticsFormat, string culture = "en")
         {
             _culture = culture;
             _dialogService = service;
-            _model = new m.Model("", culture);
+            _model = new Model.Model(serviceUri, componentsFormat, statisticsFormat, culture);
             _model.PropertyChanged += OnModelPropertyChanged;
-            _model.Initialize();
+            _model.InitializeAsync();
         }
-
-        public ViewModel(IDialogService service, string serviceUri, string culture = "en")
-        {
-            _culture = culture;
-            _dialogService = service;
-            _model = new m.Model(serviceUri, culture);
-            _model.PropertyChanged += OnModelPropertyChanged;
-            _model.Initialize();
-        }
-
-		public ViewModel(IDialogService service, string serviceUri, string authUri, string culture = "en")
-		{
-			_culture = culture;
-			_dialogService = service;
-			_model = new m.Model(serviceUri, culture);
-			_model.PropertyChanged += OnModelPropertyChanged;
-			_model.Initialize();
-		}
 
 		private readonly string[] _type = new string[]
         {
@@ -98,7 +83,7 @@ namespace ViewModel
                             int selected = int.Parse(obj.ToString());
                             SelectedTab = selected;
 
-                            await _model.UpdateData(_type[SelectedTab]);
+                            await _model.UpdateDataAsync(_type[SelectedTab]);
                         },
                         obj =>
                         {
@@ -124,7 +109,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "cpu", 
                                             values.Item1 as string, 
                                             values.Item2 as string);
@@ -136,7 +121,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "motherboard",
                                             values.Item1 as string,
                                             values.Item2 as string);
@@ -148,7 +133,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "videocard",
                                             values.Item1 as string,
                                             values.Item2 as string);
@@ -160,7 +145,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "ram",
                                             values.Item1 as string, 
                                             values.Item2 as string);
@@ -172,7 +157,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "charger",
                                             values.Item1 as string,
                                             values.Item2 as string);
@@ -184,7 +169,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "cooler",
                                             values.Item1 as string,
                                             values.Item2 as string);
@@ -196,7 +181,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "ssd",
                                             values.Item1 as string,
                                             values.Item2 as string);
@@ -208,7 +193,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "hdd",
                                             values.Item1 as string,
                                             values.Item2 as string);
@@ -220,7 +205,7 @@ namespace ViewModel
                                 {
                                     try
                                     {
-                                        await _model.ToggleFilter(
+                                        await _model.ToggleFilterAsync(
                                             "body",
                                             values.Item1 as string,
                                             values.Item2 as string);
@@ -265,7 +250,7 @@ namespace ViewModel
                     (_deselectItem = new RelayCommand(
                         async (obj) =>
                         {
-                            await _model.ClearSelectedItem(_type[int.Parse(obj.ToString())]);
+                            await _model.ClearSelectedItemAsync(_type[int.Parse(obj.ToString())]);
                         },
                         (obj) =>
                         {
@@ -351,8 +336,8 @@ namespace ViewModel
             }
 		}
 
-        private m.Model _model;
-		internal m.Model Model
+        private Model.Model _model;
+		internal Model.Model Model
 		{
 			get => _model;
 			set
@@ -363,8 +348,6 @@ namespace ViewModel
 				}
 			}
 		}
-
-		public m.User User { get; set; } = null;
 
         public ObservableCollection<Body> Bodies { get; set; } = new ObservableCollection<Body>();
         public ObservableCollection<Charger> Chargers { get; set; } = new ObservableCollection<Charger>();
@@ -832,47 +815,47 @@ namespace ViewModel
                     {
                         case 0:
                         {
-                            await _model.LoadAllEntries("body");
+                            await _model.LoadAllEntriesAsync("body");
                         }
                         break;
                         case 1:
                         {
-                            await _model.LoadAllEntries("charger");
+                            await _model.LoadAllEntriesAsync("charger");
                         }
                         break;
                         case 2:
                         {
-                            await _model.LoadAllEntries("cooler");
+                            await _model.LoadAllEntriesAsync("cooler");
                         }
                         break;
                         case 3:
                         {
-                            await _model.LoadAllEntries("cpu");
+                            await _model.LoadAllEntriesAsync("cpu");
                         }
                         break;
                         case 4:
                         {
-                            await _model.LoadAllEntries("hdd");
+                            await _model.LoadAllEntriesAsync("hdd");
                         }
                         break;
                         case 5:
                         {
-                            await _model.LoadAllEntries("motherboard");
+                            await _model.LoadAllEntriesAsync("motherboard");
                         }
                         break;
                         case 6:
                         {
-                            await _model.LoadAllEntries("ram");
+                            await _model.LoadAllEntriesAsync("ram");
                         }
                         break;
                         case 7:
                         {
-                            await _model.LoadAllEntries("ssd");
+                            await _model.LoadAllEntriesAsync("ssd");
                         }
                         break;
                         case 8:
                         {
-                            await _model.LoadAllEntries("videocard");
+                            await _model.LoadAllEntriesAsync("videocard");
                         }
                         break;
                     }
@@ -889,47 +872,47 @@ namespace ViewModel
                     {
                         case 0:
                         {
-                            await _model.LoadFields("cpu");
+                            await _model.LoadFieldsAsync("cpu");
                         }
                         break;
                         case 1:
                         {
-                            await _model.LoadFields("motherboard");
+                            await _model.LoadFieldsAsync("motherboard");
                         }
                         break;
                         case 2:
                         {
-                            await _model.LoadFields("videocard");
+                            await _model.LoadFieldsAsync("videocard");
                         }
                         break;
                         case 3:
                         {
-                            await _model.LoadFields("ram");
+                            await _model.LoadFieldsAsync("ram");
                         }
                         break;
                         case 4:
                         {
-                            await _model.LoadFields("charger");
+                            await _model.LoadFieldsAsync("charger");
                         }
                         break;
                         case 5:
                         {
-                            await _model.LoadFields("cooler");
+                            await _model.LoadFieldsAsync("cooler");
                         }
                         break;
                         case 6:
                         {
-                            await _model.LoadFields("ssd");
+                            await _model.LoadFieldsAsync("ssd");
                         }
                         break;
                         case 7:
                         {
-                            await _model.LoadFields("hdd");
+                            await _model.LoadFieldsAsync("hdd");
                         }
                         break;
                         case 8:
                         {
-                            await _model.LoadFields("body");
+                            await _model.LoadFieldsAsync("body");
                         }
                         break;
                     }
@@ -941,7 +924,7 @@ namespace ViewModel
         {
             if (newCulture != null)
             {
-                Task t = Task.Factory.StartNew(() => _model.ChangeCulture(newCulture));
+                Task t = Task.Factory.StartNew(() => _model.ChangeCultureAsync(newCulture));
 				await t;
             }
         }
@@ -953,7 +936,7 @@ namespace ViewModel
                 case "Bodies":
                 {
                     Bodies.Clear();
-                    foreach (m.Body b in _model.Bodies)
+                    foreach (Components.Body b in _model.Bodies)
                     {
                         if (!Bodies.Contains(b))
                         {
@@ -975,7 +958,7 @@ namespace ViewModel
                 case "Chargers":
                 {
                     Chargers.Clear();
-                    foreach (m.Charger b in _model.Chargers)
+                    foreach (Components.Charger b in _model.Chargers)
                     {
                         if (!Chargers.Contains(b))
                         {
@@ -997,7 +980,7 @@ namespace ViewModel
                 case "Coolers":
                 {
                     Coolers.Clear();
-                    foreach (m.Cooler b in _model.Coolers)
+                    foreach (Components.Cooler b in _model.Coolers)
                     {
                         if (!Coolers.Contains(b))
                         {
@@ -1019,7 +1002,7 @@ namespace ViewModel
                 case "Cpus":
                 {
                     CPUs.Clear();
-                    foreach (m.CPU b in _model.Cpus)
+                    foreach (Components.CPU b in _model.CPUs)
                     {
                         if (!CPUs.Contains(b))
                         {
@@ -1041,7 +1024,7 @@ namespace ViewModel
                 case "Hdds":
                 {
                     HDDs.Clear();
-                    foreach (m.HDD b in _model.Hdds)
+                    foreach (Components.HDD b in _model.HDDs)
                     {
                         if (!HDDs.Contains(b))
                         {
@@ -1063,7 +1046,7 @@ namespace ViewModel
                 case "Motherboards":
                 {
                     Motherboards.Clear();
-                    foreach (m.Motherboard b in _model.Motherboards)
+                    foreach (Components.Motherboard b in _model.Motherboards)
                     {
                         if (!Motherboards.Contains(b))
                         {
@@ -1085,7 +1068,7 @@ namespace ViewModel
                 case "Rams":
                 {
                     RAMs.Clear();
-                    foreach (m.RAM b in _model.Rams)
+                    foreach (Components.RAM b in _model.RAMs)
                     {
                         if (!RAMs.Contains(b))
                         {
@@ -1107,7 +1090,7 @@ namespace ViewModel
                 case "Ssds":
                 {
                     SSDs.Clear();
-                    foreach (m.SSD b in _model.Ssds)
+                    foreach (Components.SSD b in _model.SSDs)
                     {
                         if (!SSDs.Contains(b))
                         {
@@ -1129,7 +1112,7 @@ namespace ViewModel
                 case "Videocards":
                 {
                     Videocards.Clear();
-                    foreach (m.Videocard b in _model.Videocards)
+                    foreach (Components.Videocard b in _model.Videocards)
                     {
                         if (!Videocards.Contains(b))
                         {
@@ -1231,7 +1214,7 @@ namespace ViewModel
                 break;
                 case "SelectedCpu":
                 {
-                    if (_model.SelectedCpu == null)
+                    if (_model.SelectedCPU == null)
                     {
                         _selectedCpu = null;
                         try
@@ -1242,7 +1225,7 @@ namespace ViewModel
                     }
                     else
                     {
-                        SelectedCpu = _model.SelectedCpu;
+                        SelectedCpu = _model.SelectedCPU;
                     }
                     OnPropertyChanged("CPUs");
                     OnPropertyChanged("Selected");
@@ -1252,7 +1235,7 @@ namespace ViewModel
                 break;
                 case "SelectedHdd":
                 {
-                    if (_model.SelectedHdd == null)
+                    if (_model.SelectedHDD == null)
                     {
                         _selectedHdd = null;
                         try
@@ -1263,7 +1246,7 @@ namespace ViewModel
                     }
                     else
                     {
-                        SelectedHdd = _model.SelectedHdd;
+                        SelectedHdd = _model.SelectedHDD;
                     }
                     OnPropertyChanged("HDDs");
                     OnPropertyChanged("Selected");
@@ -1294,7 +1277,7 @@ namespace ViewModel
                 break;
                 case "SelectedRam":
                 {
-                    if (_model.SelectedRam == null)
+                    if (_model.SelectedRAM == null)
                     {
                         _selectedRam = null;
                         try
@@ -1305,7 +1288,7 @@ namespace ViewModel
                     }
                     else
                     {
-                        SelectedRam = _model.SelectedRam;
+                        SelectedRam = _model.SelectedRAM;
                     }
                     OnPropertyChanged("RAMs");
                     OnPropertyChanged("Selected");
@@ -1315,7 +1298,7 @@ namespace ViewModel
                 break;
                 case "SelectedSsd":
                 {
-                    if (_model.SelectedSsd == null)
+                    if (_model.SelectedSSD == null)
                     {
                         _selectedSsd = null;
                         try
@@ -1326,7 +1309,7 @@ namespace ViewModel
                     }
                     else
                     {
-                        SelectedSsd = _model.SelectedSsd;
+                        SelectedSsd = _model.SelectedSSD;
                     }
                     OnPropertyChanged("SSDs");
                     OnPropertyChanged("Selected");

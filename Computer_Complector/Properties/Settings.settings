@@ -2,14 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Computer_Complector.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServiceConnectionString" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://localhost:44346/api/components</Value>
+    <Setting Name="APIURIString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://localhost:44346/api</Value>
     </Setting>
     <Setting Name="Culture" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
     </Setting>
-    <Setting Name="AuthentificationConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://localhost:44346/users</Value>
+    <Setting Name="AuthentificationRequestFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{0}users</Value>
+    </Setting>
+    <Setting Name="ComponentsRequestFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{0}/components</Value>
+    </Setting>
+    <Setting Name="StatisticsRequestFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{0}/statistics</Value>
     </Setting>
   </Settings>
 </SettingsFile>

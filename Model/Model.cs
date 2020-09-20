@@ -1,7 +1,4 @@
-﻿//#define LOCALHOST
-//#define TESTCASE
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,7 +13,9 @@ using System.Xml;
 using System.Xml.Serialization;
 
 using Newtonsoft.Json;
-
+using Model.Models.Data.Components;
+using Model.Models;
+using Model.Models.Special;
 
 namespace Model
 {
@@ -25,49 +24,44 @@ namespace Model
     /// </summary>
     public class Model : INotifyPropertyChanged
     {
-        [Serializable]
-        [XmlRoot]
-        public class Selected
-        {
-            public Body SelectedBody { get; set; }
-            public Cooler SelectedCooler { get; set; }
-            public Charger SelectedCharger { get; set; }
-            public CPU SelectedCPU { get; set; }
-            public HDD SelectedHDD { get; set; }
-            public Motherboard SelectedMotherboard { get; set; }
-            public RAM SelectedRAM { get; set; }
-            public SSD SelectedSSD { get; set; }
-            public Videocard SelectedVideocard { get; set; }
-        }
-#if LOCALHOST
-        private string _apiUri = "https://localhost:44346/api/components";
-#else
+		private const string GatAllBodiesRequestFormat = "{0}/bodies";
+		private const string GetAllElementsRequestFormat = "{0}/{1}s";
+		private const string GetPropertiesRequestFormat = "{0}/{1}/properties?culture={2}";
+		private const string GetRecommendationsRequestFormat = "{0}/{1}/recommendations?{2}&time-span={3}";
+		private const string AddElementRequestFormat = "{0}/{1}";
+		private const string ElementsRequestFormat = "{0}/{1}?{2}";
+		private const string ElementByIDRequestFormat = "{0}/{1}/{2}";
+
 		/// <summary>
 		/// API uri
 		/// </summary>
-        private string _apiUri = null;
-#endif
+		protected string _apiUri = null;
+		protected string _componentsUri = null;
+		protected string _statisticsUri = null;
 		/// <summary>
 		/// App culture
 		/// </summary>
-        private string _culture = string.Empty;
+        protected string _culture = string.Empty;
         /// <summary>
         /// True, if web request is faulted
         /// </summary>
-        public bool IsFaulted { get; private set; } = false;
+        public bool IsFaulted { get; protected set; } = false;
 
 		/// <summary>
 		/// List of bodies
 		/// </summary>
         private List<Body> _bodies;
+
 		/// <summary>
 		/// Selected body
 		/// </summary>
         private Body _selectedBody;
+
 		/// <summary>
 		/// Filters for bodies
 		/// </summary>
         private Dictionary<string, Option> _bodyFields;
+
 		/// <summary>
 		/// Selected bodies filters values
 		/// </summary>
@@ -134,40 +128,41 @@ namespace Model
         /// </summary>
         public Dictionary<string, Option> CoolerFields { get => _coolerFields; set { _coolerFields = value; OnPropertyChanged("CoolerFields"); } }
 
-        public List<CPU> Cpus { get => _cpus; set { _cpus = value; OnPropertyChanged("Cpus"); } }
-        public CPU SelectedCpu { get => _selectedCpu; set { if (value != null) { _selectedCpu = value; OnPropertyChanged("SelectedCpu"); } } }
+        public List<CPU> CPUs { get => _cpus; set { _cpus = value; OnPropertyChanged("Cpus"); } }
+        public CPU SelectedCPU { get => _selectedCpu; set { if (value != null) { _selectedCpu = value; OnPropertyChanged("SelectedCpu"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
         public Dictionary<string, Option> CPUFields { get => _cpuFields; set { _cpuFields = value; OnPropertyChanged("CpuFields"); } }
 
-        public List<HDD> Hdds { get => _hdds; set { _hdds = value; OnPropertyChanged("Hdds"); } }
-        public HDD SelectedHdd { get => _selectedHdd; set { if (value != null) { _selectedHdd = value; OnPropertyChanged("SelectedHdd"); } } }
+        public List<HDD> HDDs { get => _hdds; set { _hdds = value; OnPropertyChanged("Hdds"); } }
+        public HDD SelectedHDD { get => _selectedHdd; set { if (value != null) { _selectedHdd = value; OnPropertyChanged("SelectedHdd"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
         public Dictionary<string, Option> HDDFields { get => _hddFields; set { _hddFields = value; OnPropertyChanged("HddFields"); } }
 
-        public List<RAM> Rams { get => _rams; set { _rams = value; OnPropertyChanged("Rams"); } }
-        public RAM SelectedRam { get => _selectedRam; set { if (value != null) { _selectedRam = value; OnPropertyChanged("SelectedRam"); } } }
+		public List<Motherboard> Motherboards { get => _motherboards; set { _motherboards = value; OnPropertyChanged("Motherboards"); } }
+		/// <summary>
+		/// Field, description, options
+		/// </summary>
+		public Motherboard SelectedMotherboard { get => _selectedMotherboard; set { if (value != null) { _selectedMotherboard = value; OnPropertyChanged("SelectedMotherboard"); } } }
+		public Dictionary<string, Option> MotherboardFields { get => _motherboardFields; set { _motherboardFields = value; OnPropertyChanged("MotherboardFields"); } }
+
+
+		public List<RAM> RAMs { get => _rams; set { _rams = value; OnPropertyChanged("Rams"); } }
+        public RAM SelectedRAM { get => _selectedRam; set { if (value != null) { _selectedRam = value; OnPropertyChanged("SelectedRam"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
         public Dictionary<string, Option> RAMFields { get => _ramFields; set { _ramFields = value; OnPropertyChanged("RamFields"); } }
 
-        public List<SSD> Ssds { get => _ssds; set { _ssds = value; OnPropertyChanged("Ssds"); } }
-        public SSD SelectedSsd { get => _selectedSsd; set { if (value != null) { _selectedSsd = value; OnPropertyChanged("SelectedSsd"); } } }
+        public List<SSD> SSDs { get => _ssds; set { _ssds = value; OnPropertyChanged("Ssds"); } }
+        public SSD SelectedSSD { get => _selectedSsd; set { if (value != null) { _selectedSsd = value; OnPropertyChanged("SelectedSsd"); } } }
         /// <summary>
         /// Field, description, options
         /// </summary>
         public Dictionary<string, Option> SSDFields { get => _ssdFields; set { _ssdFields = value; OnPropertyChanged("SsdFields"); } }
-
-        public List<Motherboard> Motherboards { get => _motherboards; set { _motherboards = value; OnPropertyChanged("Motherboards"); } }
-        /// <summary>
-        /// Field, description, options
-        /// </summary>
-        public Motherboard SelectedMotherboard { get => _selectedMotherboard; set { if (value != null) { _selectedMotherboard = value; OnPropertyChanged("SelectedMotherboard"); } } }
-        public Dictionary<string, Option> MotherboardFields { get => _motherboardFields; set { _motherboardFields = value; OnPropertyChanged("MotherboardFields"); } }
 
         public List<Videocard> Videocards { get => _videocards; set { _videocards = value; OnPropertyChanged("Videocards"); } }
         public Videocard SelectedVideocard { get => _selectedVideocard; set { if (value != null) { _selectedVideocard = value; OnPropertyChanged("SelectedVideocard"); } } }
@@ -187,7 +182,7 @@ namespace Model
 		/// </summary>
 		/// <param name="apiUri">APU uri</param>
 		/// <param name="culture">Culture code</param>
-        public Model(string apiUri, string culture = "en")
+        public Model(string apiUri, string componentsFormat, string statisticsFormat, string culture = "en")
         {
             _bodies = new List<Body>();
             _chargers = new List<Charger>();
@@ -199,10 +194,9 @@ namespace Model
             _ssds = new List<SSD>();
             _videocards = new List<Videocard>();
 
-#if !LOCALHOST
             _apiUri = apiUri;
-#endif
-
+			_componentsUri = string.Format(componentsFormat, _apiUri);
+			_statisticsUri = string.Format(statisticsFormat, _apiUri);
             _culture = culture;
         }
 
@@ -210,109 +204,94 @@ namespace Model
 		/// Initializes loading of entries and filters
 		/// </summary>
 		/// <returns></returns>
-		public async Task Initialize()
+		public virtual async Task InitializeAsync()
         {
-            await LoadFields("body");
-            await LoadFields("charger");
-            await LoadFields("cooler");
-            await LoadFields("cpu");
-            await LoadFields("hdd");
-            await LoadFields("motherboard");
-            await LoadFields("ram");
-            await LoadFields("ssd");
-            await LoadFields("videocard");
+            await LoadFieldsAsync("body");
+            await LoadFieldsAsync("charger");
+            await LoadFieldsAsync("cooler");
+            await LoadFieldsAsync("cpu");
+            await LoadFieldsAsync("hdd");
+            await LoadFieldsAsync("motherboard");
+            await LoadFieldsAsync("ram");
+            await LoadFieldsAsync("ssd");
+            await LoadFieldsAsync("videocard");
 
-            await LoadAllEntries("body");
-            await LoadAllEntries("charger");
-            await LoadAllEntries("cooler");
-            await LoadAllEntries("cpu");
-            await LoadAllEntries("hdd");
-            await LoadAllEntries("motherboard");
-            await LoadAllEntries("ram");
-            await LoadAllEntries("ssd");
-            await LoadAllEntries("videocard");
-        }
+            await LoadAllEntriesAsync("body");
+            await LoadAllEntriesAsync("charger");
+            await LoadAllEntriesAsync("cooler");
+            await LoadAllEntriesAsync("cpu");
+            await LoadAllEntriesAsync("hdd");
+            await LoadAllEntriesAsync("motherboard");
+            await LoadAllEntriesAsync("ram");
+            await LoadAllEntriesAsync("ssd");
+            await LoadAllEntriesAsync("videocard");
+		}
 
         /// <summary>
         /// Loads all records of a specified component
         /// </summary>
         /// <param name="type">Component name</param>
         /// <returns></returns>
-        public async Task LoadAllEntries(string type)
+        public async Task LoadAllEntriesAsync(string type)
         {
+			string request = string.Format(GetAllElementsRequestFormat, _componentsUri, type);
 			try
 			{
 				switch (type)
 				{
 					case "body":
 					{
-						string request = $"{_apiUri}/bodies";
+						request = request.Replace("body", "bodie");
 
-						Bodies = (await SendHTTPRequest<IEnumerable<Body>>("GET", request)).ToList();
+						Bodies = (await SendHTTPRequestAsync<IEnumerable<Body>>("GET", request)).ToList();
 						OnPropertyChanged("Bodies");
 					}
 					break;
 					case "charger":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Chargers = (await SendHTTPRequest<IEnumerable<Charger>>("GET", request)).ToList();
+						Chargers = (await SendHTTPRequestAsync<IEnumerable<Charger>>("GET", request)).ToList();
 						OnPropertyChanged("Chargers");
 					}
 					break;
 					case "cooler":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Coolers = (await SendHTTPRequest<IEnumerable<Cooler>>("GET", request)).ToList();
+						Coolers = (await SendHTTPRequestAsync<IEnumerable<Cooler>>("GET", request)).ToList();
 						OnPropertyChanged("Coolers");
 					}
 					break;
 					case "cpu":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Cpus = (await SendHTTPRequest<IEnumerable<CPU>>("GET", request)).ToList();
+						CPUs = (await SendHTTPRequestAsync<IEnumerable<CPU>>("GET", request)).ToList();
 						OnPropertyChanged("Cpus");
 					}
 					break;
 					case "hdd":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Hdds = (await SendHTTPRequest<IEnumerable<HDD>>("GET", request)).ToList();
+						HDDs = (await SendHTTPRequestAsync<IEnumerable<HDD>>("GET", request)).ToList();
 						OnPropertyChanged("Hdds");
 					}
 					break;
 					case "motherboard":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Motherboards = (await SendHTTPRequest<IEnumerable<Motherboard>>("GET", request)).ToList();
+						Motherboards = (await SendHTTPRequestAsync<IEnumerable<Motherboard>>("GET", request)).ToList();
 						OnPropertyChanged("Motherboards");
 					}
 					break;
 					case "ram":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Rams = (await SendHTTPRequest<IEnumerable<RAM>>("GET", request)).ToList();
+						RAMs = (await SendHTTPRequestAsync<IEnumerable<RAM>>("GET", request)).ToList();
 						OnPropertyChanged("Rams");
 					}
 					break;
 					case "ssd":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Ssds = (await SendHTTPRequest<IEnumerable<SSD>>("GET", request)).ToList();
+						SSDs = (await SendHTTPRequestAsync<IEnumerable<SSD>>("GET", request)).ToList();
 						OnPropertyChanged("Ssds");
 					}
 					break;
 					case "videocard":
 					{
-						string request = $"{_apiUri}/{type}s";
-
-						Videocards = (await SendHTTPRequest<IEnumerable<Videocard>>("GET", request)).ToList();
+						Videocards = (await SendHTTPRequestAsync<IEnumerable<Videocard>>("GET", request)).ToList();
 						OnPropertyChanged("Videocards");
 						break;
 					}
@@ -331,8 +310,10 @@ namespace Model
         /// </summary>
         /// <param name="type">component name</param>
         /// <returns></returns>
-        public async Task LoadFields(string type)
+        public async Task LoadFieldsAsync(string type)
         {
+			string request = string.Format(GetPropertiesRequestFormat, _componentsUri, type, _culture);
+
 			try
 			{
 				if (type == "body" ||
@@ -345,9 +326,7 @@ namespace Model
 					type == "ssd" ||
 					type == "videocard")
 				{
-					string request = $"{_apiUri}/{type}/properties?culture={_culture}";
-
-					var v = await SendHTTPRequest<Dictionary<string, Option>>("GET", request);
+					var v = await SendHTTPRequestAsync<Dictionary<string, Option>>("GET", request);
 
 					switch (type)
 					{
@@ -405,7 +384,7 @@ namespace Model
 		/// <param name="property">Filter name</param>
 		/// <param name="value">Target value</param>
 		/// <returns></returns>
-        public async Task ToggleFilter(string type, string property, string value)
+		public async Task ToggleFilterAsync(string type, string property, string value)
         {
             switch (type)
             {
@@ -430,7 +409,7 @@ namespace Model
                     {
                         _selectedBodyFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "charger":
@@ -454,7 +433,7 @@ namespace Model
                     {
                         _selectedChargerFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "cooler":
@@ -478,7 +457,7 @@ namespace Model
                     {
                         _selectedCoolerFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "cpu":
@@ -502,7 +481,7 @@ namespace Model
                     {
                         _selectedCpuFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "hdd":
@@ -526,7 +505,7 @@ namespace Model
                     {
                         _selectedHddFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "motherboard":
@@ -550,7 +529,7 @@ namespace Model
                     {
                         _selectedMotherboardFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "ram":
@@ -574,7 +553,7 @@ namespace Model
                     {
                         _selectedRamFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "ssd":
@@ -598,7 +577,7 @@ namespace Model
                     {
                         _selectedSsdFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
                 case "videocard":
@@ -622,7 +601,7 @@ namespace Model
                     {
                         _selectedVideocardFields.Add(property, new string[] { value });
                     }
-                    await UpdateData(type);
+                    await UpdateDataAsync(type);
                 }
                 break;
             }
@@ -632,17 +611,17 @@ namespace Model
 		/// Reloads all of the records
 		/// </summary>
 		/// <returns></returns>
-        public async Task UpdateAllData()
+        public async Task UpdateAllDataAsync()
         {
-            await UpdateData("body");
-            await UpdateData("charger");
-            await UpdateData("cooler");
-            await UpdateData("cpu");
-            await UpdateData("hdd");
-            await UpdateData("motherboard");
-            await UpdateData("ram");
-            await UpdateData("ssd");
-            await UpdateData("videocard");
+            await UpdateDataAsync("body");
+            await UpdateDataAsync("charger");
+            await UpdateDataAsync("cooler");
+            await UpdateDataAsync("cpu");
+            await UpdateDataAsync("hdd");
+            await UpdateDataAsync("motherboard");
+            await UpdateDataAsync("ram");
+            await UpdateDataAsync("ssd");
+            await UpdateDataAsync("videocard");
         }
 
 		/// <summary>
@@ -650,23 +629,41 @@ namespace Model
 		/// </summary>
 		/// <param name="type">Component</param>
 		/// <returns></returns>
-        public async Task UpdateData(string type)
+        public async Task UpdateDataAsync(string type)
         {
-            string request = $"{_apiUri}/{type}?";
+			StringBuilder request = new StringBuilder();
+			StringBuilder recommendationsRequest = new StringBuilder();
+
             switch (type)
             {
                 case "body":
                 {
                     if (_selectedBodyFields.Count > 0)
                     {
-                        request = $"{request}{string.Join("&", _selectedBodyFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
+						List<string> properties = _selectedBodyFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
                     }
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Bodies = (await SendHTTPRequest<IEnumerable<Body>>("GET", request)).ToList();
+						Bodies = (await SendHTTPRequestAsync<IEnumerable<Body>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach(var recommendation in recommendations)
+						{
+							var body = Bodies.First(e => e.ID == recommendation.Key);
+							_bodies.Remove(body);
+							_bodies.Insert(recommendation.Value, body);
+						}
+
 						OnPropertyChanged("Bodies");
 					}
 					catch (WebException)
@@ -679,16 +676,32 @@ namespace Model
                 break;
                 case "charger":
                 {
-                    if (_selectedChargerFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedChargerFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedChargerFields.Count > 0)
+					{
+						List<string> properties = _selectedChargerFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Chargers = (await SendHTTPRequest<IEnumerable<Charger>>("GET", request)).ToList();
+						Chargers = (await SendHTTPRequestAsync<IEnumerable<Charger>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var charger = Chargers.First(e => e.ID == recommendation.Key);
+							_chargers.Remove(charger);
+							_chargers.Insert(recommendation.Value, charger);
+						}
+
 						OnPropertyChanged("Chargers");
 					}
 					catch (WebException)
@@ -701,16 +714,32 @@ namespace Model
                 break;
                 case "cooler":
                 {
-                    if (_selectedCoolerFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedCoolerFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedCoolerFields.Count > 0)
+					{
+						List<string> properties = _selectedCoolerFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Coolers = (await SendHTTPRequest<IEnumerable<Cooler>>("GET", request)).ToList();
+						Coolers = (await SendHTTPRequestAsync<IEnumerable<Cooler>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var cooler = Coolers.First(e => e.ID == recommendation.Key);
+							_coolers.Remove(cooler);
+							_coolers.Insert(recommendation.Value, cooler);
+						}
+
 						OnPropertyChanged("Coolers");
 					}
 					catch (WebException)
@@ -723,16 +752,32 @@ namespace Model
                 break;
                 case "cpu":
                 {
-                    if (_selectedCpuFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedCpuFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedCpuFields.Count > 0)
+					{
+						List<string> properties = _selectedCpuFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Cpus = (await SendHTTPRequest<IEnumerable<CPU>>("GET", request)).ToList();
+						CPUs = (await SendHTTPRequestAsync<IEnumerable<CPU>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var cpu = CPUs.First(e => e.ID == recommendation.Key);
+							_cpus.Remove(cpu);
+							_cpus.Insert(recommendation.Value, cpu);
+						}
+
 						OnPropertyChanged("Cpus");
 					}
 					catch (WebException)
@@ -745,16 +790,32 @@ namespace Model
                 break;
                 case "hdd":
                 {
-                    if (_selectedHddFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedHddFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedHddFields.Count > 0)
+					{
+						List<string> properties = _selectedHddFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Hdds = (await SendHTTPRequest<IEnumerable<HDD>>("GET", request)).ToList();
+						HDDs = (await SendHTTPRequestAsync<IEnumerable<HDD>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var hdd = HDDs.First(e => e.ID == recommendation.Key);
+							_hdds.Remove(hdd);
+							_hdds.Insert(recommendation.Value, hdd);
+						}
+
 						OnPropertyChanged("Hdds");
 					}
 					catch (WebException)
@@ -767,16 +828,32 @@ namespace Model
                 break;
                 case "motherboard":
                 {
-                    if (_selectedMotherboardFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedMotherboardFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedMotherboardFields.Count > 0)
+					{
+						List<string> properties = _selectedMotherboardFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Motherboards = (await SendHTTPRequest<IEnumerable<Motherboard>>("GET", request)).ToList();
+						Motherboards = (await SendHTTPRequestAsync<IEnumerable<Motherboard>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var motherboard = Motherboards.First(e => e.ID == recommendation.Key);
+							_motherboards.Remove(motherboard);
+							_motherboards.Insert(recommendation.Value, motherboard);
+						}
+
 						OnPropertyChanged("Motherboards");
 					}
 					catch (WebException)
@@ -789,16 +866,32 @@ namespace Model
                 break;
                 case "ram":
                 {
-                    if (_selectedRamFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedRamFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedRamFields.Count > 0)
+					{
+						List<string> properties = _selectedRamFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Rams = (await SendHTTPRequest<IEnumerable<RAM>>("GET", request)).ToList();
+						RAMs = (await SendHTTPRequestAsync<IEnumerable<RAM>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var ram = RAMs.First(e => e.ID == recommendation.Key);
+							_rams.Remove(ram);
+							_rams.Insert(recommendation.Value, ram);
+						}
+
 						OnPropertyChanged("Rams");
 					}
 					catch (WebException)
@@ -811,16 +904,32 @@ namespace Model
                 break;
                 case "ssd":
                 {
-                    if (_selectedSsdFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedSsdFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedSsdFields.Count > 0)
+					{
+						List<string> properties = _selectedSsdFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Ssds = (await SendHTTPRequest<IEnumerable<SSD>>("GET", request)).ToList();
+						SSDs = (await SendHTTPRequestAsync<IEnumerable<SSD>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var ssd = SSDs.First(e => e.ID == recommendation.Key);
+							_ssds.Remove(ssd);
+							_ssds.Insert(recommendation.Value, ssd);
+						}
+
 						OnPropertyChanged("Ssds");
 					}
 					catch (WebException)
@@ -833,16 +942,32 @@ namespace Model
                 break;
                 case "videocard":
                 {
-                    if (_selectedVideocardFields.Count > 0)
-                    {
-                        request = $"{request}{string.Join("&", _selectedVideocardFields.Select((kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))))}";
-                    }
+					if (_selectedVideocardFields.Count > 0)
+					{
+						List<string> properties = _selectedVideocardFields.
+							Select(
+								(kv) => string.Join("&", kv.Value.Select(v => $"{kv.Key}={v}"))
+							).ToList();
+						string requestProperties = string.Join("&", properties);
+						request.AppendFormat(ElementsRequestFormat, _componentsUri, type, requestProperties);
+						recommendationsRequest.AppendFormat(GetRecommendationsRequestFormat, _statisticsUri, type, requestProperties, "week");
+					}
 
-					request = AddSelectedToRequest(request);
+					AddSelectedToRequest(request);
 
 					try
 					{
-						Videocards = (await SendHTTPRequest<IEnumerable<Videocard>>("GET", request)).ToList();
+						Videocards = (await SendHTTPRequestAsync<IEnumerable<Videocard>>("GET", request.ToString())).ToList();
+
+						Dictionary<int, int> recommendations = (await SendHTTPRequestAsync<Dictionary<int, int>>("GET", recommendationsRequest.ToString()));
+
+						foreach (var recommendation in recommendations)
+						{
+							var videocard = Videocards.First(e => e.ID == recommendation.Key);
+							_videocards.Remove(videocard);
+							_videocards.Insert(recommendation.Value, videocard);
+						}
+
 						OnPropertyChanged("Videocards");
 					}
 					catch (WebException)
@@ -902,12 +1027,12 @@ namespace Model
                 break;
                 case "cpu":
                 {
-                    SelectedCpu = Cpus.FirstOrDefault((o) => o.ID == id);
+                    SelectedCPU = CPUs.FirstOrDefault((o) => o.ID == id);
 				}
                 break;
                 case "hdd":
                 {
-                    SelectedHdd = Hdds.FirstOrDefault((o) => o.ID == id);
+                    SelectedHDD = HDDs.FirstOrDefault((o) => o.ID == id);
 				}
                 break;
                 case "motherboard":
@@ -917,12 +1042,12 @@ namespace Model
                 break;
                 case "ram":
                 {
-                    SelectedRam = Rams.FirstOrDefault((o) => o.ID == id);
+                    SelectedRAM = RAMs.FirstOrDefault((o) => o.ID == id);
 				}
                 break;
                 case "ssd":
                 {
-                    SelectedSsd = Ssds.FirstOrDefault((o) => o.ID == id);
+                    SelectedSSD = SSDs.FirstOrDefault((o) => o.ID == id);
 				}
                 break;
                 case "videocard":
@@ -938,7 +1063,7 @@ namespace Model
 		/// </summary>
 		/// <param name="type">Component</param>
 		/// <returns></returns>
-        public async Task ClearSelectedItem(string type)
+        public async Task ClearSelectedItemAsync(string type)
         {
             switch (type)
             {
@@ -997,7 +1122,7 @@ namespace Model
                 }
                 break;
             }
-            await UpdateAllData();
+            await UpdateAllDataAsync();
         }
 
 		/// <summary>
@@ -1020,11 +1145,11 @@ namespace Model
                             SelectedBody = SelectedBody,
                             SelectedCharger = SelectedCharger,
                             SelectedCooler = SelectedCooler,
-                            SelectedCPU = SelectedCpu,
-                            SelectedHDD = SelectedHdd,
+                            SelectedCPU = SelectedCPU,
+                            SelectedHDD = SelectedHDD,
                             SelectedMotherboard = SelectedMotherboard,
-                            SelectedRAM = SelectedRam,
-                            SelectedSSD = SelectedSsd,
+                            SelectedRAM = SelectedRAM,
+                            SelectedSSD = SelectedSSD,
                             SelectedVideocard = SelectedVideocard
                         };
                         serializer.Serialize(writer, selected);
@@ -1040,11 +1165,11 @@ namespace Model
                             SelectedBody = SelectedBody,
                             SelectedCharger = SelectedCharger,
                             SelectedCooler = SelectedCooler,
-                            SelectedCPU = SelectedCpu,
-                            SelectedHDD = SelectedHdd,
+                            SelectedCPU = SelectedCPU,
+                            SelectedHDD = SelectedHDD,
                             SelectedMotherboard = SelectedMotherboard,
-                            SelectedRAM = SelectedRam,
-                            SelectedSSD = SelectedSsd,
+                            SelectedRAM = SelectedRAM,
+                            SelectedSSD = SelectedSSD,
                             SelectedVideocard = SelectedVideocard
                         };
                         string json = JsonConvert.SerializeObject(selected, Newtonsoft.Json.Formatting.Indented);
@@ -1081,15 +1206,15 @@ namespace Model
                         OnPropertyChanged("SelectedCharger");
                         SelectedCooler = info.SelectedCooler;
                         OnPropertyChanged("SelectedCooler");
-                        SelectedCpu = info.SelectedCPU;
+                        SelectedCPU = info.SelectedCPU;
                         OnPropertyChanged("SelectedCpu");
-                        SelectedHdd = info.SelectedHDD;
+                        SelectedHDD = info.SelectedHDD;
                         OnPropertyChanged("SelectedHdd");
                         SelectedMotherboard = info.SelectedMotherboard;
                         OnPropertyChanged("SelectedMotherboard");
-                        SelectedRam = info.SelectedRAM;
+                        SelectedRAM = info.SelectedRAM;
                         OnPropertyChanged("SelectedRam");
-                        SelectedSsd = info.SelectedSSD;
+                        SelectedSSD = info.SelectedSSD;
                         OnPropertyChanged("SelectedSsd");
                         SelectedVideocard = info.SelectedVideocard;
                         OnPropertyChanged("SelectedVideocard");
@@ -1108,15 +1233,15 @@ namespace Model
                         OnPropertyChanged("SelectedCharger");
                         SelectedCooler = info.SelectedCooler;
                         OnPropertyChanged("SelectedCooler");
-                        SelectedCpu = info.SelectedCPU;
+                        SelectedCPU = info.SelectedCPU;
                         OnPropertyChanged("SelectedCpu");
-                        SelectedHdd = info.SelectedHDD;
+                        SelectedHDD = info.SelectedHDD;
                         OnPropertyChanged("SelectedHdd");
                         SelectedMotherboard = info.SelectedMotherboard;
                         OnPropertyChanged("SelectedMotherboard");
-                        SelectedRam = info.SelectedRAM;
+                        SelectedRAM = info.SelectedRAM;
                         OnPropertyChanged("SelectedRam");
-                        SelectedSsd = info.SelectedSSD;
+                        SelectedSSD = info.SelectedSSD;
                         OnPropertyChanged("SelectedSsd");
                         SelectedVideocard = info.SelectedVideocard;
                         OnPropertyChanged("SelectedVideocard");
@@ -1136,12 +1261,12 @@ namespace Model
 		/// </summary>
 		/// <param name="newCulture">New culture</param>
 		/// <returns></returns>
-        public async Task ChangeCulture(string newCulture)
+        public async Task ChangeCultureAsync(string newCulture)
         {
             if (newCulture != null)
             {
                 _culture = newCulture;
-                await Initialize();
+                await InitializeAsync();
             }
         }
 
@@ -1151,18 +1276,19 @@ namespace Model
 		/// <param name="type">Component</param>
 		/// <param name="model">Element to add</param>
 		/// <returns></returns>
-		public async Task AddModel(string type, object model, string token)
+		public async Task AddModelAsync(string type, object model, string token)
 		{
+			string request = string.Format(AddElementRequestFormat, _componentsUri, type);
+
 			switch (type)
 			{
 				case "body":
 				{
-					var m = model as Body;
-					if (m != null)
+					if (model is Body m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Body>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Body>>("POST", request, content, token);
 
 						Bodies = res.ToList();
 						OnPropertyChanged("Bodies");
@@ -1171,12 +1297,11 @@ namespace Model
 				break;
 				case "charger":
 				{
-					var m = model as Charger;
-					if (m != null)
+					if (model is Charger m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Charger>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Charger>>("POST", request, content, token);
 
 						Chargers = res.ToList();
 						OnPropertyChanged("Chargers");
@@ -1185,12 +1310,11 @@ namespace Model
 				break;
 				case "cooler":
 				{
-					var m = model as Cooler;
-					if (m != null)
+					if (model is Cooler m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Cooler>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Cooler>>("POST", request, content, token);
 
 						Coolers = res.ToList();
 						OnPropertyChanged("Coolers");
@@ -1199,40 +1323,37 @@ namespace Model
 				break;
 				case "cpu":
 				{
-					var m = model as CPU;
-					if (m != null)
+					if (model is CPU m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<CPU>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<CPU>>("POST", request, content, token);
 
-						Cpus = res.ToList();
+						CPUs = res.ToList();
 						OnPropertyChanged("Cpus");
 					}
 				}
 				break;
 				case "hdd":
 				{
-					var m = model as HDD;
-					if (m != null)
+					if (model is HDD m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<HDD>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<HDD>>("POST", request, content, token);
 
-						Hdds = res.ToList();
+						HDDs = res.ToList();
 						OnPropertyChanged("Hdds");
 					}
 				}
 				break;
 				case "motherboard":
 				{
-					var m = model as Motherboard;
-					if (m != null)
+					if (model is Motherboard m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Motherboard>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Motherboard>>("POST", request, content, token);
 
 						Motherboards = res.ToList();
 						OnPropertyChanged("Motherboards");
@@ -1241,40 +1362,37 @@ namespace Model
 				break;
 				case "ram":
 				{
-					var m = model as RAM;
-					if (m != null)
+					if (model is RAM m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<RAM>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<RAM>>("POST", request, content, token);
 
-						Rams = res.ToList();
+						RAMs = res.ToList();
 						OnPropertyChanged("Rams");
 					}
 				}
 				break;
 				case "ssd":
 				{
-					var m = model as SSD;
-					if (m != null)
+					if (model is SSD m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<SSD>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<SSD>>("POST", request, content, token);
 
-						Ssds = res.ToList();
+						SSDs = res.ToList();
 						OnPropertyChanged("Ssds");
 					}
 				}
 				break;
 				case "videocard":
 				{
-					var m = model as Videocard;
-					if (m != null)
+					if (model is Videocard m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Videocard>>("POST", $"{_apiUri}/{type}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Videocard>>("POST", request, content, token);
 
 						Videocards = res.ToList();
 						OnPropertyChanged("Videocards");
@@ -1291,18 +1409,19 @@ namespace Model
 		/// <param name="id">Element ID</param>
 		/// <param name="model">New element</param>
 		/// <returns></returns>
-		public async Task ReplaceModel(string type, int id, object model, string token)
+		public async Task ReplaceModelAsync(string type, int id, object model, string token)
 		{
+			string request = string.Format(ElementByIDRequestFormat, _componentsUri, type, id);
+
 			switch (type)
 			{
 				case "body":
 				{
-					var m = model as Body;
-					if (m != null)
+					if (model is Body m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Body>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Body>>("PUT", request, content, token);
 
 						Bodies = res.ToList();
 						OnPropertyChanged("Bodies");
@@ -1311,12 +1430,11 @@ namespace Model
 				break;
 				case "charger":
 				{
-					var m = model as Charger;
-					if (m != null)
+					if (model is Charger m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Charger>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Charger>>("PUT", request, content, token);
 
 						Chargers = res.ToList();
 						OnPropertyChanged("Chargers");
@@ -1325,12 +1443,11 @@ namespace Model
 				break;
 				case "cooler":
 				{
-					var m = model as Cooler;
-					if (m != null)
+					if (model is Cooler m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Cooler>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Cooler>>("PUT", request, content, token);
 
 						Coolers = res.ToList();
 						OnPropertyChanged("Coolers");
@@ -1339,40 +1456,37 @@ namespace Model
 				break;
 				case "cpu":
 				{
-					var m = model as CPU;
-					if (m != null)
+					if (model is CPU m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<CPU>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<CPU>>("PUT", request, content, token);
 
-						Cpus = res.ToList();
+						CPUs = res.ToList();
 						OnPropertyChanged("Cpus");
 					}
 				}
 				break;
 				case "hdd":
 				{
-					var m = model as HDD;
-					if (m != null)
+					if (model is HDD m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<HDD>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<HDD>>("PUT", request, content, token);
 
-						Hdds = res.ToList();
+						HDDs = res.ToList();
 						OnPropertyChanged("Hdds");
 					}
 				}
 				break;
 				case "motherboard":
 				{
-					var m = model as Motherboard;
-					if (m != null)
+					if (model is Motherboard m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Motherboard>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Motherboard>>("PUT", request, content, token);
 
 						Motherboards = res.ToList();
 						OnPropertyChanged("Motherboards");
@@ -1381,40 +1495,37 @@ namespace Model
 				break;
 				case "ram":
 				{
-					var m = model as RAM;
-					if (m != null)
+					if (model is RAM m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<RAM>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<RAM>>("PUT", request, content, token);
 
-						Rams = res.ToList();
+						RAMs = res.ToList();
 						OnPropertyChanged("Rams");
 					}
 				}
 				break;
 				case "ssd":
 				{
-					var m = model as SSD;
-					if (m != null)
+					if (model is SSD m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<SSD>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<SSD>>("PUT", request, content, token);
 
-						Ssds = res.ToList();
+						SSDs = res.ToList();
 						OnPropertyChanged("Ssds");
 					}
 				}
 				break;
 				case "videocard":
 				{
-					var m = model as Videocard;
-					if (m != null)
+					if (model is Videocard m)
 					{
 						var content = JsonConvert.SerializeObject(m, Newtonsoft.Json.Formatting.Indented);
 
-						var res = await SendHTTPRequest<IEnumerable<Videocard>>("PUT", $"{_apiUri}/{type}/{id}", content, token);
+						var res = await SendHTTPRequestAsync<IEnumerable<Videocard>>("PUT", request, content, token);
 
 						Videocards = res.ToList();
 						OnPropertyChanged("Videocards");
@@ -1430,13 +1541,15 @@ namespace Model
 		/// <param name="type">Component</param>
 		/// <param name="id">Element ID</param>
 		/// <returns></returns>
-		public async Task DeleteModel(string type, int id, string token)
+		public async Task DeleteModelAsync(string type, int id, string token)
 		{
+			string request = string.Format(ElementByIDRequestFormat, _componentsUri, type, id);
+
 			switch (type)
 			{
 				case "body":
 				{
-					var res = await SendHTTPRequest<IEnumerable<Body>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<Body>>("DELETE", request, token: token);
 
 					Bodies = res.ToList();
 
@@ -1445,7 +1558,7 @@ namespace Model
 				break;
 				case "charger":
 				{
-					var res = await SendHTTPRequest<IEnumerable<Charger>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<Charger>>("DELETE", request, token: token);
 
 					Chargers = res.ToList();
 
@@ -1454,7 +1567,7 @@ namespace Model
 				break;
 				case "cooler":
 				{
-					var res = await SendHTTPRequest<IEnumerable<Cooler>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<Cooler>>("DELETE", request, token: token);
 
 					Coolers = res.ToList();
 
@@ -1463,25 +1576,25 @@ namespace Model
 				break;
 				case "cpu":
 				{
-					var res = await SendHTTPRequest<IEnumerable<CPU>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<CPU>>("DELETE", request, token: token);
 
-					Cpus = res.ToList();
+					CPUs = res.ToList();
 
 					OnPropertyChanged("Cpus");
 				}
 				break;
 				case "hdd":
 				{
-					var res = await SendHTTPRequest<IEnumerable<HDD>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<HDD>>("DELETE", request, token: token);
 
-					Hdds = res.ToList();
+					HDDs = res.ToList();
 
 					OnPropertyChanged("Hdds");
 				}
 				break;
 				case "motherboard":
 				{
-					var res = await SendHTTPRequest<IEnumerable<Motherboard>>("PUT", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<Motherboard>>("PUT", request, token: token);
 
 					Motherboards = res.ToList();
 
@@ -1490,25 +1603,25 @@ namespace Model
 				break;
 				case "ram":
 				{
-					var res = await SendHTTPRequest<IEnumerable<RAM>>("DELETE", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<RAM>>("DELETE", request, token: token);
 
-					Rams = res.ToList();
+					RAMs = res.ToList();
 
 					OnPropertyChanged("Rams");
 				}
 				break;
 				case "ssd":
 				{
-					var res = await SendHTTPRequest<IEnumerable<SSD>>("PUT", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<SSD>>("PUT", request, token: token);
 
-					Ssds = res.ToList();
+					SSDs = res.ToList();
 
 					OnPropertyChanged("Ssds");
 				}
 				break;
 				case "videocard":
 				{
-					var res = await SendHTTPRequest<IEnumerable<Videocard>>("PUT", $"{_apiUri}/{type}/{id}", token: token);
+					var res = await SendHTTPRequestAsync<IEnumerable<Videocard>>("PUT", request, token: token);
 
 					Videocards = res.ToList();
 
@@ -1527,7 +1640,71 @@ namespace Model
 		/// <param name="content">JSON content</param>
 		/// <param name="token">Authorization token</param>
 		/// <returns></returns>
-		private async Task<T> SendHTTPRequest<T>(string method, string path, string content = null, string token = null)
+		protected T SendHTTPRequest<T>(string method, string path, string content = null, string token = null)
+		{
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(path);
+
+			request.Method = method;
+
+			if (token != null)
+			{
+				var cookies = new CookieContainer();
+				cookies.Add(new Cookie("Authorization", $"Bearer {token}"));
+				request.CookieContainer = cookies;
+				request.ContentType = "application/json";
+			}
+
+			if (content != null)
+			{
+				using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+				{
+					streamWriter.Write(content);
+				}
+			}
+
+			HttpWebResponse response = null;
+			try
+			{
+				response = (HttpWebResponse)request.GetResponse();
+			}
+			catch (WebException)
+			{
+				throw;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			if (response.StatusCode == HttpStatusCode.OK)
+			{
+				using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+				{
+					string res = reader.ReadToEnd();
+					try
+					{
+						return JsonConvert.DeserializeObject<T>(res);
+					}
+					catch (JsonSerializationException) { throw; };
+				}
+			}
+			else
+			{
+				return default(T);
+			}
+		}
+
+		/// <summary>
+		/// Async version of <see cref="SendHTTPRequest{T}(string, string, string, string)"/>. 
+		/// Sends HTTP request with optional JSON body and authorization token
+		/// </summary>
+		/// <typeparam name="T">Return value expected type</typeparam>
+		/// <param name="method">HTTP method</param>
+		/// <param name="path">Request uri</param>
+		/// <param name="content">JSON content</param>
+		/// <param name="token">Authorization token</param>
+		/// <returns></returns>
+		protected async Task<T> SendHTTPRequestAsync<T>(string method, string path, string content = null, string token = null)
 		{
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(path);
 
@@ -1558,9 +1735,9 @@ namespace Model
 			{
 				throw;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-
+				throw;
 			}
 
 			if (response.StatusCode == HttpStatusCode.OK)
@@ -1582,11 +1759,116 @@ namespace Model
 		}
 
 		/// <summary>
+		/// Sends HTTP request with optional JSON body and authorization token
+		/// </summary>
+		/// <param name="method">HTTP method</param>
+		/// <param name="path">Request uri</param>
+		/// <param name="content">JSON content</param>
+		/// <param name="token">Authorization token</param>
+		/// <returns>True is success. False otherwise</returns>
+		protected bool SendHTTPRequest(string method, string path, string content = null, string token = null)
+		{
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(path);
+
+			request.Method = method;
+
+			if (token != null)
+			{
+				var cookies = new CookieContainer();
+				cookies.Add(new Cookie("Authorization", $"Bearer {token}"));
+				request.CookieContainer = cookies;
+				request.ContentType = "application/json";
+			}
+
+			if (content != null)
+			{
+				using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+				{
+					streamWriter.Write(content);
+				}
+			}
+
+			HttpWebResponse response = null;
+			try
+			{
+				response = (HttpWebResponse)request.GetResponse();
+			}
+			catch (WebException)
+			{
+				throw;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Async version of <see cref="SendHTTPRequest(string, string, string, string)"/>. 
+		/// Sends HTTP request with optional JSON body and authorization token
+		/// </summary>
+		/// <param name="method">HTTP method</param>
+		/// <param name="path">Request uri</param>
+		/// <param name="content">JSON content</param>
+		/// <param name="token">Authorization token</param>
+		/// <returns>True is success. False otherwise</returns>
+		protected async Task<bool> SendHTTPRequestAsync(string method, string path, string content = null, string token = null)
+		{
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(path);
+
+			request.Method = method;
+
+			if (token != null)
+			{
+				var cookies = new CookieContainer();
+				cookies.Add(new Cookie("Authorization", $"Bearer {token}"));
+				request.CookieContainer = cookies;
+				request.ContentType = "application/json";
+			}
+
+			if (content != null)
+			{
+				using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+				{
+					streamWriter.Write(content);
+				}
+			}
+
+			HttpWebResponse response = null;
+			try
+			{
+				response = (HttpWebResponse)await request.GetResponseAsync();
+			}
+			catch (WebException)
+			{
+				throw;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		/// <summary>
 		/// Adds selected components ID`s to the request
 		/// </summary>
 		/// <param name="initialRequest">Initial request</param>
 		/// <returns></returns>
-		private string AddSelectedToRequest(string initialRequest)
+		protected string AddSelectedToRequest(string initialRequest)
 		{
 			string request = initialRequest;
 			if (SelectedBody != null)
@@ -1610,19 +1892,19 @@ namespace Model
 				else
 					request = $"{request}&selected-cooler={SelectedCooler.ID}";
 			}
-			if (SelectedCpu != null)
+			if (SelectedCPU != null)
 			{
 				if (request.Last() == '?')
-					request = $"{request}selected-cpu={SelectedCpu.ID}";
+					request = $"{request}selected-cpu={SelectedCPU.ID}";
 				else
-					request = $"{request}&selected-cpu={SelectedCpu.ID}";
+					request = $"{request}&selected-cpu={SelectedCPU.ID}";
 			}
-			if (SelectedHdd != null)
+			if (SelectedHDD != null)
 			{
 				if (request.Last() == '?')
-					request = $"{request}selected-hdd={SelectedHdd.ID}";
+					request = $"{request}selected-hdd={SelectedHDD.ID}";
 				else
-					request = $"{request}&selected-hdd={SelectedHdd.ID}";
+					request = $"{request}&selected-hdd={SelectedHDD.ID}";
 			}
 			if (SelectedMotherboard != null)
 			{
@@ -1631,19 +1913,19 @@ namespace Model
 				else
 					request = $"{request}&selected-motherboard={SelectedMotherboard.ID}";
 			}
-			if (SelectedRam != null)
+			if (SelectedRAM != null)
 			{
 				if (request.Last() == '?')
-					request = $"{request}selected-ram={SelectedRam.ID}";
+					request = $"{request}selected-ram={SelectedRAM.ID}";
 				else
-					request = $"{request}&selected-ram={SelectedRam.ID}";
+					request = $"{request}&selected-ram={SelectedRAM.ID}";
 			}
-			if (SelectedSsd != null)
+			if (SelectedSSD != null)
 			{
 				if (request.Last() == '?')
-					request = $"{request}selected-ssd={SelectedSsd.ID}";
+					request = $"{request}selected-ssd={SelectedSSD.ID}";
 				else
-					request = $"{request}&selected-ssd={SelectedSsd.ID}";
+					request = $"{request}&selected-ssd={SelectedSSD.ID}";
 			}
 			if (SelectedVideocard != null)
 			{
@@ -1654,5 +1936,77 @@ namespace Model
 			}
 			return request;
 		}
-    }
+
+		/// <summary>
+		/// Adds selected components ID`s to the request
+		/// </summary>
+		/// <param name="initialRequest">Initial request</param>
+		/// <returns></returns>
+		protected void AddSelectedToRequest(StringBuilder initialRequest)
+		{
+			if (SelectedBody != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-body={0}", SelectedBody.ID);
+				else
+					initialRequest.AppendFormat("&selected-body={0}", SelectedBody.ID);
+			}
+			if (SelectedCharger != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-charger={0}", SelectedCharger.ID);
+				else
+					initialRequest.AppendFormat("&selected-charger={0}", SelectedCharger.ID);
+			}
+			if (SelectedCooler != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-cooler={0}", SelectedCooler.ID);
+				else
+					initialRequest.AppendFormat("&selected-cooler={0}", SelectedCooler.ID);
+			}
+			if (SelectedCPU != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-cpu={0}", SelectedCPU.ID);
+				else
+					initialRequest.AppendFormat("&selected-cpu={0}", SelectedCPU.ID);
+			}
+			if (SelectedHDD != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-hdd={0}", SelectedHDD.ID);
+				else
+					initialRequest.AppendFormat("&selected-hdd={0}", SelectedHDD.ID);
+			}
+			if (SelectedMotherboard != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-motherboard={0}", SelectedMotherboard.ID);
+				else
+					initialRequest.AppendFormat("&selected-motherboard={0}", SelectedMotherboard.ID);
+			}
+			if (SelectedRAM != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-ram={0}", SelectedRAM.ID);
+				else
+					initialRequest.AppendFormat("&selected-ram={0}", SelectedRAM.ID);
+			}
+			if (SelectedSSD != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-ssd={0}", SelectedSSD.ID);
+				else
+					initialRequest.AppendFormat("&selected-ssd={0}", SelectedSSD.ID);
+			}
+			if (SelectedVideocard != null)
+			{
+				if (initialRequest.ToString().Last() == '?')
+					initialRequest.AppendFormat("selected-videocard={0}", SelectedVideocard.ID);
+				else
+					initialRequest.AppendFormat("&selected-videocard={0}", SelectedVideocard.ID);
+			}
+		}
+	}
 }

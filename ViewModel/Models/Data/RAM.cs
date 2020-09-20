@@ -5,35 +5,152 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
-using M = Model;
+using ViewModel.Models;
+using M = Model.Models.Data.Components;
 
 namespace ViewModel
 {
-    public class RAM : INotifyPropertyChanged
+    public class RAM : DataViewModelBase
     {
-        public int      ID           { get; set; }
-	    public string   Title        { get; set; }
-        public string   Company      { get; set; }
-	    public string   Series       { get; set; }
-	    public string   MemoryType   { get; set; }
-	    public string   Purpose      { get; set; }
-	    public int      Volume       { get; set; }
-        public int      ModuleAmount { get; set; }
-        public int      Freq         { get; set; }
-	    public string   CL           { get; set; }
-		public bool Compatible { get; set; }
-		public Dictionary<string, string> Incompatible { get; set; }
-		public int CompatibilityLevel
+		private string _title;
+		private string _company;
+		private string _memoryType;
+		private string _purpose;
+		private int _volume;
+		private int _modulesAmount;
+		private int _frequency;
+		private string _casLatency;
+
+        public int ID { get; set; }
+	    public string Title
 		{
-			get
+			get => _title;
+			set
 			{
-				return Incompatible?.Keys.Count ?? 0;
+				_title = value;
+
+				_errors.Remove("Title");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_title))
+				{
+					_errors.Add("Title", "Invalid data!");
+				}
+				OnPropertyChanged("Title");
+				OnPropertyChanged("Error");
 			}
 		}
+        public string Company
+		{
+			get => _company;
+			set
+			{
+				_company = value;
 
-		private bool isSelected = false;
-        public bool IsSelected { get => isSelected; set { isSelected = value; OnPropertyChanged("IsSelected"); } }
+				_errors.Remove("Company");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_company))
+				{
+					_errors.Add("Company", "Invalid data!");
+				}
+				OnPropertyChanged("Company");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public string Series { get; set; }
+	    public string MemoryType
+		{
+			get => _memoryType;
+			set
+			{
+				_memoryType = value;
+
+				_errors.Remove("MemoryType");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_memoryType))
+				{
+					_errors.Add("MemoryType", "Invalid data!");
+				}
+				OnPropertyChanged("MemoryType");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public string Purpose
+		{
+			get => _purpose;
+			set
+			{
+				_purpose = value;
+
+				_errors.Remove("Purpose");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_purpose))
+				{
+					_errors.Add("Purpose", "Invalid data!");
+				}
+				OnPropertyChanged("Purpose");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public int Volume
+		{
+			get => _volume;
+			set
+			{
+				_volume = value;
+
+				_errors.Remove("Volume");
+				if (!ValidateIntNotLessThanValue(_volume, 1))
+				{
+					_errors.Add("Volume", "Volume cannot be less or equal to zero!");
+				}
+				OnPropertyChanged("Volume");
+				OnPropertyChanged("Error");
+			}
+		}
+        public int ModuleAmount
+		{
+			get => _modulesAmount;
+			set
+			{
+				_modulesAmount = value;
+
+				_errors.Remove("ModuleAmount");
+				if (!ValidateIntNotLessThanValue(_modulesAmount, 1))
+				{
+					_errors.Add("ModuleAmount", "Amount of modules cannot be less or equal to zero!");
+				}
+				OnPropertyChanged("ModuleAmount");
+				OnPropertyChanged("Error");
+			}
+		}
+        public int Freq
+		{
+			get => _frequency;
+			set
+			{
+				_frequency = value;
+
+				_errors.Remove("Freq");
+				if (!ValidateIntNotLessThanValue(_frequency, 1))
+				{
+					_errors.Add("Freq", "Frequency cannot be less or equal to zero!");
+				}
+				OnPropertyChanged("Freq");
+				OnPropertyChanged("Error");
+			}
+		}
+	    public string CL
+		{
+			get => _casLatency;
+			set
+			{
+				_casLatency = value;
+
+				_errors.Remove("CL");
+				if (!ValidateStringNotNullNotEmptyNotWhiteSpace(_casLatency))
+				{
+					_errors.Add("CL", "Invalid data!");
+				}
+				OnPropertyChanged("CL");
+				OnPropertyChanged("Error");
+			}
+		}
 
         public static implicit operator RAM(M.RAM b)
         {
@@ -54,29 +171,50 @@ namespace ViewModel
             } : null;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-
         public override bool Equals(object obj)
         {
-            RAM b = obj as RAM;
-            if (b != null)
-            {
-                return ID == b.ID;
-            }
-            else
-            {
-                return false;
-            }
-        }
+			if (obj is RAM b)
+			{
+				return ID.Equals(b?.ID ?? 0) &&
+					(CL?.Equals(b?.CL ?? "") ?? true) &&
+					(Company?.Equals(b?.Company ?? "") ?? true) &&
+					Freq.Equals(b?.Freq ?? 0) &&
+					(MemoryType?.Equals(b?.MemoryType ?? "") ?? true) &&
+					ModuleAmount.Equals(b?.ModuleAmount ?? 0) &&
+					(Purpose?.Equals(b?.Purpose ?? "") ??  true) &&
+					(Series?.Equals(b?.Series ?? "") ?? true) &&
+					(Title?.Equals(b?.Title ?? "") ?? true) &&
+					Volume.Equals(b?.Volume ?? 0);
+			}
+			else
+			{
+				return false;
+			}
+		}
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-    }
+
+		public override object Clone()
+		{
+			return new RAM()
+			{
+				CL = CL,
+				Company = Company,
+				Freq = Freq,
+				ID = ID,
+				MemoryType = MemoryType,
+				ModuleAmount = ModuleAmount,
+				Purpose = Purpose,
+				Series = Series,
+				Title = Title,
+				Volume = Volume,
+				Compatible = Compatible,
+				Incompatible = Incompatible?.ToDictionary(e => e.Key, e => e.Value),
+				IsSelected = IsSelected
+			};
+		}
+	}
 }

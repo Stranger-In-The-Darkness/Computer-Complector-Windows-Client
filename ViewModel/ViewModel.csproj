@@ -52,12 +52,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminViewModel.cs" />
+    <Compile Include="ChangeElementViewModel.cs" />
+    <Compile Include="Delegates\ModelEditClose.cs" />
+    <Compile Include="Delegates\UnsavedChangesClose.cs" />
+    <Compile Include="Events\Delegates\BeginAddingDelegate.cs" />
+    <Compile Include="Events\Delegates\BeginEditingDelegate.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
+    <Compile Include="Interfaces\IModelEditor.cs" />
     <Compile Include="LoginViewModel.cs" />
+    <Compile Include="Events\Arguments\BeginAddingModelArgs.cs" />
+    <Compile Include="Events\Arguments\BeginEditingModelArgs.cs" />
     <Compile Include="Models\Data\Body.cs" />
     <Compile Include="Models\Data\Charger.cs" />
     <Compile Include="Models\Data\Cooler.cs" />
     <Compile Include="Models\Data\CPU.cs" />
+    <Compile Include="Models\DataViewModelBase.cs" />
     <Compile Include="Models\Data\HDD.cs" />
     <Compile Include="Models\Data\Motherboard.cs" />
     <Compile Include="Models\Data\RAM.cs" />
@@ -66,8 +75,8 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\DefaultDialogService.cs" />
     <Compile Include="Models\Option.cs" />
-    <Compile Include="ViewModelExtension.cs" />
-    <Compile Include="ViewModelMock.cs" />
+    <Compile Include="Models\Rule.cs" />
+    <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -2234,17 +2234,6 @@
 				<ColumnDefinition Width="2*"/>
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
-			<Label Content="{Binding Path=Name}" VerticalAlignment="Center">
-				<Label.Style>
-					<Style TargetType="Label">
-						<Style.Setters>
-							<Setter Property="Foreground" Value="White"/>
-						</Style.Setters>
-					</Style>
-				</Label.Style>
-			</Label>
-			<Button x:Name="logInOutBtn" Style="{StaticResource loginBtn}" Grid.Column="1" Click="LogInOutBtn_Click">
-			</Button>
 		</Grid>
 
 		<Grid Grid.ColumnSpan="3" Grid.Row="2">
@@ -3051,8 +3040,7 @@
 				Style="{StaticResource elementsListLoader}" 
 				RenderTransformOrigin="0.5,0.5" />
 			<ListBox 
-				x:Name="ItemsListBox" 
-				SelectionChanged="ItemsListBox_SelectionChanged">
+				x:Name="ItemsListBox">
 				<ListBox.Style>
 					<Style TargetType="ListBox">
 						<Style.Setters>
